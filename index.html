@@ -15,14 +15,14 @@
 		<div class="row">
 			<div class="col">
 				<header>
-					<div id="logo"></div>
+                    <div id="logo"><img src="logo/Vin.png" width="50px"/></div>
 					<div id="titre">
 						<h1>Votre Caviste 2020</h1>
 					</div>
 					<nav class="navbar navbar-light bg-light">
 						<ul class="nav nav-tabs">
 							<li class="nav-item"><a class="nav-link " href="#">Accueil</a></li>
-							
+
 							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Nos Vins</a>
 								<div class="dropdown-menu">
 								  <a class="dropdown-item" href="#">Rosé</a>
@@ -30,7 +30,7 @@
 								  <a class="dropdown-item" href="#">Vins Blanc</a>
 								</div>
 							</li>
-							
+
 							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Nos distributeurs</a>
 								<div class="dropdown-menu">
 								  <a class="dropdown-item" href="#">Distr 1</a>
@@ -39,14 +39,14 @@
 								</div>
 							</li>
 							<li class="nav-item"><a class="nav-link" href="#">Nos Dégustations</a></li>
-							
+
 							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">À propos</a>
 								<div class="dropdown-menu">
 								  <a class="dropdown-item" href="#">Qui sommes-nous ?</a>
 								  <a class="dropdown-item" href="#">Contact</a>
 								</div>
 							</li>
-						</ul> 
+						</ul>
 						<form id="searchCreateWine" action="" method="get" class="form-inline">
 							<input type="text" name="inputWine" id="inputWine" placeholder="Enter wine name..." class="form-control mr-3">
 							<button id="buttonSearch" name="buttonSearch" type="button" class="btn btn-info mr-3">Search</button>
@@ -64,11 +64,11 @@
 				<form id="addUpdateWine" action="" method="post">
 					<!-- New wine form/Wine info -->
 					<div class="form-group">
-						<label for="idWine">Id:</label>  
+						<label for="idWine">Id:</label>
 						<input id="idWine" name="idWine" type="number" class="form-control">
 					</div>
 					<div class="form-group">
-						<label for="name">Name:</label>  
+						<label for="name">Name:</label>
 						<input id="name" name="name" type="text" class="form-control">
 					</div>
 					<div class="form-group">
@@ -81,11 +81,11 @@
 					</div>
 					<div class="form-group">
 						<label for="region">Region:</label>
-						<input id="region" name="region" type="text" class="form-control">  
+						<input id="region" name="region" type="text" class="form-control">
 					</div>
 					<div class="form-group">
 						<label for="year">Year</label>
-						<input id="year" name="year" type="number" class="form-control"> 
+						<input id="year" name="year" type="number" class="form-control">
 					</div>
 					<!-- Form Buttons -->
 					<div class="form-group">
@@ -101,14 +101,14 @@
 						</div>
 						<!-- Wine Notes -->
 						<div class="form-group">
-							<label for="notes">Notes:</label>             
+							<label for="notes">Notes:</label>
 							<textarea class="form-control" id="notes" name="description" rows="5"></textarea>
 						</div>
 					</div>
 				</form>
 		</div>
 	</div>
-	
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   </body>

@@ -1,5 +1,5 @@
 nav ul li a{
-color: #007FFF;	
+color: #007FFF;
 }
 
 nav ul li a:hover{
@@ -10,4 +10,10 @@ font-weight: bold;
 .dropdown-item:hover{
 color: orange;
 font-weight: bold;
+}
+
+header div, header nav {
+  display:inline-block;
+  vertical-align:middle;
+  color: #FF155A;
 }
