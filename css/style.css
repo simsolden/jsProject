@@ -17,3 +17,7 @@ header div, header nav {
   vertical-align:middle;
   color: #FF155A;
 }
+
+#winesList li{
+    cursor: pointer;
+}
