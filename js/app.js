@@ -74,34 +74,38 @@ function showWine(id) {
     docElement.src = "http://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture;
     docElement = document.getElementById('notes');
     docElement.value = wine.description;
-	docElement = document.getElementById('OriginalPrice');
-    docElement.value = wine.price;
-	
 	docElement = document.getElementById('price');
     docElement.value = wine.price;
 
 	//Extra properties of the wine
-	docElement = document.getElementById('promo');
-	docElement.value = 0;
-	docElement = document.getElementById('bio');
-	docElement.value = "Non Bio";
+	
+	/**
+
+	TODO : Inserer les éléments extra au fur et à mesure en parcourant le json de ines.extra
+	
 	if(wine.extra){
-		if(wine.extra.promo!==0){
-			docElement = document.getElementById('promo');
-			docElement.value = wine.extra.promo;
-			docElement = document.getElementById('price');
-			docElement.value = Math.round((wine.price-wine.price*wine.extra.promo) * 100) / 100;
-		}
+		let extra = JSON.parse(wine.extra);
 		
-		docElement = document.getElementById('bio');
-		if(wine.extra.bio===true){
-			docElement.value = "Bio";
-			docElement.style.color="green";
-		}else{
-			docElement.value = "Non Bio";
-			docElement.style.color="black";
+		let extraFields = document.getElementById('extraFields');
+		let node, content;
+
+		for (let [key, value] of Object.entries(extra)) {
+			
+			let extraAttribute = key;
+			let extraLabel = key.charAt(0).toUpperCase() + key.slice(1);
+			
+			content = "<div class='form-group'><label for='"+extraAttribute+"'>"+
+				extraLabel+"</label><input id='"+extraAttribute+"' name='"+extraAttribute+"' type='text' class='form-control'></div>";
+			
+			extraFields.innerHTML=content;
+			$( document ).ready(function() {
+				document.getElementById("'"+extraAttribute+"'").value=value;
+			});
+			
 		}
 	}
+	
+	*/
 }
 
 //Main
