@@ -49,19 +49,21 @@
 						</ul>
 						<form id="searchCreateWine" action="" method="get" class="form-inline">
 							<input type="text" name="inputWine" id="inputWine" placeholder="Enter wine name..." class="form-control mr-3">
-							<button id="buttonSearch" name="buttonSearch" type="button" class="btn btn-info mr-3">Search</button>
+							<button id="btnSearch" name="btnSearch" type="button" class="btn btn-info mr-3">Search</button>
 						</form>
 					</nav>
 				</header>
 			</div>
 		</div>
 		<div id="content" class="row">
-			<div id="wines" class="col-4 mt-5">
-				<!-- ---------------TODO/Modify----------------------- -->
-				<!-- Wines list -->
+			<div class="col-4 mt-5">
+				<ul id="winesList">
+					<!-- Wines list -->
+				</ul>
             </div>
-			<div class="col mt-5">
+			<div class="col mt-3">
 				<form id="addUpdateWine" action="" method="post">
+					
 					<!-- New wine form/Wine info -->
 					<div class="form-group">
 						<label for="idWine">Id:</label>
@@ -87,11 +89,18 @@
 						<label for="year">Year</label>
 						<input id="year" name="year" type="number" class="form-control">
 					</div>
+					
+					<div class="form-group">
+						<label for="price">Prix</label>
+						<input id="price" name="price" type="number" step="any" class="form-control"> 
+					</div>
+					<div id="extraFields">
+					</div>
 					<!-- Form Buttons -->
 					<div class="form-group">
-						<button id="buttonSave" name="buttonSave" type="button" class="btn btn-primary">Save</button>
-						<button id="buttonDelete" name="buttonDelete" type="button" class="btn btn-dark">Delete</button>
-						<button id="buttonNewWine" class="btn btn-success">New Wine</button>
+						<button id="btnSave" name="btnSave" type="button" class="btn btn-primary">Save</button>
+						<button id="btnDelete" name="btnDelete" type="button" class="btn btn-dark">Delete</button>
+						<button id="btnNew" name="btnNew" type="button" class="btn btn-success">New Wine</button>
 					</div>
 			</div>
 					<div class="col mt-5">
