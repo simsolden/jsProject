@@ -1,0 +1,53 @@
+body{
+background: url("images/background.jpg") no-repeat;
+background-attachment: fixed;	
+background-size: cover;
+margin:0%;
+padding:0%;
+}
+
+.container{
+background-color: white;
+border-radius: 20px;
+padding: 0px 30px 0px 30px;
+/*margin: 30px 0px 30px 225px;*/
+margin-top:30px;
+margin-bottom: 30px;
+border: 1px solid #d63031;
+}
+
+/*----Poir déplacer le logo et le titre vers la droite------*/
+/*Mais a une limite pour le responsive....*/
+#logo{
+transform:translateX(5em);
+}
+
+#titre{
+transform:translateX(6em);
+}
+/*----------------------------fin-----------------------------*/
+
+
+nav ul li a{
+color: #007FFF;
+}
+
+nav ul li a:hover{
+color: orange;
+font-weight: bold;
+}
+
+.dropdown-item:hover{
+color: orange;
+font-weight: bold;
+}
+
+header div, header nav {
+  display:inline-block;
+  vertical-align:middle;
+  color: #FF155A;
+}
+
+#winesList li{
+    cursor: pointer;
+}
