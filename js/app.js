@@ -39,17 +39,7 @@ function showWines(wines) {
             showWine(this.dataset.id, wines);
         });
     }
-	
-	/**
-	const ulList=document.getElementById('WineList');
-	const lis=ulList.querySelectorAll('li');
-	for(li of lis){
-		let idWine=this.dataset.id;
-		li.addEventListener('click', function(){
-			showWine(idWine);
-		})
-	}
-	*/
+	showWine(1);
 }
 
 function showWine(id) {
@@ -79,33 +69,46 @@ function showWine(id) {
 
 	//Extra properties of the wine
 	
-	/**
-
-	TODO : Inserer les éléments extra au fur et à mesure en parcourant le json de ines.extra
-	
-	if(wine.extra){
-		let extra = JSON.parse(wine.extra);
+	let extraFields = document.getElementById('extraFields');
+	if(wine.extra && extraFields.innerHTML===""){
 		
-		let extraFields = document.getElementById('extraFields');
-		let node, content;
+		let extra = JSON.parse(wine.extra);
 
+		//Go through each extra properties
 		for (let [key, value] of Object.entries(extra)) {
 			
 			let extraAttribute = key;
+			let extraValue = value;
 			let extraLabel = key.charAt(0).toUpperCase() + key.slice(1);
 			
-			content = "<div class='form-group'><label for='"+extraAttribute+"'>"+
-				extraLabel+"</label><input id='"+extraAttribute+"' name='"+extraAttribute+"' type='text' class='form-control'></div>";
+			//Add a div, label and element for each one
+			let div = document.createElement("div");
+			div.className ="form-group";
+			extraFields.appendChild(div);
 			
-			extraFields.innerHTML=content;
-			$( document ).ready(function() {
-				document.getElementById("'"+extraAttribute+"'").value=value;
-			});
+			let label = document.createElement("LABEL");
+			label.htmlFor = extraAttribute;
+			label.innerHTML = extraLabel;
 			
+			let elem = document.createElement("input");
+			elem.type = "text";
+			elem.name = extraAttribute;
+			elem.className = "form-control";
+			elem.id = extraAttribute;
+			if(extraAttribute="promo"){
+				elem.value = extraValue*100 + "%";
+			}else{
+				elem.value = extraValue;	
+			}
+			
+			div.appendChild(label);
+			div.appendChild(elem);
 		}
+	}else if(wine.extra===null){
+		extraFields.innerHTML = '';
 	}
 	
-	*/
+	
 }
 
 //Main
@@ -119,7 +122,7 @@ window.onload = function() {
 			
             let data = xhttp.responseText;        
             wines = JSON.parse(data);  
-			wines.sort(function(a,b){return a.id - b.id});		
+			wines.sort(function(a,b){return a.name - b.name});		
             //Afficher la liste des vins dans UL liste
             showWines(wines);
         }     
@@ -137,4 +140,6 @@ window.onload = function() {
 	btnNew.addEventListener('click', () => newWine());
 	btnSave.addEventListener('click', () => saveWine());
 	btnDelete.addEventListener('click', () => deleteWine());
+	
+	
 };
