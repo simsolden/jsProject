@@ -122,7 +122,7 @@ window.onload = function() {
 			
             let data = xhttp.responseText;        
             wines = JSON.parse(data);  
-			wines.sort(function(a,b){return a.id - b.id});		
+			wines.sort(function(a,b){return a.name - b.name});		
             //Afficher la liste des vins dans UL liste
             showWines(wines);
         }     
