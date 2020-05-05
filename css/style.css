@@ -26,6 +26,9 @@ transform:translateX(5em);
 transform:translateX(6em);
 }
 
+#promoHide, #bioHide{
+	display:none;
+}
 
 i{
 float:right;
