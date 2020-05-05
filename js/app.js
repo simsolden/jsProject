@@ -25,9 +25,15 @@ function showWines(wines) {
 	//Add Wines to List
     const emptyList = document.getElementById('winesList');
     let listContent = '';
-    wines.forEach(function(wine) {
-        listContent += '<li data-id="'+wine.id+'" class="list-group-item list-group-item-action">'+wine.name+'</li>';
-    });
+    
+	// wines.forEach(function(wine) {
+        // listContent += '<li data-id="'+wine.id+'" class="list-group-item list-group-item-action">'+wine.name+'</li>';
+    // });
+	
+	Object.keys(wines).forEach(function(key) {
+		listContent += '<li data-id="'+wines[key].id+'" class="list-group-item list-group-item-action">'+wines[key].name+'</li>';
+
+	});
 
     emptyList.innerHTML = listContent;
 
@@ -111,6 +117,39 @@ function showWine(id) {
 	
 }
 
+// Code de Francisco-costa du site stack overflow: https://stackoverflow.com/a/29492187
+function alphabetical_sort_object_of_objects(data, attr) {
+    var arr = [];
+    for (var prop in data) {
+        if (data.hasOwnProperty(prop)) {
+            var obj = {};
+            obj[prop] = data[prop];
+            obj.tempSortName = data[prop][attr].toLowerCase();
+            arr.push(obj);
+        }
+    }
+
+    arr.sort(function(a, b) {
+        var at = a.tempSortName,
+            bt = b.tempSortName;
+        return at > bt ? 1 : ( at < bt ? -1 : 0 );
+    });
+
+    var result = [];
+    for (var i=0, l=arr.length; i<l; i++) {
+        var obj = arr[i];
+        delete obj.tempSortName;
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                var id = prop;
+            }
+        }
+        var item = obj[id];
+        result.push(item);
+    }
+    return result;
+}
+
 //Main
 
 window.onload = function() {
@@ -120,9 +159,18 @@ window.onload = function() {
     xhttp.onreadystatechange = function() {
         if(xhttp.readyState==4 && xhttp.status==200) {
 			
-            let data = xhttp.responseText;        
-            wines = JSON.parse(data);  
-			wines.sort(function(a,b){return a.name - b.name});		
+			
+            let data = xhttp.responseText; 
+			console.log(data);			
+            wines = JSON.parse(data); 
+			console.log(wines);	
+			Object.keys(wines).forEach(function(key) {
+
+			  console.log(key, wines[key]);
+
+			});	
+			wines = alphabetical_sort_object_of_objects(wines, 'name');			
+			//wines.sort((a, b) => a.name - b.name);		
             //Afficher la liste des vins dans UL liste
             showWines(wines);
         }     
