@@ -1,7 +1,6 @@
 //Variables
 
 let wines;
-
 //Functions
 
 function search(){
@@ -9,11 +8,11 @@ function search(){
 };
 
 function newWine(){
-	
+
 };
 
 function saveWine(){
-	
+
 };
 
 function deleteWine(){
@@ -49,7 +48,8 @@ function showWines(wines) {
 }
 
 function showWine(id) {
-    //console.log(wines);
+	
+	
 	let wine = wines.find(element=>element.id==id);
 	
 	//Common wine properties
@@ -72,13 +72,36 @@ function showWine(id) {
     docElement.value = wine.description;
 	docElement = document.getElementById('price');
     docElement.value = wine.price;
+	docElement = document.getElementById('capacity');
+	
+	/** TODO  problème on ne rentre pas dans la boucle*/
+	if(wine.capicity==="0"){
+		docElement.value = "none";
+	}else{
+		docElement.value = wine.capacity/100+"L";
+	}
+	docElement = document.getElementById('color');
+	if(wine.color==""){
+		docElement.value = "none";
+	}else{
+		docElement.value = wine.color;
+	}
 
 	//Extra properties of the wine
 	
 	let extraFields = document.getElementById('extraFields');
-	if(wine.extra && extraFields.innerHTML===""){
-		
+	if(wine.extra){
 		let extra = JSON.parse(wine.extra);
+		if(extra.bio){
+			document.getElementById('bioHide').style.display='block';
+			document.getElementById('bio').value="Oui";
+		}
+		if(extra.promo){
+			document.getElementById('promoHide').style.display='block';
+			document.getElementById('promo').value=extra.promo * 100 +"%";
+		}
+		/**
+		
 
 		//Go through each extra properties
 		for (let [key, value] of Object.entries(extra)) {
@@ -110,8 +133,12 @@ function showWine(id) {
 			div.appendChild(label);
 			div.appendChild(elem);
 		}
-	}else if(wine.extra===null){
-		extraFields.innerHTML = '';
+		*/
+	}
+	else if(wine.extra===null){
+		document.getElementById('bioHide').style.display='none';
+		document.getElementById('promoHide').style.display='none';
+		//extraFields.innerHTML = '';
 	}
 	
 	
@@ -157,18 +184,9 @@ window.onload = function() {
 	//Data gathering from the API
 	const xhttp = new XMLHttpRequest();       
     xhttp.onreadystatechange = function() {
-        if(xhttp.readyState==4 && xhttp.status==200) {
-			
-			
-            let data = xhttp.responseText; 
-			console.log(data);			
-            wines = JSON.parse(data); 
-			console.log(wines);	
-			Object.keys(wines).forEach(function(key) {
-
-			  console.log(key, wines[key]);
-
-			});	
+        if(xhttp.readyState==4 && xhttp.status==200) {			
+            let data = xhttp.responseText; 				
+            wines = JSON.parse(data); 	
 			wines = alphabetical_sort_object_of_objects(wines, 'name');			
 			//wines.sort((a, b) => a.name - b.name);		
             //Afficher la liste des vins dans UL liste
@@ -187,7 +205,6 @@ window.onload = function() {
 	btnSearch.addEventListener('click', () => search());
 	btnNew.addEventListener('click', () => newWine());
 	btnSave.addEventListener('click', () => saveWine());
-	btnDelete.addEventListener('click', () => deleteWine());
-	
+	btnDelete.addEventListener('click', () => deleteWine());	
 	
 };
