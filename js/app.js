@@ -117,46 +117,15 @@ function showWine(id) {
 	
 }
 
-// Code de Francisco-costa du site stack overflow: https://stackoverflow.com/a/29492187
-function alphabetical_sort_object_of_objects(data, attr) {
-    var arr = [];
-    for (var prop in data) {
-        if (data.hasOwnProperty(prop)) {
-            var obj = {};
-            obj[prop] = data[prop];
-            obj.tempSortName = data[prop][attr].toLowerCase();
-            arr.push(obj);
-        }
-    }
-
-    arr.sort(function(a, b) {
-        var at = a.tempSortName,
-            bt = b.tempSortName;
-        return at > bt ? 1 : ( at < bt ? -1 : 0 );
-    });
-
-    var result = [];
-    for (var i=0, l=arr.length; i<l; i++) {
-        var obj = arr[i];
-        delete obj.tempSortName;
-        for (var prop in obj) {
-            if (obj.hasOwnProperty(prop)) {
-                var id = prop;
-            }
-        }
-        var item = obj[id];
-        result.push(item);
-    }
-    return result;
-}
-
 //Main
 
 window.onload = function() {
 	
 	//Data gathering from the API
-	const xhttp = new XMLHttpRequest();       
+	const xhttp = new XMLHttpRequest();  
+	let	winesArray=[];
     xhttp.onreadystatechange = function() {
+<<<<<<< Updated upstream
         if(xhttp.readyState==4 && xhttp.status==200) {
 			
 			
@@ -172,6 +141,16 @@ window.onload = function() {
 			wines = alphabetical_sort_object_of_objects(wines, 'name');			
 			//wines.sort((a, b) => a.name - b.name);		
             //Afficher la liste des vins dans UL liste
+=======
+        if(xhttp.readyState==4 && xhttp.status==200) {			
+            let data = xhttp.responseText; 
+			wines = JSON.parse(data); 
+			for (let prop in wines) {
+				winesArray.push(wines[prop]);
+			}
+			winesArray.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0)
+            wines = winesArray;	
+>>>>>>> Stashed changes
             showWines(wines);
         }     
     };
