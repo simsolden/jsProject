@@ -4,9 +4,10 @@
     <meta charset="utf-8">
 	<meta name="description" content="Wine cellar SPA for client-side school project">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="librairies/node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="librairies/fontawesome-free-5.13.0-web/css/all.css">
 	<link rel="stylesheet" href="css/style.css">
-	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<script src="librairies/node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="js/app.js"></script>
 	<title>Caviste 2020</title>
 </head>
@@ -19,6 +20,7 @@
 					<div id="titre">
 						<h1>Votre Caviste 2020</h1>
 					</div>
+					<a id="login-icone" href="#"><i class="fas fa-user fa-2x"> login</i></a>
 					<nav class="navbar navbar-light bg-light">
 						<ul class="nav nav-tabs">
 							<li class="nav-item"><a class="nav-link " href="#">Accueil</a></li>
@@ -72,29 +74,57 @@
 					<div class="form-group">
 						<label for="name">Name:</label>
 						<input id="name" name="name" type="text" class="form-control">
+						<p name="error" id="nameError"></p>
 					</div>
+					
 					<div class="form-group">
 						<label for="grapes">Grapes:</label>
 						<input id="grapes" name="grapes" type="text" class="form-control">
+						<p name="error" id="grapesError"></p>
 					</div>
 					<div class="form-group">
 						<label for="country">Country:</label>
 						<input id="country" name="country" type="text" class="form-control">
+						<p name="error" id="countryError"></p>
 					</div>
 					<div class="form-group">
 						<label for="region">Region:</label>
 						<input id="region" name="region" type="text" class="form-control">
+						<p name="error" id="regionError"></p>
 					</div>
 					<div class="form-group">
 						<label for="year">Year</label>
 						<input id="year" name="year" type="number" class="form-control">
+						<p name="error" id="yearError"></p>
+					</div>
+					<div class="form-group">
+						<label for="price">Price</label>
+						<input id="price" name="price" type="number" step="any" class="form-control">
+						<p name="error" id="priceError"></p>
+					</div>
+					<div class="form-group">
+						<label for="capacity">Capacity</label>
+						<input id="capacity" name="capacity" type="text" class="form-control"> 
+						<p name="error" id="capacityError"></p>
+					</div>
+					<div class="form-group">
+						<label for="color">Color</label>
+						<input id="color" name="color" type="text" class="form-control">
+						<p name="error" id="colorError"></p>
 					</div>
 					
-					<div class="form-group">
-						<label for="price">Prix</label>
-						<input id="price" name="price" type="number" step="any" class="form-control"> 
+					<div id="bioHide" class="form-group">
+						<label for="bio">Bio</label>
+						<input id="bio" name="bio" type="text" step="any" class="form-control"> 
+						<p name="error" id="bioError"></p>
+					
 					</div>
-					<div id="extraFields"></div>
+					<div id="promoHide" class="form-group">
+						<label for="promo">Promo</label>
+						<input id="promo" name="promo" type="text"  class="form-control"> 
+						<p name="error" id="promoError"></p>
+					</div>
+					
 					<!-- Form Buttons -->
 					<div class="form-group">
 						<button id="btnSave" name="btnSave" type="button" class="btn btn-primary">Save</button>
@@ -118,6 +148,6 @@
 	</div>
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="librairies/node_modules/bootstrap/dist/css/bootstrap.min.css" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   </body>
 </html>
