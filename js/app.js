@@ -12,15 +12,9 @@ function filterByCountry(){
 	let selectElement = document.getElementById("selectCountry")
 	let selected=selectElement.options[selectElement.selectedIndex].value;
 	console.log(selected);
-	if(selected!='All'){
-		showWines(wines.filter(element=>element.country==selected));
-		showWine(wines.filter(element=>element.country==selected)[0].id);
-	}
-	else{
-		showWines(wines);
 
-	}
-
+	showWines(wines.filter(element=>element.country==selected));
+	showWine(wines.filter(element=>element.country==selected)[0].id);
 
 }
 function filterByYear(){
@@ -28,7 +22,7 @@ function filterByYear(){
 //TODO filterByYear
 }
 function search(){
-	//// TODO: Search
+	//todo: Search
 }
 
 function deleteWine() {
