@@ -4,6 +4,20 @@ let wines;
 let method;
 
 //Functions
+function filterByCountry(){
+	console.log('filter test...');
+	let selectElement = document.getElementById("selectCountry")
+	let selected=selectElement.options[selectElement.selectedIndex].value;
+	console.log(selected);
+
+	showWines(wines.filter(element=>element.country==selected));
+	showWine(wines.filter(element=>element.country==selected)[0].id);
+
+}
+function filterByYear(){
+
+//TODO filterByYear
+}
 
 
 function deleteWine(){
@@ -274,10 +288,12 @@ window.onload = function() {
     let btnNew = document.getElementById('btnNew');
     let btnSave = document.getElementById('btnSave');
     let btnDelete = document.getElementById('btnDelete');
+	let btnFilterByCountry = document.getElementById('btnFilterByCountry');
 
 	btnSearch.addEventListener('click', search);
 	btnNew.addEventListener('click', newWine);
 	btnSave.addEventListener('click',validateForm);
 	btnDelete.addEventListener('click', deleteWine);
+	btnFilterByCountry.addEventListener('click', filterByCountry);
 
 };
