@@ -21,7 +21,9 @@ function filterByYear(){
 
 //TODO filterByYear
 }
-
+function search(){
+	//// TODO: Search
+}
 
 function deleteWine() {
 	if (confirm('Voulez-vous vraiment supprimer ce vin ?')) {
