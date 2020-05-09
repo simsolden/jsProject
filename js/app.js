@@ -2,13 +2,40 @@
 
 let wines;
 let method;
+let user = 'ced';
+let pass = '123';
+let url='http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines/';
 
 //Functions
 
 
-function deleteWine(){
-	//TODO
-};
+function deleteWine() {
+	if (confirm('Voulez-vous vraiment supprimer ce vin ?')) {
+		let idWine = document.getElementById(idWine).value;
+		let wineSelected = wines.find(element => element.id == idWine);
+		let info;
+		const xhr = new XMLHttpRequest();
+		xhr.onload = function () {
+			if (this.status === 200) {
+				let id = document.getElementById('idWine').value;
+				let wine = wines.find(element=>element.id==id);
+				wines.splice(wines.indexOf(wine),1);
+				info = "Le vin a bien été supprimé";
+				showWines();
+			}
+		}
+
+		xhr.onerror = function () {
+			if (this.status === 404) {
+				//console.log('error');
+				info = "Une erreur est survenue, le vin n'a pas pu être supprimé";
+			}
+		}
+		xhr.open('DELETE', url + idWine, true);
+		xhr.setRequestHeader('Authorization', "Basic " + btoa(user + ":" + pass) );
+		xhr.send();
+	}
+}
 
 function saveWine(){
 	console.log('saving wine...');
