@@ -7,15 +7,20 @@ let pass = "123";
 let url = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines/";
 
 //Functions
-function filterByCountry() {
-  console.log("filter test...");
-  let selectElement = document.getElementById("selectCountry");
-  let selected = selectElement.options[selectElement.selectedIndex].value;
-  console.log(selected);
 
-  showWines(wines.filter((element) => element.country == selected));
-  showWine(wines.filter((element) => element.country == selected)[0].id);
+function filterByCountry(){
+	console.log('filter test...');
+	let selectElement = document.getElementById("selectCountry")
+	let selected=selectElement.options[selectElement.selectedIndex].value;
+	console.log(selected);
+	if(selected!='All') {
+		showWines(wines.filter(element=>element.country==selected));
+		showWine(wines.filter(element=>element.country==selected)[0].id);
+	} else {
+		showWines(wines);
+	}
 }
+
 function filterByYear() {
   //TODO filterByYear
 }
@@ -92,12 +97,12 @@ function saveWine() {
   }
 
   data.append("extra", extra);
+  
   const xhr = new XMLHttpRequest();
-
   //Fonction de rappel
   xhr.onload = function () {
     if (this.readyState === 4 && this.status === 200) {
-      // Requête terminée et prète
+      // Requête terminée et prête
       //Affichage selon les méthodes
       if (method == "POST") {
         alert("Le vin a bien été créé.");
