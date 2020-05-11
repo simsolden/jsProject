@@ -36,6 +36,11 @@ margin-top: 1.5%;
 color: #3498db/*#34ace0*/;
 }
 
+.error{
+display:none;
+color:red;
+}
+
 i:hover{
 color: orange;
 }
