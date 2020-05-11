@@ -28,7 +28,7 @@ function search() {
 
 function deleteWine() {
   if (confirm("Voulez-vous vraiment supprimer ce vin ?")) {
-    let idWine = document.getElementById(idWine).value;
+    let idWine = document.getElementById('idWine').value;
     let wineSelected = wines.find((element) => element.id == idWine);
     let info;
     const xhr = new XMLHttpRequest();
