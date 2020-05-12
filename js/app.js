@@ -2,28 +2,61 @@
 
 let wines;
 let method;
+
 const user = "ced";
 const pass = "123";
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines";
+let booleanSort = false;
 
 //Functions
+function filter(){
+	//filter by country
+	let selectCountry = document.getElementById("selectCountry")
+	let selectedCountry=selectCountry.options[selectCountry.selectedIndex].value;
+	let selectYear = document.getElementById("selectYear")
+	let selectedYear=selectYear.options[selectYear.selectedIndex].value;
 
-function filterByCountry(){
-	let selectElement = document.getElementById("selectCountry")
-	let selected=selectElement.options[selectElement.selectedIndex].value;
-	if(selected!='All') {
-		showWines(wines.filter(element=>element.country==selected));
-		showWine(wines.filter(element=>element.country==selected)[0].id);
-	} else {
-		showWines(wines);
+	if(selectedCountry!='Country'&&selectedYear!='Year'){
+		console.log('work');
+		selected = showWines(wines.filter(element => element.country == selectedCountry && element.year == selectedYear));
+	}
+	else if(selectedCountry=='Country'&&selectedYear!='Year'){
+		console.log('test');
+		selected = showWines(wines.filter(element => element.year == selectedYear));
+	}
+	else if(selectedCountry!='Country'&&selectedYear=='Year'){
+		console.log('test2');
+		selected = showWines(wines.filter(element => element.country == selectedCountry));
+	}
+	else{
+		
+    (wines);
+	}
+
+}
+
+function sortByGrapes(){
+	//sort automatically by grapes
+	if(booleanSort==false){
+		booleanSort=true;
+	}
+	else{
+		booleanSort=false;
+	}
+	filter();
+}
+
+function sort(wines){
+	if(booleanSort==false){
+		return wines.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
+	}
+	else{
+		return wines.sort((a, b) => a.grapes !== b.grapes ? a.grapes < b.grapes ? -1 : 1 : 0);
 	}
 }
 
-function filterByYear() {
-  //TODO filterByYear
-}
-function search() {
-  //todo: Search
+function search(){
+	//todo: Search
 }
 
 function deleteWine() {
@@ -38,7 +71,7 @@ function deleteWine() {
         let wine = wines.find((element) => element.id == id);
         wines.splice(wines.indexOf(wine), 1);
         info = "Le vin a bien été supprimé";
-        showWines();
+        showWines(wines);
       }
     };
 
@@ -254,30 +287,30 @@ function validateForm() {
 }
 
 function showWines(wines) {
-  //Add Wines to List
-  const emptyList = document.getElementById("winesList");
-  let listContent = "";
 
-  Object.keys(wines).forEach(function (key) {
-    listContent +=
-      '<li data-id="' +
-      wines[key].id +
-      '" class="list-group-item list-group-item-action">' +
-      wines[key].name +
-      "</li>";
-  });
 
-  emptyList.innerHTML = listContent;
+	//Add Wines to List
+    const emptyList = document.getElementById('winesList');
+    let listContent = '';
 
-  //Add Event Listenners to each wine
-  let liList = emptyList.querySelectorAll("li");
+	wines = sort(wines);
+	Object.keys(wines).forEach(function(key) {
 
-  for (li of liList) {
-    li.addEventListener("click", function () {
-      showWine(this.dataset.id, wines);
-    });
-  }
-  showWine(1);
+		listContent += '<li data-id="'+wines[key].id+'" class="list-group-item list-group-item-action">'+wines[key].name+'</li>';
+
+	});
+
+    emptyList.innerHTML = listContent;
+
+	//Add Event Listenners to each wine
+    let liList = emptyList.querySelectorAll('li');
+
+    for(li of liList){
+        li.addEventListener('click',function() {
+            showWine(this.dataset.id, wines);
+        });
+    }
+	showWine(1);
 }
 
 /**
@@ -387,38 +420,41 @@ function showWine(id) {
 
 //Main
 
-window.onload = function () {
-  //Data gathering from the API
-  const xhttp = new XMLHttpRequest();
-  let winesArray = [];
-  xhttp.onreadystatechange = function () {
-    if (xhttp.readyState == 4 && xhttp.status == 200) {
-      let data = xhttp.responseText;
-      wines = JSON.parse(data);
-      for (let prop in wines) {
-        winesArray.push(wines[prop]);
-      }
-      winesArray.sort((a, b) =>
-        a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0
-      );
-      wines = winesArray;
-      showWines(wines);
-    }
-  };
+window.onload = function() {
 
-  xhttp.open("GET",apiUrl,true);
-  xhttp.send();
+	//Data gathering from the API
+	const xhttp = new XMLHttpRequest();
+	let	winesArray=[];
+    xhttp.onreadystatechange = function() {
+        if(xhttp.readyState==4 && xhttp.status==200) {
+            let data = xhttp.responseText;
+			wines = JSON.parse(data);
+			for (let prop in wines) {
+				winesArray.push(wines[prop]);
+			}
+			winesArray.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
+            wines = winesArray;
+            showWines(wines);
+        }
+    };
 
-  //Events creation on buttons
-  let btnSearch = document.getElementById("btnSearch");
-  let btnNew = document.getElementById("btnNew");
-  let btnSave = document.getElementById("btnSave");
-  let btnDelete = document.getElementById("btnDelete");
-  let btnFilterByCountry = document.getElementById("btnFilterByCountry");
+    xhttp.open('GET',apiUrl,true);
+    xhttp.send();
 
-  btnSearch.addEventListener("click", search);
-  btnNew.addEventListener("click", newWine);
-  btnSave.addEventListener("click", validateForm);
-  btnDelete.addEventListener("click", deleteWine);
-  btnFilterByCountry.addEventListener("click", filterByCountry);
+	//Events creation on buttons
+    let btnSearch = document.getElementById('btnSearch');
+    let btnNew = document.getElementById('btnNew');
+    let btnSave = document.getElementById('btnSave');
+    let btnDelete = document.getElementById('btnDelete');
+	  let btnFilter = document.getElementById('btnFilter');
+	  let btnSortByGrapes=document.getElementById('btnSortByGrapes');
+
+	  btnSearch.addEventListener('click', search);
+	  btnNew.addEventListener('click', newWine);
+	  btnSave.addEventListener('click',validateForm);
+	  btnDelete.addEventListener('click', deleteWine);
+    btnFilter.addEventListener('click', filter);
+	  btnSortByGrapes.addEventListener('click', sortByGrapes);
+
+
 };

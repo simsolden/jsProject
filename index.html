@@ -57,21 +57,37 @@
 				</header>
 			</div>
 		</div>
-        <form id="filterByCountry" action="" method="post">
+        <form id="filter" action="" method="post">
             <div class="optionsDiv">
-                Filter by country
-            <select id="selectCountry">
-                <option value="All" selected>All</option>
-                <option value="Italy">Italy</option>
-                <option value="Spain">Spain</option>
-                <option value="France">France</option>
-                <option value="USA">USA</option>
-            </select>
-            <button id="btnFilterByCountry" name="btnFilterByCountry" type="button" class="btn btn-success">Filter</button>
+                Filter
+                <select id="selectCountry">
+                    <option value="Country" selected>Country</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Spain">Spain</option>
+                    <option value="France">France</option>
+                    <option value="USA">USA</option>
+                </select>
+                <select id="selectYear">
+                    <option value="Year" selected>Year</option>
+                    <option value="2005">2005</option>
+                    <option value="2006">2006</option>
+                    <option value="2007">2007</option>
+                    <option value="2008">2008</option>
+                    <option value="2009">2009</option>
+                    <option value="2010">2010</option>
+                    <option value="2011">2011</option>
+
+                </select>
+                <button id="btnFilter" name="btnFilter" type="button" class="btn btn-success">Filter</button>
             </div>
         </form>
 
+        <form id="sortByGrapes" action="" method="post">
+            <div class="optionsDiv">
+                <button id="btnSortByGrapes" name="btnSortByGrapes" type="button" class="btn btn-success">Sort by grapes</button>
 
+            </div>
+        </form>
 		<div id="content" class="row">
 			<div class="col-4 mt-5">
 				<ul id="winesList">
