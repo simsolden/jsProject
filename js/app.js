@@ -7,14 +7,25 @@ let pass = '123';
 let url='http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines/';
 
 //Functions
-function filterByCountry(){
-	console.log('filter test...');
-	let selectElement = document.getElementById("selectCountry")
-	let selected=selectElement.options[selectElement.selectedIndex].value;
-	console.log(selected);
-	if(selected!='All'){
-		showWines(wines.filter(element=>element.country==selected));
-		showWine(wines.filter(element=>element.country==selected)[0].id);
+function filter(){
+	//filter by country
+	//console.log('filterCountry test...');
+	let selectCountry = document.getElementById("selectCountry")
+	let selectedCountry=selectCountry.options[selectCountry.selectedIndex].value;
+	let selectYear = document.getElementById("selectYear")
+	let selectedYear=selectYear.options[selectYear.selectedIndex].value;
+	
+	if(selectedCountry!='Country'&&selectedYear!='Year'){
+		console.log('work');
+		selected = showWines(wines.filter(element => element.country == selectedCountry && element.year == selectedYear));
+	}
+	else if(selectedCountry=='Country'&&selectedYear!='Year'){
+		console.log('test');
+		selected = showWines(wines.filter(element => element.year == selectedYear));
+	}
+	else if(selectedCountry!='Country'&&selectedYear=='Year'){
+		console.log('test2');
+		selected = showWines(wines.filter(element => element.country == selectedCountry));
 	}
 	else{
 		showWines(wines);
@@ -22,11 +33,11 @@ function filterByCountry(){
 	}
 
 
-}
-function filterByYear(){
 
-//TODO filterByYear
+
+
 }
+
 function search(){
 	//todo: Search
 }
@@ -323,12 +334,12 @@ window.onload = function() {
     let btnNew = document.getElementById('btnNew');
     let btnSave = document.getElementById('btnSave');
     let btnDelete = document.getElementById('btnDelete');
-	let btnFilterByCountry = document.getElementById('btnFilterByCountry');
+	let btnFilter = document.getElementById('btnFilter');
 
 	btnSearch.addEventListener('click', search);
 	btnNew.addEventListener('click', newWine);
 	btnSave.addEventListener('click',validateForm);
 	btnDelete.addEventListener('click', deleteWine);
-	btnFilterByCountry.addEventListener('click', filterByCountry);
+	btnFilter.addEventListener('click', filter);
 
 };
