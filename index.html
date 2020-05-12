@@ -82,9 +82,15 @@
             </div>
         </form>
 
-        <form id="sortByGrapes" action="" method="post">
+        <form id="sort" action="" method="post">
             <div class="optionsDiv">
-                <button id="btnSortByGrapes" name="btnSortByGrapes" type="button" class="btn btn-success">Sort by grapes</button>
+
+                <select id="selectSort">
+                    <option value="Sort" selected>Name</option>
+                    <option value="Grapes">Grapes</option>
+                    <option value="Year">Year</option>
+                </select>
+                <button id="btnSortBy" name="sort" type="button" class="btn btn-success">Sort</button>
 
             </div>
         </form>
