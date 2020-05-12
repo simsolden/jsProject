@@ -29,8 +29,7 @@ function filter(){
 		selected = showWines(wines.filter(element => element.country == selectedCountry));
 	}
 	else{
-		
-    (wines);
+		showWines(wines);
 	}
 
 }
