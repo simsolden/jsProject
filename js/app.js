@@ -2,17 +2,15 @@
 
 let wines;
 let method;
-let user = "ced";
-let pass = "123";
-let url = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines/";
+const user = "ced";
+const pass = "123";
+const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines";
 
 //Functions
 
 function filterByCountry(){
-	console.log('filter test...');
 	let selectElement = document.getElementById("selectCountry")
 	let selected=selectElement.options[selectElement.selectedIndex].value;
-	console.log(selected);
 	if(selected!='All') {
 		showWines(wines.filter(element=>element.country==selected));
 		showWine(wines.filter(element=>element.country==selected)[0].id);
@@ -30,7 +28,7 @@ function search() {
 
 function deleteWine() {
   if (confirm("Voulez-vous vraiment supprimer ce vin ?")) {
-    let idWine = document.getElementById(idWine).value;
+    let idWine = document.getElementById('idWine').value;
     let wineSelected = wines.find((element) => element.id == idWine);
     let info;
     const xhr = new XMLHttpRequest();
@@ -50,7 +48,7 @@ function deleteWine() {
         info = "Une erreur est survenue, le vin n'a pas pu être supprimé";
       }
     };
-    xhr.open("DELETE", url + idWine, true);
+    xhr.open("DELETE", apiUrl +'/' + idWine, true);
     xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
     xhr.send();
   }
@@ -62,80 +60,82 @@ function deleteWine() {
  * @author Rachida
  */
 function saveWine() {
-  const data = new FormData(); //Récupération des données du formulaire
-  //Ajout de données supplémentaire
-  let idWine = document.getElementById("id").value;
-  data.append("id", idWine);
-  let name = document.getElementById("name").value;
-  data.append("name", name);
-  let grapes = document.getElementById("grapes").value;
-  data.append("grapes", grapes);
-  let country = document.getElementById("country").value;
-  data.append("country", country);
-  let region = document.getElementById("region").value;
-  data.append("region", region);
-  let year = document.getElementById("year").value;
-  data.append("year", year);
-  let price = document.getElementById("price").value;
-  data.append("price", price);
-  let capicity = document.getElementById("capicity").value;
-  data.append("capicity", capicity);
-  let color = document.getElementById("color").value;
-  data.append("color", color);
-
-  let extra;
-  let promo = document.getElementById("promo").value;
-  let bio = document.getElementById("bio").checked;
-  if (bio || promo != "") {
-    if (bio && promo != "") {
-      extra = { bio: true, promo: promo / 100 };
-    } else if (bio && promo == "") {
-      extra = { bio: true };
-    } else {
-      extra = { promo: true };
-    }
-  }
-
-  data.append("extra", extra);
+	
+	const data = new FormData(); //Récupération des données du formulaire
+	
+	//Ajout des données du vin
+	let idWine = document.getElementById("idWine").value;
+	data.append("idWine", idWine);
+	let name = document.getElementById("name").value;
+	data.append("name", name);
+	let grapes = document.getElementById("grapes").value;
+	data.append("grapes", grapes);
+	let country = document.getElementById("country").value;
+	data.append("country", country);
+	let region = document.getElementById("region").value;
+	data.append("region", region);
+	let year = document.getElementById("year").value;
+	data.append("year", year);
+	let price = document.getElementById("price").value;
+	data.append("price", price);
+	let capacity = document.getElementById("capacity").value;
+	data.append("capacity", capacity);
+	let color = document.getElementById("color").value;
+	data.append("color", color);
+	
+	//Ajout des données extra si existantes
+	let extra;
+	let promo = document.getElementById("promo").value;
+	let bio = document.getElementById("bio").checked;
+	if (bio || promo != "") {
+		if (bio && promo != "") {
+			extra = { bio: true, promo: promo / 100 };
+		} else if (bio && promo == "") {
+			extra = { bio: true };
+		} else {
+			extra = { promo: true };
+		}
+	}
+	data.append("extra", extra);
   
-  const xhr = new XMLHttpRequest();
-  //Fonction de rappel
-  xhr.onload = function () {
-    if (this.readyState === 4 && this.status === 200) {
-      // Requête terminée et prête
-      //Affichage selon les méthodes
-      if (method == "POST") {
-        alert("Le vin a bien été créé.");
-      } else {
-        alert("Le vin a bien été modifié.");
-      }
-    } else {
-      //gestion d erreur
-      //Affichage selon les méthodes
-      if (method == "POST") {
-        alert("une erreur est survenue, le vin na pas été créé.");
-      } else {
-        alert("une erreur est survenue, le vin na pas été modifié.");
-      }
-    }
-
-    //créer un vin
+	/** Ouverture et envois de la requète */
+	const xhr = new XMLHttpRequest();
+	//Fonction de rappel
+	xhr.onload = function(){
+		if (this.readyState === 4 && this.status === 200) {
+			//Requête terminée et prête
+			//Affichage selon les méthodes
+			if (method == "POST") {
+				alert("Le vin a bien été créé.");
+			} else {
+				alert("Le vin a bien été modifié.");
+			}
+		} else {
+			//gestion des erreurs selon la méthode
+			if (method == "POST") {
+				alert("une erreur est survenue, le vin na pas été créé.");
+			} else {
+				alert("une erreur est survenue, le vin na pas été modifié.");
+			}
+		}
+	};
+	let requestUrl; 
     if (method == "POST") {
-      url;
-    } else {
-      //modifier un vin
-      id = document.getElementById("idWine");
-      url + id;
+      requestUrl=apiUrl;
+    } else if(method =='PUT'){
+      id = document.getElementById("idWine").value;
+      requestUrl =apiUrl + '/' + id;
     }
-    //Envoie de la requete au server
-    xhr.open(method, url, true);
+    //Envoie de la requete au serveur
+    xhr.open(method, requestUrl, true);
     xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
     xhr.send(data);
-  };
 }
 
 function newWine() {
-  clearErrorMessages();
+	
+	$("p[name='error']").slideUp();
+  //clearErrorMessages();
 
   method = "POST";
 
@@ -156,76 +156,98 @@ function newWine() {
 
 function validateForm() {
   let msg = "";
+  
 
+  //Name
   if (document.getElementById("name").value == "") {
-    msg = "Please enter a wine name";
-    document.getElementById("nameError").innerHTML = msg;
+	msg = "Please enter a wine name";
+	document.getElementById("nameError").innerHTML = msg;
   } else {
-    document.getElementById("nameError").innerHTML = "";
+	document.getElementById("nameError").innerHTML = "";
   }
 
+  //Grapes
   if (document.getElementById("grapes").value == "") {
-    msg = "Please enter grapes type";
-    document.getElementById("grapesError").innerHTML = msg;
+	msg = "Please enter grapes type";
+	document.getElementById("grapesError").innerHTML = msg;
   } else {
-    document.getElementById("grapesError").innerHTML = "";
+	document.getElementById("grapesError").innerHTML = "";
   }
 
+  //Region
   if (document.getElementById("region").value == "") {
-    msg = "Please enter a region";
-    document.getElementById("regionError").innerHTML = msg;
+	msg = "Please enter a region";
+	document.getElementById("regionError").innerHTML = msg;
   } else {
-    document.getElementById("regionError").innerHTML = "";
+	document.getElementById("regionError").innerHTML = "";
   }
 
+  //Country
   if (document.getElementById("country").value == "") {
-    msg = "Please enter a country";
-    document.getElementById("countryError").innerHTML = msg;
+	msg = "Please enter a country";
+	document.getElementById("countryError").innerHTML = msg;
   } else {
-    document.getElementById("countryError").innerHTML = "";
+	document.getElementById("countryError").innerHTML = "";
   }
 
+  //Year
   let year = document.getElementById("year").value;
   let currentYear = new Date().getFullYear();
-  if (
-    isNaN(parseFloat(year)) ||
-    year.value == "" ||
-    parseFloat(year) < 1500 ||
-    parseFloat(year) > currentYear
+  if (isNaN(parseFloat(year)) ||
+	year.value == "" ||
+	parseFloat(year) < 1500 ||
+	parseFloat(year) > currentYear
   ) {
-    msg = "Please enter a valid year";
-    document.getElementById("yearError").innerHTML = msg;
+	msg = "Please enter a valid year";
+	document.getElementById("yearError").innerHTML = msg;
+	//$("#yearError").slideDown('slow');
   } else {
-    document.getElementById("yearError").innerHTML = "";
+	  msg="";
+	//$("#yearError").slideUp('slow');
   }
 
+  //Capacity
   let capacity = document.getElementById("capacity").value;
   if (isNaN(parseFloat(capacity)) || capacity.value == "") {
-    msg = "Please enter a capacity in litter";
-    document.getElementById("capacityError").innerHTML = msg;
+	msg = "Please enter a capacity in litter";
+	document.getElementById("capacityError").innerHTML = msg;
   } else {
-    document.getElementById("capacityError").innerHTML = "";
+	document.getElementById("capacityError").innerHTML = "";
   }
 
+  //Price
   let price = document.getElementById("price").value;
   if (isNaN(parseFloat(price)) || price.value == "") {
-    msg = "Please enter a valid price";
-    document.getElementById("priceError").innerHTML = msg;
+	msg = "Please enter a valid price";
+	document.getElementById("priceError").innerHTML = msg;
   } else {
-    document.getElementById("priceError").innerHTML = "";
+	document.getElementById("priceError").innerHTML = "";
+  }
+  
+  //Color
+  let color = document.getElementById("color").value.toLowerCase();
+  let existingWineColors = ['gray','orange','red','white','rosé','tawny','yellow','burgundy','sangria','ox blood'];
+  if(!existingWineColors.includes(color)){
+	msg = "Please enter a valid color. Here is a list:";
+	existingWineColors.forEach(function(wineColor){
+		msg+= " '"+wineColor+"' - ";
+	  });
+	  document.getElementById("colorError").innerHTML = msg;
+  } else {
+	  document.getElementById("colorError").innerHTML = "";
   }
 
+  //Promo
   let promo = document.getElementById("promo").value;
-
   if (promo != "") {
-    if (isNaN(parseFloat(promo))) {
-      msg = "Please enter a valid promotion";
-      document.getElementById("promoError").innerHTML = msg;
-    } else {
-      document.getElementById("promoError").innerHTML = "";
-    }
+	if (isNaN(parseFloat(promo))) {
+	  msg = "Please enter a valid promotion";
+	  document.getElementById("promoError").innerHTML = msg;
+	} else {
+	  document.getElementById("promoError").innerHTML = "";
+	}
   }
-
+	$("p[name='error']").slideDown();
   if (msg === "") {
     saveWine();
   }
@@ -258,6 +280,7 @@ function showWines(wines) {
   showWine(1);
 }
 
+/**
 function clearErrorMessages() {
   // Clear error messages
   var cells = document.getElementsByName("error");
@@ -265,70 +288,71 @@ function clearErrorMessages() {
     document.getElementsByName("error")[i].innerHTML = "";
   }
 }
+*/
 
 function showWine(id) {
-  clearErrorMessages();
+	//clear error messages
+	$("p[name='error']").slideUp('slow');
 
-  method = "PUT";
-  let wine = wines.find((element) => element.id == id);
+	//define method for wine update as PUT
+	method = "PUT";
+	
+	let wine = wines.find((element) => element.id == id);
+	//Show common wine properties
+	let docElement = document.getElementById("idWine");
+	docElement.value = wine.id;
+	docElement = document.getElementById("name");
+	docElement.value = wine.name;
+	docElement = document.getElementById("grapes");
+	docElement.value = wine.grapes;
+	docElement = document.getElementById("country");
+	docElement.value = wine.country;
+	docElement = document.getElementById("region");
+	docElement.value = wine.region;
+	docElement = document.getElementById("year");
+	docElement.value = wine.year;
+	docElement = document.getElementById("picture");
+	docElement.alt = wine.name;
+	docElement.src ="http://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture;
+	docElement = document.getElementById("notes");
+	docElement.value = wine.description;
+	docElement = document.getElementById("price");
+	docElement.value = wine.price;
+	docElement = document.getElementById("capacity");
 
-  //Common wine properties
-  let docElement = document.getElementById("idWine");
-  docElement.value = wine.id;
-  docElement = document.getElementById("name");
-  docElement.value = wine.name;
-  docElement = document.getElementById("grapes");
-  docElement.value = wine.grapes;
-  docElement = document.getElementById("country");
-  docElement.value = wine.country;
-  docElement = document.getElementById("region");
-  docElement.value = wine.region;
-  docElement = document.getElementById("year");
-  docElement.value = wine.year;
-  docElement = document.getElementById("picture");
-  docElement.alt = wine.name;
-  docElement.src =
-    "http://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture;
-  docElement = document.getElementById("notes");
-  docElement.value = wine.description;
-  docElement = document.getElementById("price");
-  docElement.value = wine.price;
-  docElement = document.getElementById("capacity");
+	if (wine.capicity === "0") {
+		docElement.value = "Not given";
+	} else {
+		docElement.value = wine.capacity / 100 + "L";
+	}
+	docElement = document.getElementById("color");
+	if (wine.color == "") {
+		docElement.value = "Not given";
+	} else {
+		docElement.value = wine.color;
+	}
 
-  /** TODO  problème on ne rentre pas dans la boucle*/
-  if (wine.capicity === "0") {
-    docElement.value = "none";
-  } else {
-    docElement.value = wine.capacity / 100 + "L";
-  }
-  docElement = document.getElementById("color");
-  if (wine.color == "") {
-    docElement.value = "none";
-  } else {
-    docElement.value = wine.color;
-  }
+	//Show extra properties of the wine
 
-  //Extra properties of the wine
-
-  let extraFields = document.getElementById("extraFields");
-  if (wine.extra) {
-    let extra = JSON.parse(wine.extra);
-    if (extra.bio) {
-      document.getElementById("bioHide").style.display = "block";
-      document.getElementById("bio").value = "Oui";
-    }
-    if (extra.promo) {
-      document.getElementById("promoHide").style.display = "block";
-      document.getElementById("promo").value = extra.promo * 100 + "%";
-    }
-  } else if (wine.extra === null) {
+	let extraFields = document.getElementById("extraFields");
+	if (wine.extra) {
+		let extra = JSON.parse(wine.extra);
+		if (extra.bio) {
+			document.getElementById("bioHide").style.display = "block";
+			document.getElementById("bio").value = "Oui";
+		}
+		if (extra.promo) {
+			document.getElementById("promoHide").style.display = "block";
+			document.getElementById("promo").value = extra.promo * 100 + "%";
+		}
+	} else if (wine.extra === null) {
     document.getElementById("bioHide").style.display = "none";
     document.getElementById("promoHide").style.display = "none";
     //extraFields.innerHTML = '';
-  }
+	}
 
   /**
-		//Go through each extra properties
+		//Go through each extra properties dynamically
 		for (let [key, value] of Object.entries(extra)) {
 
 			let extraAttribute = key;
@@ -382,11 +406,7 @@ window.onload = function () {
     }
   };
 
-  xhttp.open(
-    "GET",
-    "http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines",
-    true
-  );
+  xhttp.open("GET",apiUrl,true);
   xhttp.send();
 
   //Events creation on buttons
