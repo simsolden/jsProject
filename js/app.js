@@ -5,16 +5,16 @@ let method;
 let user = 'ced';
 let pass = '123';
 let url='http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines/';
+let booleanSort = false;
 
 //Functions
 function filter(){
 	//filter by country
-	//console.log('filterCountry test...');
 	let selectCountry = document.getElementById("selectCountry")
 	let selectedCountry=selectCountry.options[selectCountry.selectedIndex].value;
 	let selectYear = document.getElementById("selectYear")
 	let selectedYear=selectYear.options[selectYear.selectedIndex].value;
-	
+
 	if(selectedCountry!='Country'&&selectedYear!='Year'){
 		console.log('work');
 		selected = showWines(wines.filter(element => element.country == selectedCountry && element.year == selectedYear));
@@ -32,9 +32,27 @@ function filter(){
 
 	}
 
+}
 
+function sortByGrapes(){
+	//sort automatically by grapes
+	if(booleanSort==false){
+		booleanSort=true;
+	}
+	else{
+		booleanSort=false;
+	}
+	filter();
+}
 
+function sort(wines){
 
+	if(booleanSort==false){
+		return wines.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
+	}
+	else{
+		return wines.sort((a, b) => a.grapes !== b.grapes ? a.grapes < b.grapes ? -1 : 1 : 0);
+	}
 
 }
 
@@ -182,7 +200,9 @@ function showWines(wines) {
     const emptyList = document.getElementById('winesList');
     let listContent = '';
 
+	wines = sort(wines);
 	Object.keys(wines).forEach(function(key) {
+
 		listContent += '<li data-id="'+wines[key].id+'" class="list-group-item list-group-item-action">'+wines[key].name+'</li>';
 
 	});
@@ -320,7 +340,7 @@ window.onload = function() {
 			for (let prop in wines) {
 				winesArray.push(wines[prop]);
 			}
-			winesArray.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0)
+			winesArray.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
             wines = winesArray;
             showWines(wines);
         }
@@ -335,11 +355,13 @@ window.onload = function() {
     let btnSave = document.getElementById('btnSave');
     let btnDelete = document.getElementById('btnDelete');
 	let btnFilter = document.getElementById('btnFilter');
+	let btnSortByGrapes=document.getElementById('btnSortByGrapes');
 
 	btnSearch.addEventListener('click', search);
 	btnNew.addEventListener('click', newWine);
 	btnSave.addEventListener('click',validateForm);
 	btnDelete.addEventListener('click', deleteWine);
 	btnFilter.addEventListener('click', filter);
+	btnSortByGrapes.addEventListener('click', sortByGrapes);
 
 };
