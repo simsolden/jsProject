@@ -2,6 +2,8 @@
 
 let wines;
 let method;
+let info;
+let picturesFiles;
 
 const user = "ced";
 const pass = "123";
@@ -62,6 +64,47 @@ function sort(wines){
 function search(){
 	//todo: Search
 }
+
+function addPictures(){
+	document.getElementById("uploadHide").style.display = "block";
+}
+
+
+function uploadPictures(){
+	
+	let idWine = document.getElementById('idWine').value;
+	const frmUpload = document.forms["frmUpload"];	
+	const dataUpload = new FormData(frmUpload);
+
+	for(file of upload.files){
+		console.log(file);
+		dataUpload.append('picture', 'file');
+	}	
+	
+
+	picturesFiles = dataUpload.getAll('picture');
+	
+	
+	const xhr = new XMLHttpRequest();
+	xhr.onload = function () {
+		if (this.status === 200) {
+		
+			alert("Upload réussi !");
+		}
+	}
+
+	xhr.onerror = function () {
+		if (this.status === 404) {
+			
+			alert("Une erreur est survenue, la photo n'a pu être uploader");
+		}
+	};
+
+	xhr.open("POST", apiUrl +'/' + idWine + '/'+ picturesFiles, true);
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.send(dataUpload);
+}
+
 
 function deleteWine() {
   if (confirm("Voulez-vous vraiment supprimer ce vin ?")) {
@@ -189,6 +232,8 @@ function newWine() {
   document.getElementById("capacity").value = "";
   document.getElementById("bio").type = "checkbox";
   document.getElementById("promo").value = "";
+  document.getElementById("picture").alt ="";
+  document.getElementById("picture").src ="";
 }
 
 function validateForm() {
@@ -289,6 +334,40 @@ function validateForm() {
     saveWine();
   }
 }
+
+
+
+function validateAddPictures(){
+	let msgError = "";
+	let pictures = document.getElementById("upload");
+
+
+	if(pictures.files.length == " "){
+	  msgError = "Please upload at least one max 200 000 size .jpg file";
+	  document.getElementById("uploadError").innerHTML = msgError;
+   
+	} else if(pictures.files.length != ""){
+	 
+	  if(pictures.size > frmUpload.MAX_FILE_SIZE.value){
+		msgError = "Please upload at least one max 200 000 size file";
+		document.getElementById("uploadError").innerHTML = msgError;
+  
+	  } else if(pictures.accept != ".jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
+		msgError = "Please upload at least one .jpg file";
+		document.getElementById("uploadError").innerHTML = msgError;
+  
+	  } else if(pictures.files.length > 3){
+		msgError = "Please upload max 3 pictures";
+		document.getElementById("uploadError").innerHTML = msgError;
+	  }  else {
+		document.getElementById("uploadError").innerHTML = "";
+		uploadPictures();
+	 } 
+  
+	}
+}
+
+
 
 function showWines(wines) {
 
@@ -452,6 +531,8 @@ window.onload = function() {
     let btnDelete = document.getElementById('btnDelete');
 	let btnFilter = document.getElementById('btnFilter');
 	let btnSortBy=document.getElementById('btnSortBy');
+	let btnAddPictures = document.getElementById('btnAddPictures');
+	let btnUpload = document.getElementById('btnUpload');
 
 	btnSearch.addEventListener('click', search);
  	btnNew.addEventListener('click', newWine);
@@ -459,5 +540,7 @@ window.onload = function() {
 	btnDelete.addEventListener('click', deleteWine);
 	btnFilter.addEventListener('click', filter);
 	btnSortBy.addEventListener('click', sortBy);
+	btnAddPictures.addEventListener('click', addPictures);
+	btnUpload.addEventListener('click', validateAddPictures);
 
 };

@@ -5,7 +5,7 @@
 	<meta name="description" content="Wine cellar SPA for client-side school project">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="librairies/node_modules/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="librairies/fontawesome-free-5.13.0-web/css/all.css">
+	<link rel="stylesheet" href="librairies/fontawesome-free-5.13.0-web/css/all.min.css">
 	<link rel="stylesheet" href="css/style.css">
 	<script src="librairies/node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="js/app.js"></script>
@@ -180,7 +180,24 @@
 						</div>
 					</div>
 				</form>
+				
+				<!-- Wine picture(s) uploading -->
+			<div>				
+				<form id="frmUpload" class="form-upload" action="" method="post" enctype="multipart/form-data">
+					<div>
+						<button id="btnAddPictures" name="btnAddPictures" type="button"><i class="fas fa-camera"></i></button>
+					</div>
+					<div id="uploadHide">
+						<label for="upload">  Picture:</label>
+						<input name="MAX_FILE_SIZE" value="200000" type="hidden">
+						<input id="upload"  name="myUpload" type="file" accept=".jpg" multiple>
+						<button id="btnUpload" name="btnUpload" type="button">Upload</button>
+						<p class="errorMsg" name="errorMsg" id="uploadError"></p>
+					</div>
+				</form>
+			</div>
 		</div>
+			
 	</div>
 
     <script src="librairies/node_modules/popper.js/dist/popper.min.js"></script>
