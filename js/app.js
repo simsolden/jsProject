@@ -6,26 +6,26 @@ let method;
 const user = "ced";
 const pass = "123";
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines";
-let booleanSort = false;
+let sortName='';
 
 //Functions
 function filter(){
 	//filter by country
-	let selectCountry = document.getElementById("selectCountry")
+	let selectCountry = document.getElementById("selectCountry");
 	let selectedCountry=selectCountry.options[selectCountry.selectedIndex].value;
-	let selectYear = document.getElementById("selectYear")
+	let selectYear = document.getElementById("selectYear");
 	let selectedYear=selectYear.options[selectYear.selectedIndex].value;
 
+	//case when the user want to filter by country and year
 	if(selectedCountry!='Country'&&selectedYear!='Year'){
-		console.log('work');
 		selected = showWines(wines.filter(element => element.country == selectedCountry && element.year == selectedYear));
 	}
+	//case when the user want to filter only by year
 	else if(selectedCountry=='Country'&&selectedYear!='Year'){
-		console.log('test');
 		selected = showWines(wines.filter(element => element.year == selectedYear));
 	}
+	//case when the user want to filter only by country
 	else if(selectedCountry!='Country'&&selectedYear=='Year'){
-		console.log('test2');
 		selected = showWines(wines.filter(element => element.country == selectedCountry));
 	}
 	else{
@@ -34,23 +34,28 @@ function filter(){
 
 }
 
-function sortByGrapes(){
-	//sort automatically by grapes
-	if(booleanSort==false){
-		booleanSort=true;
-	}
-	else{
-		booleanSort=false;
-	}
+function sortBy(){
+	let selectSort = document.getElementById('selectSort');
+	let selectedSort=selectSort.options[selectSort.selectedIndex].value;
+	sortName=selectedSort;
+	//allows the sort even when the wines are filtered
 	filter();
 }
 
 function sort(wines){
-	if(booleanSort==false){
-		return wines.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
+	//sort by year
+	if(sortName=='Year'){
+		console.log('year');
+		return wines.sort((a, b) => a.year !== b.year ? a.year < b.year ? -1 : 1 : 0);
 	}
-	else{
+	//sort by grapes
+	else if(sortName=='Grapes'){
+		console.log('grape');
 		return wines.sort((a, b) => a.grapes !== b.grapes ? a.grapes < b.grapes ? -1 : 1 : 0);
+	}
+	//sort by name
+	else{
+		return wines.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
 	}
 }
 
@@ -92,9 +97,9 @@ function deleteWine() {
  * @author Rachida
  */
 function saveWine() {
-	
+
 	const data = new FormData(); //Récupération des données du formulaire
-	
+
 	//Ajout des données du vin
 	let idWine = document.getElementById("idWine").value;
 	data.append("idWine", idWine);
@@ -114,7 +119,7 @@ function saveWine() {
 	data.append("capacity", capacity);
 	let color = document.getElementById("color").value;
 	data.append("color", color);
-	
+
 	//Ajout des données extra si existantes
 	let extra;
 	let promo = document.getElementById("promo").value;
@@ -129,7 +134,7 @@ function saveWine() {
 		}
 	}
 	data.append("extra", extra);
-  
+
 	/** Ouverture et envois de la requète */
 	const xhr = new XMLHttpRequest();
 	//Fonction de rappel
@@ -151,7 +156,7 @@ function saveWine() {
 			}
 		}
 	};
-	let requestUrl; 
+	let requestUrl;
     if (method == "POST") {
       requestUrl=apiUrl;
     } else if(method =='PUT'){
@@ -165,7 +170,7 @@ function saveWine() {
 }
 
 function newWine() {
-	
+
 	$("p[name='error']").slideUp();
   //clearErrorMessages();
 
@@ -188,7 +193,7 @@ function newWine() {
 
 function validateForm() {
   let msg = "";
-  
+
 
   //Name
   if (document.getElementById("name").value == "") {
@@ -255,7 +260,7 @@ function validateForm() {
   } else {
 	document.getElementById("priceError").innerHTML = "";
   }
-  
+
   //Color
   let color = document.getElementById("color").value.toLowerCase();
   let existingWineColors = ['gray','orange','red','white','rosé','tawny','yellow','burgundy','sangria','ox blood'];
@@ -328,7 +333,7 @@ function showWine(id) {
 
 	//define method for wine update as PUT
 	method = "PUT";
-	
+
 	let wine = wines.find((element) => element.id == id);
 	//Show common wine properties
 	let docElement = document.getElementById("idWine");
@@ -445,15 +450,14 @@ window.onload = function() {
     let btnNew = document.getElementById('btnNew');
     let btnSave = document.getElementById('btnSave');
     let btnDelete = document.getElementById('btnDelete');
-	  let btnFilter = document.getElementById('btnFilter');
-	  let btnSortByGrapes=document.getElementById('btnSortByGrapes');
+	let btnFilter = document.getElementById('btnFilter');
+	let btnSortBy=document.getElementById('btnSortBy');
 
-	  btnSearch.addEventListener('click', search);
-	  btnNew.addEventListener('click', newWine);
-	  btnSave.addEventListener('click',validateForm);
-	  btnDelete.addEventListener('click', deleteWine);
-    btnFilter.addEventListener('click', filter);
-	  btnSortByGrapes.addEventListener('click', sortByGrapes);
-
+	btnSearch.addEventListener('click', search);
+ 	btnNew.addEventListener('click', newWine);
+	btnSave.addEventListener('click',validateForm);
+	btnDelete.addEventListener('click', deleteWine);
+	btnFilter.addEventListener('click', filter);
+	btnSortBy.addEventListener('click', sortBy);
 
 };
