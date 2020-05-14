@@ -5,6 +5,9 @@ let method;
 let sortName;
 let lastAction;
 let userLikes=[];
+let info;
+let picturesFiles;
+
 
 const userId=1;
 const user = "ced";
@@ -88,6 +91,47 @@ function search(){
 	document.getElementById("selectYear").value="Year";
 	document.getElementById("selectCountry").value="Country";
 }
+
+function addPictures(){
+	document.getElementById("uploadHide").style.display = "block";
+}
+
+
+function uploadPictures(){
+	
+	let idWine = document.getElementById('idWine').value;
+	const frmUpload = document.forms["frmUpload"];	
+	const dataUpload = new FormData(frmUpload);
+
+	for(file of upload.files){
+		console.log(file);
+		dataUpload.append('picture', 'file');
+	}	
+	
+
+	picturesFiles = dataUpload.getAll('picture');
+	
+	
+	const xhr = new XMLHttpRequest();
+	xhr.onload = function () {
+		if (this.status === 200) {
+		
+			alert("Upload réussi !");
+		}
+	}
+
+	xhr.onerror = function () {
+		if (this.status === 404) {
+			
+			alert("Une erreur est survenue, la photo n'a pu être uploader");
+		}
+	};
+
+	xhr.open("POST", apiUrl +'/' + idWine + '/'+ picturesFiles, true);
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.send(dataUpload);
+}
+
 
 function deleteWine() {
 	if (confirm("Voulez-vous vraiment supprimer ce vin ?")) {
@@ -310,6 +354,40 @@ function validateForm() {
 	}
 }
 
+
+
+function validateAddPictures(){
+	let msgError = "";
+	let pictures = document.getElementById("upload");
+
+
+	if(pictures.files.length == " "){
+	  msgError = "Please upload at least one max 200 000 size .jpg file";
+	  document.getElementById("uploadError").innerHTML = msgError;
+   
+	} else if(pictures.files.length != ""){
+	 
+	  if(pictures.size > frmUpload.MAX_FILE_SIZE.value){
+		msgError = "Please upload at least one max 200 000 size file";
+		document.getElementById("uploadError").innerHTML = msgError;
+  
+	  } else if(pictures.accept != ".jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
+		msgError = "Please upload at least one .jpg file";
+		document.getElementById("uploadError").innerHTML = msgError;
+  
+	  } else if(pictures.files.length > 3){
+		msgError = "Please upload max 3 pictures";
+		document.getElementById("uploadError").innerHTML = msgError;
+	  }  else {
+		document.getElementById("uploadError").innerHTML = "";
+		uploadPictures();
+	 } 
+  
+	}
+}
+
+
+
 function showWines(wines) {
 	//Add Wines to List
 	const emptyList = document.getElementById('winesList');
@@ -503,10 +581,11 @@ window.onload = function() {
 	let btnFilter = document.getElementById('btnFilter');
 	let btnSortBy=document.getElementById('btnSortBy');
 	let btnLike=document.getElementById('btnLike');
+	let btnAddPictures = document.getElementById('btnAddPictures');
+	let btnUpload = document.getElementById('btnUpload');
 	let input = document.getElementById("inputSearch");
 
 	//Events creation
-
 	btnSearch.addEventListener('click', search);
 	btnNew.addEventListener('click', newWine);
 	btnSave.addEventListener('click',validateForm);
@@ -514,7 +593,8 @@ window.onload = function() {
 	btnFilter.addEventListener('click', filter);
 	btnSortBy.addEventListener('click', sortBy);
 	btnLike.addEventListener('click', like);
-
+	btnAddPictures.addEventListener('click', addPictures);
+	btnUpload.addEventListener('click', validateAddPictures);
 	input.addEventListener("keydown", function(event) {
 		// Number 13 is the "Enter" key on the keyboard
 		if (event.keyCode === 13) {

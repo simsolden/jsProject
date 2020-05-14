@@ -30,6 +30,11 @@ transform:translateX(6em);
 	display:none;
 }
 
+#uploadHide{
+  display:none;
+}
+
+
 .error{
 display:none;
 color:red;
