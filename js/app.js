@@ -522,5 +522,4 @@ window.onload = function() {
 			search();
 		}
 	});
-
 };
