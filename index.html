@@ -11,177 +11,166 @@
 	<script src="js/app.js"></script>
 	<title>Caviste 2020</title>
 </head>
-  <body>
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				<header>
-                    <div id="logo"><img src="logo/Vin.png" width="50px"/></div>
-					<div id="titre">
-						<h1>Votre Caviste 2020</h1>
-					</div>
-					<a id="login-icone" href="#"><i class="fas fa-user fa-2x"> login</i></a>
-					<nav class="navbar navbar-light bg-light">
-						<ul class="nav nav-tabs">
-							<li class="nav-item"><a class="nav-link " href="#">Accueil</a></li>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <header>
+          <div id="logo"><img src="logo/Vin.png" width="50px"/></div>
+          <div id="titre">
+            <h1>Votre Caviste 2020</h1>
+          </div>
+          <a id="login-icone" href="#"><i class="fas fa-user fa-2x"> login</i></a>
+          <nav class="navbar navbar-light bg-light">
+            <ul class="nav nav-tabs">
+              <li class="nav-item"><a class="nav-link " href="#">Accueil</a></li>
 
-							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Nos Vins</a>
-								<div class="dropdown-menu">
-								  <a class="dropdown-item" href="#">Rosé</a>
-								  <a class="dropdown-item" href="#">Vins Rouge</a>
-								  <a class="dropdown-item" href="#">Vins Blanc</a>
-								</div>
-							</li>
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Nos Vins</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Rosé</a>
+                  <a class="dropdown-item" href="#">Vins Rouge</a>
+                  <a class="dropdown-item" href="#">Vins Blanc</a>
+                </div>
+              </li>
 
-							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Nos distributeurs</a>
-								<div class="dropdown-menu">
-								  <a class="dropdown-item" href="#">Distr 1</a>
-								  <a class="dropdown-item" href="#">Distr 2</a>
-								  <a class="dropdown-item" href="#">Distr 3</a>
-								</div>
-							</li>
-							<li class="nav-item"><a class="nav-link" href="#">Nos Dégustations</a></li>
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Nos distributeurs</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Distr 1</a>
+                  <a class="dropdown-item" href="#">Distr 2</a>
+                  <a class="dropdown-item" href="#">Distr 3</a>
+                </div>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="#">Nos Dégustations</a></li>
 
-							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">À propos</a>
-								<div class="dropdown-menu">
-								  <a class="dropdown-item" href="#">Qui sommes-nous ?</a>
-								  <a class="dropdown-item" href="#">Contact</a>
-								</div>
-							</li>
-						</ul>
-						<form id="searchCreateWine" action="" method="get" class="form-inline">
-							<input type="text" name="inputWine" id="inputWine" placeholder="Enter wine name..." class="form-control mr-3">
-							<button id="btnSearch" name="btnSearch" type="button" class="btn btn-info mr-3">Search</button>
-						</form>
-					</nav>
-				</header>
-			</div>
-		</div>
-        <form id="filter" action="" method="post">
-            <div class="optionsDiv">
-                Filter
-                <select id="selectCountry">
-                    <option value="Country" selected>Country</option>
-                    <option value="Italy">Italy</option>
-                    <option value="Spain">Spain</option>
-                    <option value="France">France</option>
-                    <option value="USA">USA</option>
-                </select>
-                <select id="selectYear">
-                    <option value="Year" selected>Year</option>
-                    <option value="2005">2005</option>
-                    <option value="2006">2006</option>
-                    <option value="2007">2007</option>
-                    <option value="2008">2008</option>
-                    <option value="2009">2009</option>
-                    <option value="2010">2010</option>
-                    <option value="2011">2011</option>
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">À propos</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Qui sommes-nous ?</a>
+                  <a class="dropdown-item" href="#">Contact</a>
+                </div>
+              </li>
+            </ul>
+            <form id="searchCreateWine" action="#" class="form-inline">
+              <input type="text" name="inputSearch" id="inputSearch" placeholder="Enter wine name..." class="form-control mr-3">
+              <button id="btnSearch" name="btnSearch" type="button" class="btn btn-info mr-3">Search</button>
+            </form>
+          </nav>
+        </header>
+      </div>
+    </div>
+    <form id="filterAndSort" action="#" method="post">
+      <div class="form-row ml-3">
+        <div class="optionsDiv">
+          <select id="selectCountry">
+            <option value="Country" selected>Country</option>
+            <option value="Italy">Italy</option>
+            <option value="Spain">Spain</option>
+            <option value="France">France</option>
+            <option value="USA">USA</option>
+          </select>
+          <select id="selectYear">
+            <option value="Year" selected>Year</option>
+            <option value="2005">2005</option>
+            <option value="2006">2006</option>
+            <option value="2007">2007</option>
+            <option value="2008">2008</option>
+            <option value="2009">2009</option>
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
 
-                </select>
-                <button id="btnFilter" name="btnFilter" type="button" class="btn btn-success">Filter</button>
-            </div>
+          </select>
+          <button id="btnFilter" name="btnFilter" type="button" class="btn btn-success">Filter</button>
+        </div>
+        <div class="optionsDiv ml-1">
+          <select id="selectSort">
+            <option value="Sort" selected>Name</option>
+            <option value="Grapes">Grapes</option>
+            <option value="Year">Year</option>
+          </select>
+          <button id="btnSortBy" name="sort" type="button" class="btn btn-success">Sort</button>
+        </div>
+      </div>
+    </form>
+    <div id="content" class="row">
+      <div class="col-4 mt-5">
+        <ul id="winesList">
+          <!-- Wines list -->
+        </ul>
+      </div>
+      <div class="col mt-3">
+        <form id="addUpdateWine" action="#" method="post">
+
+          <!-- New wine form/Wine info -->
+          <div class="form-group">
+            <label for="idWine">Id:</label>
+            <input id="idWine" name="idWine" type="number" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input id="name" name="name" type="text" class="form-control">
+            <p class="error" name="error" id="nameError"></p>
+          </div>
+          <div class="form-group">
+            <label for="grapes">Grapes:</label>
+            <input id="grapes" name="grapes" type="text" class="form-control">
+            <p class="error" name="error" id="grapesError"></p>
+          </div>
+          <div class="form-group">
+            <label for="country">Country:</label>
+            <input id="country" name="country" type="text" class="form-control">
+            <p class="error" name="error" id="countryError"></p>
+          </div>
+          <div class="form-group">
+            <label for="region">Region:</label>
+            <input id="region" name="region" type="text" class="form-control">
+            <p class="error" name="error" id="regionError"></p>
+          </div>
+          <div class="form-group">
+            <label for="year">Year</label>
+            <input id="year" name="year" type="number" class="form-control">
+            <p class="error" name="error" id="yearError"></p>
+          </div>
+          <div class="form-group">
+            <label for="price">Price</label>
+            <input id="price" name="price" type="number" step="any" class="form-control">
+            <p class="error" name="error" id="priceError"></p>
+          </div>
+          <div class="form-group">
+            <label for="capacity">Capacity</label>
+            <input id="capacity" name="capacity" type="text" class="form-control">
+            <p class="error" name="error" id="capacityError"></p>
+          </div>
+          <div class="form-group">
+            <label for="color">Color</label>
+            <input id="color" name="color" type="text" class="form-control">
+            <p class="error" name="error" id="colorError"></p>
+          </div>
+
+          <div id="bioHide" class="form-group">
+            <label for="bio">Bio</label>
+            <input id="bio" name="bio" type="text" step="any" class="form-control">
+            <p class="error" name="error" id="bioError"></p>
+
+          </div>
+          <div id="promoHide" class="form-group">
+            <label for="promo">Promo</label>
+            <input id="promo" name="promo" type="text"  class="form-control">
+            <p class="error" name="error" id="promoError"></p>
+          </div>
+
+          <!-- Form Buttons -->
+          <div class="form-group">
+            <button id="btnSave" name="btnSave" type="button" class="btn btn-primary">Save</button>
+            <button id="btnDelete" name="btnDelete" type="button" class="btn btn-dark">Delete</button>
+            <button id="btnNew" name="btnNew" type="button" class="btn btn-success">New Wine</button>
+          </div>
         </form>
-
-        <form id="sort" action="" method="post">
-            <div class="optionsDiv">
-
-                <select id="selectSort">
-                    <option value="Sort" selected>Name</option>
-                    <option value="Grapes">Grapes</option>
-                    <option value="Year">Year</option>
-                </select>
-                <button id="btnSortBy" name="sort" type="button" class="btn btn-success">Sort</button>
-
-            </div>
-        </form>
-		<div id="content" class="row">
-			<div class="col-4 mt-5">
-				<ul id="winesList">
-					<!-- Wines list -->
-				</ul>
-            </div>
-			<div class="col mt-3">
-				<form id="addUpdateWine" action="" method="post">
-
-					<!-- New wine form/Wine info -->
-					<div class="form-group">
-						<label for="idWine">Id:</label>
-						<input id="idWine" name="idWine" type="number" class="form-control">
-					</div>
-					<div class="form-group">
-						<label for="name">Name:</label>
-						<input id="name" name="name" type="text" class="form-control">
-						<p class="error" name="error" id="nameError"></p>
-					</div>
-					<div class="form-group">
-						<label for="grapes">Grapes:</label>
-						<input id="grapes" name="grapes" type="text" class="form-control">
-						<p class="error" name="error" id="grapesError"></p>
-					</div>
-					<div class="form-group">
-						<label for="country">Country:</label>
-						<input id="country" name="country" type="text" class="form-control">
-						<p class="error" name="error" id="countryError"></p>
-					</div>
-					<div class="form-group">
-						<label for="region">Region:</label>
-						<input id="region" name="region" type="text" class="form-control">
-						<p class="error" name="error" id="regionError"></p>
-					</div>
-					<div class="form-group">
-						<label for="year">Year</label>
-						<input id="year" name="year" type="number" class="form-control">
-						<p class="error" name="error" id="yearError"></p>
-					</div>
-					<div class="form-group">
-						<label for="price">Price</label>
-						<input id="price" name="price" type="number" step="any" class="form-control">
-						<p class="error" name="error" id="priceError"></p>
-					</div>
-					<div class="form-group">
-						<label for="capacity">Capacity</label>
-						<input id="capacity" name="capacity" type="text" class="form-control">
-						<p class="error" name="error" id="capacityError"></p>
-					</div>
-					<div class="form-group">
-						<label for="color">Color</label>
-						<input id="color" name="color" type="text" class="form-control">
-						<p class="error" name="error" id="colorError"></p>
-					</div>
-
-					<div id="bioHide" class="form-group">
-						<label for="bio">Bio</label>
-						<input id="bio" name="bio" type="text" step="any" class="form-control">
-						<p class="error" name="error" id="bioError"></p>
-
-					</div>
-					<div id="promoHide" class="form-group">
-						<label for="promo">Promo</label>
-						<input id="promo" name="promo" type="text"  class="form-control">
-						<p class="error" name="error" id="promoError"></p>
-					</div>
-
-					<!-- Form Buttons -->
-					<div class="form-group">
-						<button id="btnSave" name="btnSave" type="button" class="btn btn-primary">Save</button>
-						<button id="btnDelete" name="btnDelete" type="button" class="btn btn-dark">Delete</button>
-						<button id="btnNew" name="btnNew" type="button" class="btn btn-success">New Wine</button>
-					</div>
-			</div>
-					<div class="col mt-5">
-						<!-- Wine Picture -->
-						<div class="card" style="width: 18rem;">
-							<img id="picture" src="files/pics/generic.jpg" alt="Generic wine" class="card-img-top">
-						</div>
-						<!-- Wine Notes -->
-						<div class="form-group">
-							<label for="notes">Notes:</label>
-							<textarea class="form-control" id="notes" name="description" rows="5"></textarea>
-						</div>
-					</div>
-				</form>
-				
-				<!-- Wine picture(s) uploading -->
+      </div>
+      <div class="col mt-5">
+          <!-- Wine Picture -->
+          <div class="card" style="width: 18rem;">
+            <img id="picture" src="files/pics/generic.jpg" alt="Generic wine" class="card-img-top">
+          </div>
+          	<!-- Wine picture(s) uploading -->
 			<div>				
 				<form id="frmUpload" class="form-upload" action="" method="post" enctype="multipart/form-data">
 					<div>
@@ -196,11 +185,28 @@
 					</div>
 				</form>
 			</div>
+        <div class="likes">
+          <p id="wineLikesCount" class="likes" ></p>
+          <form id="addLike" action="#" method="">
+            <!-- Wine Picture -->
+            <button id="btnLike" name ="btnLike" class="likeButton mt-3"><i class="far fa-thumbs-up"></i> Like</button>
+          </form>
+        </div>
+        <form id="addNote" action="" method="post">
+          <!-- Wine Notes -->
+          <div class="form-group">
+            <label for="notes">Notes:</label>
+            <textarea class="form-control" id="notes" name="description" rows="5"></textarea>
+          </div>
+        </form>
+      </div>
+				
+			
 		</div>
 			
 	</div>
 
-    <script src="librairies/node_modules/popper.js/dist/popper.min.js"></script>
-    <script src="librairies/node_modules/bootstrap/dist/css/bootstrap.min.css"></script>
-  </body>
+  <script src="librairies/node_modules/popper.js/dist/popper.min.js"></script>
+  <script src="librairies/node_modules/bootstrap/dist/css/bootstrap.min.css"></script>
+</body>
 </html>
