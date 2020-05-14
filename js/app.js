@@ -60,7 +60,21 @@ function sort(wines){
 }
 
 function search(){
-	//todo: Search
+	//define last action
+	lastAction='search';
+	//Create searchResult array
+	const inputSearch = document.getElementById("inputSearch").value;
+	searchResult=[];
+	wines.forEach(function(wine){
+		if(wine.name.includes(inputSearch.toUpperCase())){
+			searchResult.push(wine);
+		}
+	});
+	//display array
+	showWines(searchResult);
+	//Removes filter values
+	document.getElementById("selectYear").value="Year";
+	document.getElementById("selectCountry").value="Country";
 }
 
 function deleteWine() {
@@ -444,20 +458,30 @@ window.onload = function() {
 
     xhttp.open('GET',apiUrl,true);
     xhttp.send();
-
-	//Events creation on buttons
-    let btnSearch = document.getElementById('btnSearch');
-    let btnNew = document.getElementById('btnNew');
-    let btnSave = document.getElementById('btnSave');
-    let btnDelete = document.getElementById('btnDelete');
+	
+	//Buttons and inputs
+	let btnSearch = document.getElementById('btnSearch');
+	let btnNew = document.getElementById('btnNew');
+	let btnSave = document.getElementById('btnSave');
+	let btnDelete = document.getElementById('btnDelete');
 	let btnFilter = document.getElementById('btnFilter');
 	let btnSortBy=document.getElementById('btnSortBy');
+	let input = document.getElementById("inputSearch");
+
+	//Events creation
 
 	btnSearch.addEventListener('click', search);
- 	btnNew.addEventListener('click', newWine);
+	btnNew.addEventListener('click', newWine);
 	btnSave.addEventListener('click',validateForm);
 	btnDelete.addEventListener('click', deleteWine);
 	btnFilter.addEventListener('click', filter);
 	btnSortBy.addEventListener('click', sortBy);
 
+	input.addEventListener("keydown", function(event) {
+		// Number 13 is the "Enter" key on the keyboard
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			search();
+		}
+	});
 };
