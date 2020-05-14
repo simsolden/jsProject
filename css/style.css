@@ -1,6 +1,6 @@
 body{
 background: url("images/background.jpg") no-repeat;
-background-attachment: fixed;	
+background-attachment: fixed;
 background-size: cover;
 margin:0%;
 padding:0%;
@@ -30,18 +30,36 @@ transform:translateX(6em);
 	display:none;
 }
 
-i{
-float:right;
-margin-top: 1.5%;
-color: #3498db/*#34ace0*/;
-}
-
 .error{
 display:none;
 color:red;
 }
 
-i:hover{
+.likeButtonLiked{
+	border-style:solid;
+	border-radius:5px;
+	color:#3498db;
+}
+.likeButton{
+	border-style:solid;
+	border-radius:5px;
+	color:black;
+}
+.likeButton:hover, .likeButtonLiked:hover{
+	background-color:lightgrey;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+
+#login-icone{
+float:right;
+margin-top: 1.5%;
+color: #3498db/*#34ace0*/;
+}
+
+#login-icone:hover{
 color: orange;
 }
 /*----------------------------fin-----------------------------*/
