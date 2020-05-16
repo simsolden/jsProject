@@ -47,9 +47,10 @@ function filter(){
 }
 
 function sortBy(){
-	let selectSort = document.getElementById('selectSort');
-	let selectedSort=selectSort.options[selectSort.selectedIndex].value;
+	const selectSort = document.getElementById('selectSort');
+	const selectedSort=selectSort.options[selectSort.selectedIndex].value;
 	sortName=selectedSort;
+	wines = sort(wines);
 	//allows the sort even when the wines are filtered or searched
 	if(lastAction=='filter'){
 		filter();
