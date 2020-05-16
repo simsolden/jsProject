@@ -16,7 +16,7 @@
     <div class="row">
       <div class="col">
         <header>
-          <div id="logo"><img src="logo/Vin.png" width="50px"/></div>
+          <div id="logo"><img src="logo/Vin.png" alt="Wine icon" class="logo"/></div>
           <div id="titre">
             <h1>Votre Caviste 2020</h1>
           </div>
@@ -107,54 +107,54 @@
           <div class="form-group">
             <label for="name">Name:</label>
             <input id="name" name="name" type="text" class="form-control">
-            <p class="error" name="error" id="nameError"></p>
+            <p class="error" id="nameError"></p>
           </div>
           <div class="form-group">
             <label for="grapes">Grapes:</label>
             <input id="grapes" name="grapes" type="text" class="form-control">
-            <p class="error" name="error" id="grapesError"></p>
+            <p class="error" id="grapesError"></p>
           </div>
           <div class="form-group">
             <label for="country">Country:</label>
             <input id="country" name="country" type="text" class="form-control">
-            <p class="error" name="error" id="countryError"></p>
+            <p class="error" id="countryError"></p>
           </div>
           <div class="form-group">
             <label for="region">Region:</label>
             <input id="region" name="region" type="text" class="form-control">
-            <p class="error" name="error" id="regionError"></p>
+            <p class="error" id="regionError"></p>
           </div>
           <div class="form-group">
             <label for="year">Year</label>
             <input id="year" name="year" type="number" class="form-control">
-            <p class="error" name="error" id="yearError"></p>
+            <p class="error" id="yearError"></p>
           </div>
           <div class="form-group">
             <label for="price">Price</label>
             <input id="price" name="price" type="number" step="any" class="form-control">
-            <p class="error" name="error" id="priceError"></p>
+            <p class="error" id="priceError"></p>
           </div>
           <div class="form-group">
             <label for="capacity">Capacity</label>
             <input id="capacity" name="capacity" type="text" class="form-control">
-            <p class="error" name="error" id="capacityError"></p>
+            <p class="error" id="capacityError"></p>
           </div>
           <div class="form-group">
             <label for="color">Color</label>
             <input id="color" name="color" type="text" class="form-control">
-            <p class="error" name="error" id="colorError"></p>
+            <p class="error" id="colorError"></p>
           </div>
 
           <div id="bioHide" class="form-group">
             <label for="bio">Bio</label>
-            <input id="bio" name="bio" type="text" step="any" class="form-control">
-            <p class="error" name="error" id="bioError"></p>
+            <input id="bio" name="bio" type="text" class="form-control">
+            <p class="error" id="bioError"></p>
 
           </div>
           <div id="promoHide" class="form-group">
             <label for="promo">Promo</label>
             <input id="promo" name="promo" type="text"  class="form-control">
-            <p class="error" name="error" id="promoError"></p>
+            <p class="error" id="promoError"></p>
           </div>
 
           <!-- Form Buttons -->
@@ -171,28 +171,28 @@
             <img id="picture" src="files/pics/generic.jpg" alt="Generic wine" class="card-img-top">
           </div>
           	<!-- Wine picture(s) uploading -->
-			<div>				
-				<form id="frmUpload" class="form-upload" action="" method="post" enctype="multipart/form-data">
+			<div>
+				<form id="frmUpload" class="form-upload" action="#" method="post" enctype="multipart/form-data">
 					<div>
-						<button id="btnAddPictures" name="btnAddPictures" type="button"><i class="fas fa-camera"></i></button>
+						<button id="btnAddPictures" name="btnAddPictures" class="addPicture" type="button"><i class="fas fa-camera"></i></button>
 					</div>
 					<div id="uploadHide">
 						<label for="upload">  Picture:</label>
 						<input name="MAX_FILE_SIZE" value="200000" type="hidden">
 						<input id="upload"  name="myUpload" type="file" accept=".jpg" multiple>
 						<button id="btnUpload" name="btnUpload" type="button">Upload</button>
-						<p class="errorMsg" name="errorMsg" id="uploadError"></p>
+						<p class="errorMsg" id="uploadError"></p>
 					</div>
 				</form>
 			</div>
         <div class="likes">
           <p id="wineLikesCount" class="likes" ></p>
-          <form id="addLike" action="#" method="">
+          <form id="addLike" action="#" method="post">
             <!-- Wine Picture -->
-            <button id="btnLike" name ="btnLike" class="likeButton mt-3"><i class="far fa-thumbs-up"></i> Like</button>
+            <button id="btnLike" name ="btnLike" class="likeButton"><i class="far fa-thumbs-up"></i> Like</button>
           </form>
         </div>
-        <form id="addNote" action="" method="post">
+        <form id="addNote" action="#" method="post">
           <!-- Wine Notes -->
           <div class="form-group">
             <label for="notes">Notes:</label>
@@ -200,10 +200,10 @@
           </div>
         </form>
       </div>
-				
-			
+
+
 		</div>
-			
+
 	</div>
 
   <script src="librairies/node_modules/popper.js/dist/popper.min.js"></script>

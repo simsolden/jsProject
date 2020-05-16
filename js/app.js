@@ -98,31 +98,31 @@ function addPictures(){
 
 
 function uploadPictures(){
-	
+
 	let idWine = document.getElementById('idWine').value;
-	const frmUpload = document.forms["frmUpload"];	
+	const frmUpload = document.forms["frmUpload"];
 	const dataUpload = new FormData(frmUpload);
 
 	for(file of upload.files){
 		console.log(file);
 		dataUpload.append('picture', 'file');
-	}	
-	
+	}
+
 
 	picturesFiles = dataUpload.getAll('picture');
-	
-	
+
+
 	const xhr = new XMLHttpRequest();
 	xhr.onload = function () {
 		if (this.status === 200) {
-		
+
 			alert("Upload réussi !");
 		}
 	}
 
 	xhr.onerror = function () {
 		if (this.status === 404) {
-			
+
 			alert("Une erreur est survenue, la photo n'a pu être uploader");
 		}
 	};
@@ -240,7 +240,7 @@ function saveWine() {
 }
 
 function newWine() {
-	$("p[name='error']").slideUp();
+	$(".error").slideUp();
 
 	method = "POST";
 
@@ -348,7 +348,7 @@ function validateForm() {
 			document.getElementById("promoError").innerHTML = "";
 		}
 	}
-	$("p[name='error']").slideDown();
+	$(".error").slideDown();
 	if (msg === "") {
 		saveWine();
 	}
@@ -364,25 +364,25 @@ function validateAddPictures(){
 	if(pictures.files.length == " "){
 	  msgError = "Please upload at least one max 200 000 size .jpg file";
 	  document.getElementById("uploadError").innerHTML = msgError;
-   
+
 	} else if(pictures.files.length != ""){
-	 
+
 	  if(pictures.size > frmUpload.MAX_FILE_SIZE.value){
 		msgError = "Please upload at least one max 200 000 size file";
 		document.getElementById("uploadError").innerHTML = msgError;
-  
+
 	  } else if(pictures.accept != ".jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
 		msgError = "Please upload at least one .jpg file";
 		document.getElementById("uploadError").innerHTML = msgError;
-  
+
 	  } else if(pictures.files.length > 3){
 		msgError = "Please upload max 3 pictures";
 		document.getElementById("uploadError").innerHTML = msgError;
 	  }  else {
 		document.getElementById("uploadError").innerHTML = "";
 		uploadPictures();
-	 } 
-  
+	 }
+
 	}
 }
 
@@ -414,7 +414,7 @@ function showWines(wines) {
 
 function showWine(id) {
 	//clear error messages
-	$("p[name='error']").slideUp('slow');
+	$(".error").slideUp('slow');
 
 	//define method for wine update as PUT
 	method = "PUT";
@@ -428,7 +428,7 @@ function showWine(id) {
 		if (xhttp.readyState == 4 && xhttp.status == 200) {
 			let data = xhttp.responseText;
 			let likes = JSON.parse(data);
-			document.getElementById("wineLikesCount").innerHTML=likes.total;
+			document.getElementById("wineLikesCount").innerHTML=likes.total +" user(s) like this wine.";
 		}
 	};
 	xhttp.open("GET",apiUrl+'/wines/'+id+'/likes-count',true);
@@ -496,7 +496,7 @@ function showWine(id) {
 
 //TODO Like or dislike a wine
 function like(){
-
+	event.preventDefault();
 	const xhr = new XMLHttpRequest();
 	const formData = new FormData();
 	const id=document.getElementById('idWine').value;

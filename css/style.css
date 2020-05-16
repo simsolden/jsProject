@@ -18,8 +18,13 @@ border: 1px solid #d63031;
 
 /*----Poir déplacer le logo et le titre vers la droite------*/
 /*Mais a une limite pour le responsive....*/
-#logo{
+#logo, {
 transform:translateX(5em);
+
+}
+
+.logo{
+width:50px;
 }
 
 #titre{
@@ -45,7 +50,7 @@ color:red;
 	border-radius:5px;
 	color:#3498db;
 }
-.likeButton{
+.likeButton, .addPicture{
 	border-style:solid;
 	border-radius:5px;
 	color:black;
