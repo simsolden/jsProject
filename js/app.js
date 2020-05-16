@@ -87,7 +87,7 @@ function getAllYears(){
 	arrayYears.sort();
 
 	//browse the list to add appropriate option values
-	for (let item of arrayYears)
+	for (let item of arrayYears){
 		allYears.options[allYears.options.length] = new Option(item, item);
 	}
 
