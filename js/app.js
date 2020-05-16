@@ -1,19 +1,18 @@
 //Variables
 
 let wines;
-let method;
+let HTTPMethod;
 let sortName;
 let lastAction;
 let userLikes=[];
+var availableTags = [];
 let info;
 let picturesFiles;
-
 
 const userId=1;
 const user = "ced";
 const pass = "123";
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
-
 
 //Functions
 function filter(){
@@ -160,6 +159,12 @@ function deleteWine() {
 	}
 }
 
+function autocomplete() {
+	$( "#inputSearch" ).autocomplete({
+		source: availableTags
+	});
+}
+
 /**
 * Fonction permettant de créer et modifier un vin
 * @author Simon
@@ -212,14 +217,14 @@ function saveWine() {
 		if (this.readyState === 4 && this.status === 200) {
 			//Requête terminée et prête
 			//Affichage selon les méthodes
-			if (method == "POST") {
+			if (HTTPMethod == "POST") {
 				alert("Le vin a bien été créé.");
 			} else {
 				alert("Le vin a bien été modifié.");
 			}
 		} else {
 			//gestion des erreurs selon la méthode
-			if (method == "POST") {
+			if (HTTPMethod == "POST") {
 				alert("une erreur est survenue, le vin na pas été créé.");
 			} else {
 				alert("une erreur est survenue, le vin na pas été modifié.");
@@ -227,14 +232,14 @@ function saveWine() {
 		}
 	};
 	let requestUrl;
-	if (method == "POST") {
+	if (HTTPMethod == "POST") {
 		requestUrl=apiUrl+'/wines';
-	} else if(method =='PUT'){
+	} else if(HTTPMethod =='PUT'){
 		id = document.getElementById("idWine").value;
 		requestUrl =apiUrl + '/wines/' + id;
 	}
 	//Envoie de la requete au serveur
-	xhr.open(method, requestUrl, true);
+	xhr.open(HTTPMethod, requestUrl, true);
 	xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
 	xhr.send(data);
 }
@@ -242,7 +247,7 @@ function saveWine() {
 function newWine() {
 	$(".error").slideUp();
 
-	method = "POST";
+	HTTPMethod = "POST";
 
 	document.getElementById("promoHide").style.display = "block";
 	document.getElementById("bioHide").style.display = "block";
@@ -416,8 +421,8 @@ function showWine(id) {
 	//clear error messages
 	$(".error").slideUp('slow');
 
-	//define method for wine update as PUT
-	method = "PUT";
+	//define HTTPMethod for wine update as PUT
+	HTTPMethod = "PUT";
 
 	const wine = wines.find((element) => element.id == id);
 
@@ -529,6 +534,7 @@ function like(){
 	xhr.send(formData);
 }
 
+//Get wines from the API and then display them
 function getWines(){
 	//Data gathering from the API
 	const xhttp = new XMLHttpRequest();
@@ -538,7 +544,10 @@ function getWines(){
 			let data = xhttp.responseText;
 			wines = JSON.parse(data);
 			for (let prop in wines) {
+				//fill the array with our wines
 				winesArray.push(wines[prop]);
+				//Create tag for autocompletion on search
+				availableTags.push(wines[prop].name.toLowerCase());
 			}
 			winesArray.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
 			wines = winesArray;
@@ -572,6 +581,7 @@ window.onload = function() {
 
 	getWines();
 	getUserLikes();
+	autocomplete();
 
 	//Buttons and inputs
 	let btnSearch = document.getElementById('btnSearch');
