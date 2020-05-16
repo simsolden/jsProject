@@ -4,11 +4,12 @@ let wines;
 let method;
 let info;
 let picturesFiles;
+let sortName='';
 
 const user = "ced";
 const pass = "123";
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines";
-let sortName='';
+
 
 //Functions
 function filter(){
@@ -17,6 +18,7 @@ function filter(){
 	let selectedCountry=selectCountry.options[selectCountry.selectedIndex].value;
 	let selectYear = document.getElementById("selectYear");
 	let selectedYear=selectYear.options[selectYear.selectedIndex].value;
+
 
 	//case when the user want to filter by country and year
 	if(selectedCountry!='Country'&&selectedYear!='Year'){
@@ -47,12 +49,10 @@ function sortBy(){
 function sort(wines){
 	//sort by year
 	if(sortName=='Year'){
-		console.log('year');
 		return wines.sort((a, b) => a.year !== b.year ? a.year < b.year ? -1 : 1 : 0);
 	}
 	//sort by grapes
 	else if(sortName=='Grapes'){
-		console.log('grape');
 		return wines.sort((a, b) => a.grapes !== b.grapes ? a.grapes < b.grapes ? -1 : 1 : 0);
 	}
 	//sort by name
@@ -61,7 +61,52 @@ function sort(wines){
 	}
 }
 
+function getAllYears(){
+	let allYears = document.getElementById('selectYear');
+	let setYear=new Set();
+	let arrayYears;
+
+	//creation of a set to remove duplicates
+	for(let i=0;i<wines.length;i++){
+		setYear.add(wines[i]['year']);
+	}
+	//transforming the set into an array to use the sort() function
+	arrayYears = Array.from(setYear);
+	arrayYears.sort();
+
+	//browse the list to add appropriate option values
+	for (let item of arrayYears){
+		allYears = document.getElementById('selectYear');
+		allYears.options[allYears.options.length] = new Option(item, item);
+	}
+
+
+}
+
+function getAllCountries(){
+	let allCountries = document.getElementById('selectCountry');
+	let setCountry=new Set();
+	let arrayCountries;
+
+	//creation of a set to remove duplicates
+	for(let i=0;i<wines.length;i++){
+		setCountry.add(wines[i]['country']);
+	}
+	//transforming the set into an array to use the sort() function
+	arrayCountries = Array.from(setCountry);
+	arrayCountries.sort();
+	
+	//browse the list to add appropriate option values
+	for (let item of arrayCountries){
+		allCountries = document.getElementById('selectCountry');
+		allCountries.options[allCountries.options.length] = new Option(item, item);
+	}
+
+}
+
+
 function search(){
+
 	//define last action
 	lastAction='search';
 	//Create searchResult array
@@ -85,31 +130,31 @@ function addPictures(){
 
 
 function uploadPictures(){
-	
+
 	let idWine = document.getElementById('idWine').value;
-	const frmUpload = document.forms["frmUpload"];	
+	const frmUpload = document.forms["frmUpload"];
 	const dataUpload = new FormData(frmUpload);
 
 	for(file of upload.files){
 		console.log(file);
 		dataUpload.append('picture', 'file');
-	}	
-	
+	}
+
 
 	picturesFiles = dataUpload.getAll('picture');
-	
-	
+
+
 	const xhr = new XMLHttpRequest();
 	xhr.onload = function () {
 		if (this.status === 200) {
-		
+
 			alert("Upload réussi !");
 		}
 	}
 
 	xhr.onerror = function () {
 		if (this.status === 404) {
-			
+
 			alert("Une erreur est survenue, la photo n'a pu être uploader");
 		}
 	};
@@ -359,32 +404,31 @@ function validateAddPictures(){
 	if(pictures.files.length == " "){
 	  msgError = "Please upload at least one max 200 000 size .jpg file";
 	  document.getElementById("uploadError").innerHTML = msgError;
-   
+
 	} else if(pictures.files.length != ""){
-	 
+
 	  if(pictures.size > frmUpload.MAX_FILE_SIZE.value){
 		msgError = "Please upload at least one max 200 000 size file";
 		document.getElementById("uploadError").innerHTML = msgError;
-  
+
 	  } else if(pictures.accept != ".jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
 		msgError = "Please upload at least one .jpg file";
 		document.getElementById("uploadError").innerHTML = msgError;
-  
+
 	  } else if(pictures.files.length > 3){
 		msgError = "Please upload max 3 pictures";
 		document.getElementById("uploadError").innerHTML = msgError;
 	  }  else {
 		document.getElementById("uploadError").innerHTML = "";
 		uploadPictures();
-	 } 
-  
+	 }
+
 	}
 }
 
 
 
 function showWines(wines) {
-
 
 	//Add Wines to List
     const emptyList = document.getElementById('winesList');
@@ -407,6 +451,8 @@ function showWines(wines) {
             showWine(this.dataset.id, wines);
         });
     }
+	//used to add option values
+
 	showWine(1);
 }
 
@@ -518,7 +564,7 @@ function showWine(id) {
 //Main
 
 window.onload = function() {
-
+	console.log(1);
 	//Data gathering from the API
 	const xhttp = new XMLHttpRequest();
 	let	winesArray=[];
@@ -532,12 +578,19 @@ window.onload = function() {
 			winesArray.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
             wines = winesArray;
             showWines(wines);
+
+			//call the functions allowing the filter/sort dynamically
+			getAllYears();
+			getAllCountries();
         }
     };
 
     xhttp.open('GET',apiUrl,true);
     xhttp.send();
-	
+	console.log(2);
+
+
+
 	//Buttons and inputs
 	let btnSearch = document.getElementById('btnSearch');
 	let btnNew = document.getElementById('btnNew');
@@ -566,4 +619,5 @@ window.onload = function() {
 			search();
 		}
 	});
+
 };
