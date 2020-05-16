@@ -17,11 +17,15 @@ const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 
 //Functions
 function filter(){
+	//Define last action
+	lastAction='filter';
+	//remove search input
+	document.getElementById('inputSearch').value="";
 	//filter by country
-	let selectCountry = document.getElementById("selectCountry");
-	let selectedCountry=selectCountry.options[selectCountry.selectedIndex].value;
-	let selectYear = document.getElementById("selectYear");
-	let selectedYear=selectYear.options[selectYear.selectedIndex].value;
+	const selectCountry = document.getElementById("selectCountry");
+	const selectedCountry=selectCountry.options[selectCountry.selectedIndex].value;
+	const selectYear = document.getElementById("selectYear");
+	const selectedYear=selectYear.options[selectYear.selectedIndex].value;
 
 
 	//case when the user want to filter by country and year
@@ -46,8 +50,12 @@ function sortBy(){
 	let selectSort = document.getElementById('selectSort');
 	let selectedSort=selectSort.options[selectSort.selectedIndex].value;
 	sortName=selectedSort;
-	//allows the sort even when the wines are filtered
-	filter();
+	//allows the sort even when the wines are filtered or searched
+	if(lastAction=='filter'){
+		filter();
+	}else if(lastAction=='search'){
+		search();
+	}
 }
 
 function sort(wines){
@@ -66,7 +74,7 @@ function sort(wines){
 }
 
 function getAllYears(){
-	let allYears = document.getElementById('selectYear');
+	const allYears = document.getElementById('selectYear');
 	let setYear=new Set();
 	let arrayYears;
 
@@ -79,8 +87,7 @@ function getAllYears(){
 	arrayYears.sort();
 
 	//browse the list to add appropriate option values
-	for (let item of arrayYears){
-		allYears = document.getElementById('selectYear');
+	for (let item of arrayYears)
 		allYears.options[allYears.options.length] = new Option(item, item);
 	}
 
@@ -88,7 +95,7 @@ function getAllYears(){
 }
 
 function getAllCountries(){
-	let allCountries = document.getElementById('selectCountry');
+	const allCountries = document.getElementById('selectCountry');
 	let setCountry=new Set();
 	let arrayCountries;
 
@@ -102,7 +109,6 @@ function getAllCountries(){
 
 	//browse the list to add appropriate option values
 	for (let item of arrayCountries){
-		allCountries = document.getElementById('selectCountry');
 		allCountries.options[allCountries.options.length] = new Option(item, item);
 	}
 
