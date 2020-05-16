@@ -26,6 +26,7 @@ function filter(){
 	const selectYear = document.getElementById("selectYear");
 	const selectedYear=selectYear.options[selectYear.selectedIndex].value;
 
+
 	//case when the user want to filter by country and year
 	if(selectedCountry!='Country'&&selectedYear!='Year'){
 		selected = showWines(wines.filter(element => element.country == selectedCountry && element.year == selectedYear));
@@ -49,13 +50,12 @@ function sortBy(){
 	const selectedSort=selectSort.options[selectSort.selectedIndex].value;
 	sortName=selectedSort;
 	wines = sort(wines);
-	//allows the sort even when the wines are filtered
+	//allows the sort even when the wines are filtered or searched
 	if(lastAction=='filter'){
 		filter();
 	}else if(lastAction=='search'){
 		search();
 	}
-
 }
 
 function sort(wines){
@@ -71,6 +71,47 @@ function sort(wines){
 	else{
 		return wines.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
 	}
+}
+
+function getAllYears(){
+	const allYears = document.getElementById('selectYear');
+	let setYear=new Set();
+	let arrayYears;
+
+	//creation of a set to remove duplicates
+	for(let i=0;i<wines.length;i++){
+		setYear.add(wines[i]['year']);
+	}
+	//transforming the set into an array to use the sort() function
+	arrayYears = Array.from(setYear);
+	arrayYears.sort();
+
+	//browse the list to add appropriate option values
+	for (let item of arrayYears)
+		allYears.options[allYears.options.length] = new Option(item, item);
+	}
+
+
+}
+
+function getAllCountries(){
+	const allCountries = document.getElementById('selectCountry');
+	let setCountry=new Set();
+	let arrayCountries;
+
+	//creation of a set to remove duplicates
+	for(let i=0;i<wines.length;i++){
+		setCountry.add(wines[i]['country']);
+	}
+	//transforming the set into an array to use the sort() function
+	arrayCountries = Array.from(setCountry);
+	arrayCountries.sort();
+
+	//browse the list to add appropriate option values
+	for (let item of arrayCountries){
+		allCountries.options[allCountries.options.length] = new Option(item, item);
+	}
+
 }
 
 function search(){
@@ -552,6 +593,10 @@ function getWines(){
 			winesArray.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
 			wines = winesArray;
 			showWines(wines);
+			//call the functions allowing the filter/sort dynamically
+			getAllYears();
+			getAllCountries();
+
 		}
 	};
 	xhttp.open('GET',apiUrl+'/wines',true);
