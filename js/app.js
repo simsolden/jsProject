@@ -17,15 +17,12 @@ const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 
 //Functions
 function filter(){
-	//Define last action
-	lastAction='filter';
-	//remove search input
-	document.getElementById('inputSearch').value="";
 	//filter by country
-	const selectCountry = document.getElementById("selectCountry");
-	const selectedCountry=selectCountry.options[selectCountry.selectedIndex].value;
-	const selectYear = document.getElementById("selectYear");
-	const selectedYear=selectYear.options[selectYear.selectedIndex].value;
+	let selectCountry = document.getElementById("selectCountry");
+	let selectedCountry=selectCountry.options[selectCountry.selectedIndex].value;
+	let selectYear = document.getElementById("selectYear");
+	let selectedYear=selectYear.options[selectYear.selectedIndex].value;
+
 
 	//case when the user want to filter by country and year
 	if(selectedCountry!='Country'&&selectedYear!='Year'){
@@ -46,17 +43,11 @@ function filter(){
 }
 
 function sortBy(){
-	const selectSort = document.getElementById('selectSort');
-	const selectedSort=selectSort.options[selectSort.selectedIndex].value;
+	let selectSort = document.getElementById('selectSort');
+	let selectedSort=selectSort.options[selectSort.selectedIndex].value;
 	sortName=selectedSort;
-	wines = sort(wines);
 	//allows the sort even when the wines are filtered
-	if(lastAction=='filter'){
-		filter();
-	}else if(lastAction=='search'){
-		search();
-	}
-
+	filter();
 }
 
 function sort(wines){
@@ -72,6 +63,49 @@ function sort(wines){
 	else{
 		return wines.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
 	}
+}
+
+function getAllYears(){
+	let allYears = document.getElementById('selectYear');
+	let setYear=new Set();
+	let arrayYears;
+
+	//creation of a set to remove duplicates
+	for(let i=0;i<wines.length;i++){
+		setYear.add(wines[i]['year']);
+	}
+	//transforming the set into an array to use the sort() function
+	arrayYears = Array.from(setYear);
+	arrayYears.sort();
+
+	//browse the list to add appropriate option values
+	for (let item of arrayYears){
+		allYears = document.getElementById('selectYear');
+		allYears.options[allYears.options.length] = new Option(item, item);
+	}
+
+
+}
+
+function getAllCountries(){
+	let allCountries = document.getElementById('selectCountry');
+	let setCountry=new Set();
+	let arrayCountries;
+
+	//creation of a set to remove duplicates
+	for(let i=0;i<wines.length;i++){
+		setCountry.add(wines[i]['country']);
+	}
+	//transforming the set into an array to use the sort() function
+	arrayCountries = Array.from(setCountry);
+	arrayCountries.sort();
+
+	//browse the list to add appropriate option values
+	for (let item of arrayCountries){
+		allCountries = document.getElementById('selectCountry');
+		allCountries.options[allCountries.options.length] = new Option(item, item);
+	}
+
 }
 
 function search(){
@@ -543,6 +577,10 @@ function getWines(){
 			winesArray.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
 			wines = winesArray;
 			showWines(wines);
+			//call the functions allowing the filter/sort dynamically
+			getAllYears();
+			getAllCountries();
+
 		}
 	};
 	xhttp.open('GET',apiUrl+'/wines',true);
