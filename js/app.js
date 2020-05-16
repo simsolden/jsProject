@@ -6,7 +6,10 @@ let sortName;
 let lastAction;
 let userLikes=[];
 var availableTags = [];
+
 let info;
+let pictureSelect;
+let picturesList;
 let picturesFiles;
 
 const userId=1;
@@ -102,14 +105,23 @@ function uploadPictures(){
 	const frmUpload = document.forms["frmUpload"];
 	const dataUpload = new FormData(frmUpload);
 
-	for(file of upload.files){
+	//Pour uploader une seule photo:
+	/*let pictures = document.getElementById('upload').value;	    //let pictures = document.getElementById('upload').files;
+	picturesFiles = dataUpload.getAll('myUpload');*/
+	
+
+	//Pour uploader plus d'une photo:
+	let pictureSelect = document.getElementById('upload');
+ 
+	let picturesList = pictureSelect.files;
+	
+	 for (let i = 0; i <picturesList.length; i++) {
+		const file = picturesList[i];
 		console.log(file);
-		dataUpload.append('picture', 'file');
-	}
+		alert(file.name);
+	  }
 
-
-	picturesFiles = dataUpload.getAll('picture');
-
+	picturesFiles = dataUpload.getAll('myUpload');
 
 	const xhr = new XMLHttpRequest();
 	xhr.onload = function () {
@@ -126,8 +138,8 @@ function uploadPictures(){
 		}
 	};
 
-	xhr.open("POST", apiUrl +'/' + idWine + '/'+ picturesFiles, true);
-	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.open("POST", apiUrl +'/wines/' + idWine + '/'+ 'pictures', true);
+	xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
 	xhr.send(dataUpload);
 }
 
