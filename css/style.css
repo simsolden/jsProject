@@ -16,12 +16,7 @@ margin-bottom: 30px;
 border: 1px solid #d63031;
 }
 
-/*----Poir déplacer le logo et le titre vers la droite------*/
-/*Mais a une limite pour le responsive....*/
-#logo, {
-transform:translateX(5em);
-
-}
+/*----Pour déplacer le logo et le titre vers la droite------*/
 
 .logo{
 width:50px;
@@ -31,6 +26,7 @@ width:50px;
 transform:translateX(6em);
 }
 
+/*----Element(s) de Formulaire(s) à "cacher"----*/
 #promoHide, #bioHide{
 	display:none;
 }
@@ -45,6 +41,7 @@ display:none;
 color:red;
 }
 
+/*----------------Bouton like--------------------*/
 .likeButtonLiked{
 	border-style:solid;
 	border-radius:5px;
@@ -62,7 +59,7 @@ color:red;
 	border-radius: 5px;
 }
 
-
+/*--------icone de connexion (login)--------------*/
 #login-icone{
 float:right;
 margin-top: 1.5%;
@@ -72,8 +69,9 @@ color: #3498db/*#34ace0*/;
 #login-icone:hover{
 color: orange;
 }
-/*----------------------------fin-----------------------------*/
 
+
+/*----------------------Menu---------------------*/
 
 nav ul li a{
 color: #007FFF;
@@ -87,6 +85,7 @@ font-weight: bold;
 .dropdown-item:hover{
 color: orange;
 font-weight: bold;
+/*z-index: 1000;*/
 }
 
 header div, header nav {
@@ -95,6 +94,7 @@ header div, header nav {
   color: #FF155A;
 }
 
+/*----------Liste de vin(sélectionner un vin)------------*/
 #winesList li{
     cursor: pointer;
 }
