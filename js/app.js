@@ -5,9 +5,8 @@ let HTTPMethod;
 let sortName;
 let lastAction;
 let userLikes=[];
-var availableTags = [];
-
-let info;    
+let availableTags = [];
+let info;
 let pictureSelect;
 let picturesList;
 
@@ -15,6 +14,8 @@ const userId= 1;
 const user = "myriam";
 const pass = "epfc";
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
+const pics = "http://cruth.phpnet.org/epfc/caviste/public/pics/";
+const uploads = "http://cruth.phpnet.org/epfc/caviste/public/uploads/";
 
 //Functions
 function filter(){
@@ -139,14 +140,14 @@ function addPictures(){
 }
 
 function uploadPictures(){
-	
+
 	let idWine = document.getElementById('idWine').value;
-	const frmUpload = document.forms["frmUpload"];	
+	const frmUpload = document.forms["frmUpload"];
 	const dataUpload = new FormData(frmUpload);
 
 	//Pour uploader une photo:
 	let pictureSelect = document.getElementById('upload');
-	
+
 	let picturesList = pictureSelect.files[0];
 	alert(picturesList.name);
 	dataUpload.getAll(picturesList);
@@ -154,14 +155,14 @@ function uploadPictures(){
 	const xhr = new XMLHttpRequest();
 	xhr.onload = function () {
 		if (this.status === 200) {
-		
+
 			alert("Upload réussi !");
 		}
 	}
 
 	xhr.onerror = function () {
 		if (this.status === 404) {
-			
+
 			alert("Une erreur est survenue, la photo n'a pu être uploader");
 		}
 	};
@@ -169,7 +170,7 @@ function uploadPictures(){
 	xhr.open("POST", apiUrl +'/wines/' + idWine + '/'+ 'pictures', true);
 	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
 	xhr.send(dataUpload);
-	
+
 }
 
 function deleteWine() {
@@ -415,7 +416,7 @@ function validateAddPictures(){
 	  if(pictures.size > frmUpload.MAX_FILE_SIZE.value){
 		msgError = "Please upload a max 200 000 size file";
 		document.getElementById("uploadError").innerHTML = msgError;
-	 
+
 	} else if(pictures.accept != ".jpeg, .jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
 	  msgError = "Please upload at least one .jpeg file";
 	  document.getElementById("uploadError").innerHTML = msgError;
@@ -429,7 +430,27 @@ function validateAddPictures(){
 	}
 }
 
-
+//Request and show likes()
+function getLikes(id){
+	//Show user blue liked button if already liked
+	const likeButton=document.getElementById('btnLike');
+	if(userLikes.includes(id)){
+		likeButton.className = 'likeButtonLiked';
+	}else{
+		likeButton.className = 'likeButton';
+	}
+	//Request and show wines like
+	const xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function () {
+		if (xhttp.readyState == 4 && xhttp.status == 200) {
+			let data = xhttp.responseText;
+			let likes = JSON.parse(data);
+			document.getElementById("wineLikesCount").innerHTML=likes.total +" user(s) like this wine.";
+		}
+	};
+	xhttp.open("GET",apiUrl+'/wines/'+id+'/likes-count',true);
+	xhttp.send();
+}
 
 function showWines(wines) {
 	//Add Wines to List
@@ -463,27 +484,6 @@ function showWine(id) {
 	HTTPMethod = "PUT";
 
 	const wine = wines.find((element) => element.id == id);
-
-	//Get and show Likes
-	const xhttp = new XMLHttpRequest();
-	let count=0;
-	xhttp.onreadystatechange = function () {
-		if (xhttp.readyState == 4 && xhttp.status == 200) {
-			let data = xhttp.responseText;
-			let likes = JSON.parse(data);
-			document.getElementById("wineLikesCount").innerHTML=likes.total +" user(s) like this wine.";
-		}
-	};
-	xhttp.open("GET",apiUrl+'/wines/'+id+'/likes-count',true);
-	xhttp.send();
-
-	//Show user like button checked of liked
-	const likeButton=document.getElementById('btnLike');
-	if(userLikes.includes(id)){
-		likeButton.className = 'likeButtonLiked';
-	}else{
-		likeButton.className = 'likeButton';
-	}
 
 	//Show common wine properties
 	let docElement = document.getElementById("idWine");
@@ -535,41 +535,46 @@ function showWine(id) {
 		document.getElementById("bioHide").style.display = "none";
 		document.getElementById("promoHide").style.display = "none";
 	}
+
+
+	//Get and show wine Likes
+	getLikes(id);
 }
 
-//TODO Like or dislike a wine
+//Like or dislike a wine
 function like(){
+	//prevents page from reloading
 	event.preventDefault();
+
 	const xhr = new XMLHttpRequest();
-	const formData = new FormData();
 	const id=document.getElementById('idWine').value;
 
-	let like=true;
+	//Choose if like or unlike wine
+	let like=false;
 	if(!userLikes.includes(id)){
-		like=false;
+		like=true;
 	}
+	let toSend={like:like};
+	toSend = JSON.stringify(toSend);
 
-	formData.append('like', like);
+	//Request handler
 	xhr.onload = function () {
+		//Success : Add wine to likedWines and show wine.
 		if (this.status === 200) {
-			alert("vin ajouté");
-			const data = xhr.responseText;
-			likes = JSON.parse(data);
-			wine.likes = likes.total;
-			if(!like){
+			if(like){
 				userLikes.push(id);
 			}else{
 				let index = userLikes.indexOf(id);
 				userLikes.splice(index, 1);
 			}
+			getLikes(id);
 		} else{
-			alert("Erreur Ajax");
+			alert(xhr.responseText);
 		}
 	};
-
 	xhr.open("PUT",apiUrl+'/wines/'+id+'/like',true);
-	xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
-	xhr.send(formData);
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.send(toSend);
 }
 
 //Get wines from the API and then display them
