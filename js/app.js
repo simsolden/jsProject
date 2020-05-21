@@ -7,7 +7,7 @@ let lastAction;
 let userLikes=[];
 var availableTags = [];
 
-let info;    
+let info;
 let pictureSelect;
 let picturesList;
 
@@ -139,14 +139,14 @@ function addPictures(){
 }
 
 function uploadPictures(){
-	
+
 	let idWine = document.getElementById('idWine').value;
-	const frmUpload = document.forms["frmUpload"];	
+	const frmUpload = document.forms["frmUpload"];
 	const dataUpload = new FormData(frmUpload);
 
 	//Pour uploader une photo:
 	let pictureSelect = document.getElementById('upload');
-	
+
 	let picturesList = pictureSelect.files[0];
 	alert(picturesList.name);
 	dataUpload.getAll(picturesList);
@@ -154,14 +154,14 @@ function uploadPictures(){
 	const xhr = new XMLHttpRequest();
 	xhr.onload = function () {
 		if (this.status === 200) {
-		
+
 			alert("Upload réussi !");
 		}
 	}
 
 	xhr.onerror = function () {
 		if (this.status === 404) {
-			
+
 			alert("Une erreur est survenue, la photo n'a pu être uploader");
 		}
 	};
@@ -169,7 +169,7 @@ function uploadPictures(){
 	xhr.open("POST", apiUrl +'/wines/' + idWine + '/'+ 'pictures', true);
 	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
 	xhr.send(dataUpload);
-	
+
 }
 
 function deleteWine() {
@@ -399,8 +399,6 @@ function validateForm() {
 	}
 }
 
-
-
 function validateAddPictures(){
 	let msgError = "";
 	let pictures = document.getElementById("upload");
@@ -415,7 +413,7 @@ function validateAddPictures(){
 	  if(pictures.size > frmUpload.MAX_FILE_SIZE.value){
 		msgError = "Please upload a max 200 000 size file";
 		document.getElementById("uploadError").innerHTML = msgError;
-	 
+
 	} else if(pictures.accept != ".jpeg, .jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
 	  msgError = "Please upload at least one .jpeg file";
 	  document.getElementById("uploadError").innerHTML = msgError;
@@ -428,8 +426,6 @@ function validateAddPictures(){
 
 	}
 }
-
-
 
 function showWines(wines) {
 	//Add Wines to List
@@ -455,9 +451,18 @@ function showWines(wines) {
 	}
 }
 
+function hideCommentValueAndButtons(){
+	document.getElementById('btnComment').style.display='block';
+	document.getElementById('btnUpdateComment').style.display='none';
+	document.getElementById('btnCancelComment').style.display='none';
+	document.getElementById('comment').value='';
+}
+
 function showWine(id) {
+
 	//clear error messages
-	$(".error").slideUp('slow');
+	$(".success, .error").slideUp('slow');
+	hideCommentValueAndButtons();
 
 	//define HTTPMethod for wine update as PUT
 	HTTPMethod = "PUT";
@@ -535,6 +540,153 @@ function showWine(id) {
 		document.getElementById("bioHide").style.display = "none";
 		document.getElementById("promoHide").style.display = "none";
 	}
+
+	//Get and show comments
+	getComments(wine);
+}
+
+//Request and show comments
+function getComments(wine){
+	const xhttp = new XMLHttpRequest();
+	document.getElementById("comments").innerHTML ='<div class="card-header">Comments</div>';
+	xhttp.onload = function (){
+		if(xhttp.status===200) {
+			let data = xhttp.responseText;
+			let JSONcomments = JSON.parse(data);
+			let div='';
+			let i=0;
+			for (let prop in JSONcomments) {
+				console.log(div);
+				//If the comment is of the user, show delete and modify button and link the to according events
+				if(parseInt(JSONcomments[prop].user_id) === userId){
+					let btnDel= '<button name="btnDeleteComment" data-id="'+JSONcomments[prop].id+'" type="button" class="btn btn-link btn-sm mr-2">Delete</button>';
+					let btnModify= '<button name="btnModifyComment" data-id="'+JSONcomments[prop].id+'" type="button" class="btn btn-link  btn-sm">Modify</button>';
+					div = '<div class="card mb-2"><div class="card-body"><p id="'+JSONcomments[prop].id+'">' + JSONcomments[prop].content + '</p>'+btnDel +btnModify+'</div></div>';
+					document.getElementById("comments").innerHTML += div;
+					//Else just show the comment
+				}else{
+					div = '<div class="card mb-2"><div class="card-body"><p>' + JSONcomments[prop].content + '</p></div></div>';
+					document.getElementById("comments").innerHTML += div;
+				}
+			}
+			//Add event listenners to delete and modify buttons
+			btnDel = document.getElementsByName('btnDeleteComment');
+			btnModify = document.getElementsByName('btnModifyComment');
+			for (let i=0; i<btnDel.length; i++){
+				btnModify[i].addEventListener('click', function() {
+					modifyComment(wine, btnModify[i].getAttribute('data-id'));
+				});
+				btnDel[i].addEventListener('click', function() {
+					deleteComment(wine, btnDel[i].getAttribute('data-id'));
+				});
+			}
+		}else{
+			alert(xhttp.responseText);
+		}
+	};
+	xhttp.open("GET", apiUrl + '/wines/' + wine.id + '/comments', true);
+	xhttp.send();
+}
+
+//Comment a wine
+function comment(){
+
+	const id= document.getElementById('idWine').value;
+	const comment= document.getElementById('comment').value;
+	if(comment.length<255 && comment.length>0 ){
+		const xhttp = new XMLHttpRequest();
+		let toSend={content:comment};
+		toSend=JSON.stringify(toSend);
+
+		xhttp.onload = function(){
+			if(xhttp.status===200){
+				document.getElementById('comment').value='';
+				getComments(id);
+			}else{
+				alert(xhttp.responseText);
+			}
+		};
+		console.log(apiUrl+'/wines/'+id+'/comments', toSend);
+		xhttp.open('POST', apiUrl+'/wines/'+id+'/comments', true);
+		xhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+		xhttp.send(toSend);
+	}else{
+		msg = "Please enter a comment under 255 characters";
+		document.getElementById("commentError").innerHTML = msg;
+		$("#commentError").slideDown();
+	}
+}
+
+//Delete comment
+function deleteComment(wine, commentId){
+
+	if(confirm("Voulez-vous supprimer ?")){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function (){
+			if(xhttp.status === 200){
+				hideCommentValueAndButtons();
+				let msg = ("Comment deleted");
+				document.getElementById("commentMsg").innerHTML=msg;
+				$('#commentMsg').slideDown();
+				getComments(wine);
+			}else{
+				alert(xhttp.responseText);
+			}
+		};
+		xhttp.open('DELETE', apiUrl+ '/wines/' + wine.id +'/comments/' + commentId, true);
+		xhttp.setRequestHeader('Authorization', 'Basic ' +btoa(user + ':' + pass));
+		xhttp.send();
+	}
+}
+
+//Delete comment
+function modifyComment(wine, commentId){
+
+	//fill comment section with comment to modify
+	let comment=document.getElementById(commentId).innerHTML;
+	document.getElementById('comment').value=comment;
+		//Show modify and cancel buttons
+	document.getElementById('btnComment').style.display='none';
+	document.getElementById('btnUpdateComment').style.display='inline-block';
+	document.getElementById('btnCancelComment').style.display='inline-block';
+
+	//Create listener on update
+	document.getElementById('btnUpdateComment').addEventListener('click', function(){
+		const newComment=document.getElementById("comment").value;
+		if(newComment.length<255 && newComment.length>0 ){
+			console.log(newComment);
+			const xhttp = new XMLHttpRequest();
+
+			let toSend={"content":newComment};
+			toSend=JSON.stringify(toSend);
+			xhttp.onload = function(){
+					if(xhttp.status===200){
+						let msg="Comment modified";
+						document.getElementById("commentMsg").innerHTML=msg;
+						$('#commentMsg').slideDown();
+						hideCommentValueAndButtons();
+						getComments(wine);
+					}else{
+						alert(xhttp.responseText);
+					}
+			};
+
+			xhttp.open('PUT', apiUrl + '/wines/' + wine.id + '/comments/' + commentId);
+			xhttp.setRequestHeader('Authorization', 'Basic '+ btoa(user +':'+ pass));
+			xhttp.send(toSend);
+		}else{
+			document.getElementById('comment').value='';
+			msg = "Please enter a comment under 255 characters";
+			document.getElementById("commentError").innerHTML = msg;
+			$("#commentError").slideDown();
+		}
+	});
+
+	document.getElementById('btnCancelComment').addEventListener('click', function(){
+		showWine(wine.id);
+	});
+
+
 }
 
 //TODO Like or dislike a wine
@@ -626,18 +778,20 @@ window.onload = function() {
 	autocomplete();
 
 	//Buttons and inputs
-	let btnSearch = document.getElementById('btnSearch');
-	let btnNew = document.getElementById('btnNew');
-	let btnSave = document.getElementById('btnSave');
-	let btnDelete = document.getElementById('btnDelete');
-	let btnFilter = document.getElementById('btnFilter');
-	let btnSortBy=document.getElementById('btnSortBy');
-	let btnLike=document.getElementById('btnLike');
-	let btnAddPictures = document.getElementById('btnAddPictures');
-	let btnUpload = document.getElementById('btnUpload');
-	let input = document.getElementById("inputSearch");
+	const btnSearch = document.getElementById('btnSearch');
+	const btnNew = document.getElementById('btnNew');
+	const btnSave = document.getElementById('btnSave');
+	const btnDelete = document.getElementById('btnDelete');
+	const btnFilter = document.getElementById('btnFilter');
+	const btnSortBy=document.getElementById('btnSortBy');
+	const btnLike=document.getElementById('btnLike');
+	const btnAddPictures = document.getElementById('btnAddPictures');
+	const btnUpload = document.getElementById('btnUpload');
+	const input = document.getElementById("inputSearch");
+	const addComment = document.getElementById("addComment");
 
 	//Events creation
+	btnComment.addEventListener('click', comment);
 	btnSearch.addEventListener('click', search);
 	btnNew.addEventListener('click', newWine);
 	btnSave.addEventListener('click',validateForm);

@@ -180,7 +180,23 @@
           <!-- Wine Notes -->
           <div class="form-group">
             <label for="notes">Notes:</label>
-            <textarea class="form-control" id="notes" name="description" rows="5"></textarea>
+            <textarea class="form-control" id="notes" name="description" rows="4" readonly></textarea>
+          </div>
+        </form>
+        <!-- Comments section -->
+        <p class="success" id="commentMsg"></p>
+        <div id="comments" class="comments scrollable">
+        </div>
+        <form id="addComment" action="#" method="post">
+          <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control mb-1" id="comment" name="comment" rows="3"></textarea>
+
+            <p class="error" id="commentError"></p>
+
+            <button id="btnComment" name="btnComment" type="button" class="btn btn-info">Comment</button>
+            <button id="btnUpdateComment" name="btnUpdateComment" type="button" class="btn btn-info">Modify</button>
+            <button id="btnCancelComment" name="btnCancelComment" type="button" class="btn btn-danger">Annuler</button>
           </div>
         </form>
       </div>
