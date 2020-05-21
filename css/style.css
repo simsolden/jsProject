@@ -16,13 +16,28 @@ margin-bottom: 30px;
 border: 1px solid #d63031;
 }
 
+/*-- Resize pictures and keeps aspect ratio --*/
+.carousel-item{
+  max-width:200px;
+  max-height:350px;
+  width: auto;
+  height: auto;
+}
+/*-- makes indicators seeable even with white background --*/
+#carousel-indicators li{
+  border-style: solid;
+  border-width:1px;
+  border-color: black;
+}
+
+
 /*----Pour déplacer le logo et le titre vers la droite------*/
 
 .logo{
 width:50px;
 }
 
-#titre{
+#title{
 transform:translateX(6em);
 }
 
