@@ -6,6 +6,7 @@ let sortName;
 let lastAction;
 let userLikes=[];
 let availableTags = [];
+
 let info;
 let pictureSelect;
 let picturesList;
@@ -198,6 +199,12 @@ function deleteWine() {
 		xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
 		xhr.send();
 	}
+}
+
+//Delete picture
+function deletePicture(){
+	//This is the picture id of the image selected via the carousel
+	pictureId=$('#carousel li.active').attr("data-id");
 }
 
 function autocomplete() {
@@ -486,38 +493,26 @@ function showWine(id) {
 	const wine = wines.find((element) => element.id == id);
 
 	//Show common wine properties
-	let docElement = document.getElementById("idWine");
-	docElement.value = wine.id;
-	docElement = document.getElementById("name");
-	docElement.value = wine.name;
-	docElement = document.getElementById("grapes");
-	docElement.value = wine.grapes;
-	docElement = document.getElementById("country");
-	docElement.value = wine.country;
-	docElement = document.getElementById("region");
-	docElement.value = wine.region;
-	docElement = document.getElementById("year");
-	docElement.value = wine.year;
-	docElement = document.getElementById("picture");
-	docElement.alt = wine.name;
-	docElement.src ="http://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture;
-	docElement = document.getElementById("notes");
-	docElement.value = wine.description;
-	docElement = document.getElementById("price");
-	docElement.value = wine.price;
+	document.getElementById("idWine").value = wine.id;;
+	document.getElementById("name").value = wine.name;
+	document.getElementById("grapes").value = wine.grapes;
+	document.getElementById("country").value = wine.country;
+	document.getElementById("region").value = wine.region;
+	document.getElementById("year").value = wine.year;
+	document.getElementById("notes").value = wine.description;
+	document.getElementById("price").value = wine.price;
 
-	docElement = document.getElementById("capacity");
+	//Show capacity IF given
 	if (wine.capicity === "0") {
-		docElement.value = "Not given";
+		document.getElementById("capacity").value = "Not given";
 	} else {
-		docElement.value = wine.capacity / 100 + "L";
+		document.getElementById("capacity").value = wine.capacity / 100 + "L";
 	}
-
-	docElement = document.getElementById("color");
+	//Show color IF given
 	if (wine.color == "") {
-		docElement.value = "Not given";
+		document.getElementById("color").value = "Not given";
 	} else {
-		docElement.value = wine.color;
+		document.getElementById("color").value = wine.color;
 	}
 
 	//Show extra properties of the wine
@@ -535,10 +530,13 @@ function showWine(id) {
 		document.getElementById("bioHide").style.display = "none";
 		document.getElementById("promoHide").style.display = "none";
 	}
-
-
+  
 	//Get and show wine Likes
 	getLikes(id);
+
+	//Get and show pictures
+	getPictures(wine);
+
 }
 
 //Like or dislike a wine
@@ -575,6 +573,45 @@ function like(){
 	xhr.open("PUT",apiUrl+'/wines/'+id+'/like',true);
 	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
 	xhr.send(toSend);
+}
+
+//Request and show pictures
+function getPictures(wine){
+	document.getElementById("carousel-inner").innerHTML='';
+	const xhttp = new XMLHttpRequest();
+
+	//Add the image of the API
+	let div = '<div class="carousel-item active"><img  src="' + pics + wine.picture + '" alt="' + wine.name + ' picture"></div>';
+	document.getElementById("carousel-inner").innerHTML = div;
+
+	xhttp.onload = function () {
+		if(xhttp.status===200) {
+
+			let data = xhttp.responseText;
+			let JSONpictures = JSON.parse(data);
+
+			//create list for carousel indicators
+			const carouselIndicators = document.getElementById("carousel-indicators");
+			let count=1;
+			let li = '<li data-target="#carousel" data-slide-to="0" class="active"></li>';;
+			for (let prop in JSONpictures) {
+				li += '<li data-target="#carousel" data-id="'+JSONpictures[prop].id+'" data-slide-to="'+count+'"></li>';
+				count++;;
+			}
+			carouselIndicators.innerHTML =li;
+
+			//Add user images to carousel
+			for (let prop in JSONpictures) {
+				div +='<div class="carousel-item"><img  src="'+ uploads +JSONpictures[prop].url+'" alt"' +wine.name+ ' picture"></div>';
+			}
+			document.getElementById("carousel-inner").innerHTML = div;
+			$('.carousel').carousel('pause');
+		}
+	};
+
+	xhttp.open("GET",apiUrl+'/wines/'+wine.id+'/pictures',true);
+	xhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhttp.send();
 }
 
 //Get wines from the API and then display them
