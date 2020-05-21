@@ -6,12 +6,14 @@ let sortName;
 let lastAction;
 let userLikes=[];
 var availableTags = [];
-let info;
-let picturesFiles;
 
-const userId=1;
-const user = "ced";
-const pass = "123";
+let info;    
+let pictureSelect;
+let picturesList;
+
+const userId= 1;
+const user = "myriam";
+const pass = "epfc";
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 
 //Functions
@@ -136,42 +138,39 @@ function addPictures(){
 	document.getElementById("uploadHide").style.display = "block";
 }
 
-
 function uploadPictures(){
-
+	
 	let idWine = document.getElementById('idWine').value;
-	const frmUpload = document.forms["frmUpload"];
+	const frmUpload = document.forms["frmUpload"];	
 	const dataUpload = new FormData(frmUpload);
 
-	for(file of upload.files){
-		console.log(file);
-		dataUpload.append('picture', 'file');
-	}
-
-
-	picturesFiles = dataUpload.getAll('picture');
-
+	//Pour uploader une photo:
+	let pictureSelect = document.getElementById('upload');
+	
+	let picturesList = pictureSelect.files[0];
+	alert(picturesList.name);
+	dataUpload.getAll(picturesList);
 
 	const xhr = new XMLHttpRequest();
 	xhr.onload = function () {
 		if (this.status === 200) {
-
+		
 			alert("Upload réussi !");
 		}
 	}
 
 	xhr.onerror = function () {
 		if (this.status === 404) {
-
+			
 			alert("Une erreur est survenue, la photo n'a pu être uploader");
 		}
 	};
 
-	xhr.open("POST", apiUrl +'/' + idWine + '/'+ picturesFiles, true);
+	xhr.open("POST", apiUrl +'/wines/' + idWine + '/'+ 'pictures', true);
 	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
 	xhr.send(dataUpload);
+	
 }
-
 
 function deleteWine() {
 	if (confirm("Voulez-vous vraiment supprimer ce vin ?")) {
@@ -407,25 +406,23 @@ function validateAddPictures(){
 	let pictures = document.getElementById("upload");
 
 
-	if(pictures.files.length == " "){
-	  msgError = "Please upload at least one max 200 000 size .jpg file";
+	if(pictures.files.length == ""){
+	  msgError = "Please upload a max 200 000 size .jpg or .jpeg file";
 	  document.getElementById("uploadError").innerHTML = msgError;
 
 	} else if(pictures.files.length != ""){
 
 	  if(pictures.size > frmUpload.MAX_FILE_SIZE.value){
-		msgError = "Please upload at least one max 200 000 size file";
+		msgError = "Please upload a max 200 000 size file";
 		document.getElementById("uploadError").innerHTML = msgError;
+	 
+	} else if(pictures.accept != ".jpeg, .jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
+	  msgError = "Please upload at least one .jpeg file";
+	  document.getElementById("uploadError").innerHTML = msgError;
 
-	  } else if(pictures.accept != ".jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
-		msgError = "Please upload at least one .jpg file";
-		document.getElementById("uploadError").innerHTML = msgError;
-
-	  } else if(pictures.files.length > 3){
-		msgError = "Please upload max 3 pictures";
-		document.getElementById("uploadError").innerHTML = msgError;
-	  }  else {
+	} else {
 		document.getElementById("uploadError").innerHTML = "";
+
 		uploadPictures();
 	 }
 
