@@ -5,7 +5,7 @@ let HTTPMethod;
 let sortName;
 let lastAction;
 let userLikes=[];
-var availableTags = [];
+let availableTags = [];
 
 let info;
 let pictureSelect;
@@ -15,6 +15,8 @@ const userId= 1;
 const user = "myriam";
 const pass = "epfc";
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
+const pics = "http://cruth.phpnet.org/epfc/caviste/public/pics/";
+const uploads = "http://cruth.phpnet.org/epfc/caviste/public/uploads/";
 
 //Functions
 function filter(){
@@ -197,6 +199,12 @@ function deleteWine() {
 		xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
 		xhr.send();
 	}
+}
+
+//Delete picture
+function deletePicture(){
+	//This is the picture id of the image selected via the carousel
+	pictureId=$('#carousel li.active').attr("data-id");
 }
 
 function autocomplete() {
@@ -427,6 +435,30 @@ function validateAddPictures(){
 	}
 }
 
+
+//Request and show likes()
+function getLikes(id){
+	//Show user blue liked button if already liked
+	const likeButton=document.getElementById('btnLike');
+	if(userLikes.includes(id)){
+		likeButton.className = 'likeButtonLiked';
+	}else{
+		likeButton.className = 'likeButton';
+	}
+	//Request and show wines like
+	const xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function () {
+		if (xhttp.readyState == 4 && xhttp.status == 200) {
+			let data = xhttp.responseText;
+			let likes = JSON.parse(data);
+			document.getElementById("wineLikesCount").innerHTML=likes.total +" user(s) like this wine.";
+		}
+	};
+	xhttp.open("GET",apiUrl+'/wines/'+id+'/likes-count',true);
+	xhttp.send();
+}
+
+
 function showWines(wines) {
 	//Add Wines to List
 	const emptyList = document.getElementById('winesList');
@@ -469,60 +501,27 @@ function showWine(id) {
 
 	const wine = wines.find((element) => element.id == id);
 
-	//Get and show Likes
-	const xhttp = new XMLHttpRequest();
-	let count=0;
-	xhttp.onreadystatechange = function () {
-		if (xhttp.readyState == 4 && xhttp.status == 200) {
-			let data = xhttp.responseText;
-			let likes = JSON.parse(data);
-			document.getElementById("wineLikesCount").innerHTML=likes.total +" user(s) like this wine.";
-		}
-	};
-	xhttp.open("GET",apiUrl+'/wines/'+id+'/likes-count',true);
-	xhttp.send();
-
-	//Show user like button checked of liked
-	const likeButton=document.getElementById('btnLike');
-	if(userLikes.includes(id)){
-		likeButton.className = 'likeButtonLiked';
-	}else{
-		likeButton.className = 'likeButton';
-	}
-
 	//Show common wine properties
-	let docElement = document.getElementById("idWine");
-	docElement.value = wine.id;
-	docElement = document.getElementById("name");
-	docElement.value = wine.name;
-	docElement = document.getElementById("grapes");
-	docElement.value = wine.grapes;
-	docElement = document.getElementById("country");
-	docElement.value = wine.country;
-	docElement = document.getElementById("region");
-	docElement.value = wine.region;
-	docElement = document.getElementById("year");
-	docElement.value = wine.year;
-	docElement = document.getElementById("picture");
-	docElement.alt = wine.name;
-	docElement.src ="http://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture;
-	docElement = document.getElementById("notes");
-	docElement.value = wine.description;
-	docElement = document.getElementById("price");
-	docElement.value = wine.price;
+	document.getElementById("idWine").value = wine.id;;
+	document.getElementById("name").value = wine.name;
+	document.getElementById("grapes").value = wine.grapes;
+	document.getElementById("country").value = wine.country;
+	document.getElementById("region").value = wine.region;
+	document.getElementById("year").value = wine.year;
+	document.getElementById("notes").value = wine.description;
+	document.getElementById("price").value = wine.price;
 
-	docElement = document.getElementById("capacity");
+	//Show capacity IF given
 	if (wine.capicity === "0") {
-		docElement.value = "Not given";
+		document.getElementById("capacity").value = "Not given";
 	} else {
-		docElement.value = wine.capacity / 100 + "L";
+		document.getElementById("capacity").value = wine.capacity / 100 + "L";
 	}
-
-	docElement = document.getElementById("color");
+	//Show color IF given
 	if (wine.color == "") {
-		docElement.value = "Not given";
+		document.getElementById("color").value = "Not given";
 	} else {
-		docElement.value = wine.color;
+		document.getElementById("color").value = wine.color;
 	}
 
 	//Show extra properties of the wine
@@ -541,6 +540,12 @@ function showWine(id) {
 		document.getElementById("promoHide").style.display = "none";
 	}
 
+  	//Get and show wine Likes
+	getLikes(id);
+
+	//Get and show pictures
+	getPictures(wine);
+  
 	//Get and show comments
 	getComments(wine);
 }
@@ -639,7 +644,7 @@ function deleteComment(wine, commentId){
 	}
 }
 
-//Delete comment
+//Modify comment
 function modifyComment(wine, commentId){
 
 	//fill comment section with comment to modify
@@ -686,42 +691,81 @@ function modifyComment(wine, commentId){
 		showWine(wine.id);
 	});
 
-
 }
 
-//TODO Like or dislike a wine
+//Like or dislike a wine
 function like(){
+	//prevents page from reloading
 	event.preventDefault();
+
 	const xhr = new XMLHttpRequest();
-	const formData = new FormData();
 	const id=document.getElementById('idWine').value;
 
-	let like=true;
+	//Choose if like or unlike wine
+	let like=false;
 	if(!userLikes.includes(id)){
-		like=false;
+		like=true;
 	}
+	let toSend={like:like};
+	toSend = JSON.stringify(toSend);
 
-	formData.append('like', like);
+	//Request handler
 	xhr.onload = function () {
+		//Success : Add wine to likedWines and show wine.
 		if (this.status === 200) {
-			alert("vin ajouté");
-			const data = xhr.responseText;
-			likes = JSON.parse(data);
-			wine.likes = likes.total;
-			if(!like){
+			if(like){
 				userLikes.push(id);
 			}else{
 				let index = userLikes.indexOf(id);
 				userLikes.splice(index, 1);
 			}
+			getLikes(id);
 		} else{
-			alert("Erreur Ajax");
+			alert(xhr.responseText);
+		}
+	};
+	xhr.open("PUT",apiUrl+'/wines/'+id+'/like',true);
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.send(toSend);
+}
+
+//Request and show pictures
+function getPictures(wine){
+	document.getElementById("carousel-inner").innerHTML='';
+	const xhttp = new XMLHttpRequest();
+
+	//Add the image of the API
+	let div = '<div class="carousel-item active"><img  src="' + pics + wine.picture + '" alt="' + wine.name + ' picture"></div>';
+	document.getElementById("carousel-inner").innerHTML = div;
+
+	xhttp.onload = function () {
+		if(xhttp.status===200) {
+
+			let data = xhttp.responseText;
+			let JSONpictures = JSON.parse(data);
+
+			//create list for carousel indicators
+			const carouselIndicators = document.getElementById("carousel-indicators");
+			let count=1;
+			let li = '<li data-target="#carousel" data-slide-to="0" class="active"></li>';;
+			for (let prop in JSONpictures) {
+				li += '<li data-target="#carousel" data-id="'+JSONpictures[prop].id+'" data-slide-to="'+count+'"></li>';
+				count++;;
+			}
+			carouselIndicators.innerHTML =li;
+
+			//Add user images to carousel
+			for (let prop in JSONpictures) {
+				div +='<div class="carousel-item"><img  src="'+ uploads +JSONpictures[prop].url+'" alt"' +wine.name+ ' picture"></div>';
+			}
+			document.getElementById("carousel-inner").innerHTML = div;
+			$('.carousel').carousel('pause');
 		}
 	};
 
-	xhr.open("PUT",apiUrl+'/wines/'+id+'/like',true);
-	xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
-	xhr.send(formData);
+	xhttp.open("GET",apiUrl+'/wines/'+wine.id+'/pictures',true);
+	xhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhttp.send();
 }
 
 //Get wines from the API and then display them
