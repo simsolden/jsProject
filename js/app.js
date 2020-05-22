@@ -1002,7 +1002,21 @@ window.onload = function() {
 	if (sessionStorage.getItem("user")){
 
 		//TODO request users values to see if user and pass are valid else, sessionStorage.clear();
-
+		/**
+		const xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				let data = xhr.responseText;
+				let login = JSON.parse(data);
+				alert('vous êtes connecté');
+			} else {
+				alert('Error !');
+			}
+		};
+		xhr.open("GET", apiUrl + "/users", true);
+		xhr.send();
+		*/
+		
 		//Add events related to connected user
 		const btnNew = document.getElementById('btnNew');
 		const btnSave = document.getElementById('btnSave');
