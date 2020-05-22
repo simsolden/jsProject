@@ -150,14 +150,18 @@ function uploadPictures(){
 	let pictureSelect = document.getElementById('upload');
 
 	let picturesList = pictureSelect.files[0];
-	alert(picturesList.name);
+	//alert(picturesList.name);
 	dataUpload.getAll(picturesList);
 
 	const xhr = new XMLHttpRequest();
 	xhr.onload = function () {
 		if (this.status === 200) {
 
+			alert(picturesList.name);
 			alert("Upload réussi !");
+		} else {
+		
+			alert("Vous avez atteint le nombre de photo maximal pour ce vin (max 3 ajouts possibles)");
 		}
 	}
 
@@ -173,6 +177,41 @@ function uploadPictures(){
 	xhr.send(dataUpload);
 
 }
+
+
+
+//Delete picture
+function deletePicture(){
+	//This is the picture id of the image selected via the carousel
+	
+		if(confirm('Souhaitez-vous vraiment supprimer ce vin ?')){
+	pictureId = $('#carousel li.active').attr("data-id");
+	let idWine = document.getElementById('idWine').value;
+
+	const xhr = new XMLHttpRequest();
+	xhr.onload = function () {
+		if (this.status === 200) {
+			
+			alert("Suppression réussie !");
+			showWine(idWine);
+		} 
+	}
+
+	xhr.onerror = function () {
+		if (this.status === 404) {
+
+			alert("Une erreur est survenue lors de la suppression de la photo !");
+		}
+	};
+
+	xhr.open("DELETE", apiUrl +'/wines/' + idWine + '/pictures/'+ pictureId, true);
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.send();
+	}	
+}
+
+
+
 
 function deleteWine() {
 	if (confirm("Voulez-vous vraiment supprimer ce vin ?")) {
@@ -201,11 +240,7 @@ function deleteWine() {
 	}
 }
 
-//Delete picture
-function deletePicture(){
-	//This is the picture id of the image selected via the carousel
-	pictureId=$('#carousel li.active').attr("data-id");
-}
+
 
 function autocomplete() {
 	$( "#inputSearch" ).autocomplete({
@@ -678,6 +713,7 @@ window.onload = function() {
 	let btnAddPictures = document.getElementById('btnAddPictures');
 	let btnUpload = document.getElementById('btnUpload');
 	let input = document.getElementById("inputSearch");
+	let btnDelPictures = document.getElementById("btnDelPictures");
 
 	//Events creation
 	btnSearch.addEventListener('click', search);
@@ -696,4 +732,6 @@ window.onload = function() {
 			search();
 		}
 	});
+	btnDelPictures.addEventListener('click', deletePicture);
+
 };
