@@ -22,7 +22,20 @@
           <div id="title">
             <h1>Votre Caviste 2020</h1>
           </div>
+          <div id="dialog-form" title="Login">
+            <p class="validateTips">All form fields are required.</p>
+            <form>
+              <fieldset>
+                <label for="userName">Name</label>
+                <input type="text" name="userName" id="userName" value="Rachida" class="text ui-widget-content ui-corner-all">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" value="epfc" class="text ui-widget-content ui-corner-all">
+                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+              </fieldset>
+            </form>
+          </div>
           <a id="login-icone" href="#"><i class="fas fa-user fa-2x"> login</i></a>
+          <a id="logout-icone" style="display:none;" href="#"><i class="fas fa-user fa-2x"> logout</i></a>
           <nav class="navbar navbar-light bg-light">
             <ul class="nav nav-tabs">
               <li class="nav-item"><a class="nav-link " href="index.html">Accueil</a></li>
@@ -143,9 +156,9 @@
 
           <!-- Form Buttons -->
           <div class="form-group">
-            <button id="btnSave" name="btnSave" type="button" class="btn btn-primary">Save</button>
-            <button id="btnDelete" name="btnDelete" type="button" class="btn btn-dark">Delete</button>
-            <button id="btnNew" name="btnNew" type="button" class="btn btn-success">New Wine</button>
+            <button id="btnSave" name="btnSave" type="button" style="display:none;" class="btn btn-primary">Save</button>
+            <button id="btnDelete" name="btnDelete" type="button" style="display:none;" class="btn btn-dark">Delete</button>
+            <button id="btnNew" name="btnNew" type="button" style="display:none;" class="btn btn-success">New Wine</button>
           </div>
         </form>
       </div>
@@ -161,8 +174,8 @@
         <div>
           <form id="frmUpload" class="form-upload" action="#" method="post" enctype="multipart/form-data">
             <div>
-              <button id="btnAddPictures" name="btnAddPictures" class="addPicture" type="button"><i class="fas fa-camera"></i></button>
-              <button id="btnDelPictures" name="btnDelPictures"  class="delPictures" type="button"><i class="fas fa-trash-alt"></i></button>
+              <button id="btnAddPictures" name="btnAddPictures" class="addPicture" style="display:none;" type="button"><i class="fas fa-camera"></i></button>
+              <button id="btnDelPictures" name="btnDelPictures"  class="delPictures" style="display:none;" type="button"><i class="fas fa-trash-alt"></i></button>
             </div>
             <div id="uploadHide">
               <label for="upload">  Picture :</label>
@@ -177,7 +190,7 @@
          <p id="wineLikesCount" class="likes" ></p>
           <form id="addLike" action="#" method="post">
             <!-- Wine Picture -->
-            <button id="btnLike" name ="btnLike" class="likeButton"><i class="far fa-thumbs-up"></i> Like</button>
+            <button id="btnLike" name ="btnLike" style="display:none;" class="likeButton"><i class="far fa-thumbs-up"></i> Like</button>
           </form>
         </div>
         <form id="addNote" action="#" method="post">
@@ -191,7 +204,7 @@
         <p class="success" id="commentMsg"></p>
         <div id="comments" class="comments scrollable">
         </div>
-        <form id="addComment" action="#" method="post">
+        <form id="addComment" action="#" method="post" class="hideConnect">
           <div class="form-group">
             <label for="comment">Comment:</label>
             <textarea class="form-control mb-1" id="comment" name="comment" rows="3"></textarea>
