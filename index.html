@@ -34,8 +34,8 @@
               </fieldset>
             </form>
           </div>
-          <a id="login-icone" href="#"><i class="fas fa-user fa-2x"> login</i></a>
-          <a id="logout-icone" style="display:none;" href="#"><i class="fas fa-user fa-2x"> logout</i></a>
+          <a id="login-icone" href="#"><i class="fas fa-user fa-2x "> login</i></a>
+          <a id="logout-icone"  href="#"><i class="fas fa-user fa-2x hideConnect"> logout</i></a>
           <nav class="navbar navbar-light bg-light">
             <ul class="nav nav-tabs">
               <li class="nav-item"><a class="nav-link " href="index.html">Accueil</a></li>
@@ -155,10 +155,10 @@
           </div>
 
           <!-- Form Buttons -->
-          <div class="form-group">
-            <button id="btnSave" name="btnSave" type="button" style="display:none;" class="btn btn-primary">Save</button>
-            <button id="btnDelete" name="btnDelete" type="button" style="display:none;" class="btn btn-dark">Delete</button>
-            <button id="btnNew" name="btnNew" type="button" style="display:none;" class="btn btn-success">New Wine</button>
+          <div class="form-group hideConnect">
+            <button id="btnSave" name="btnSave" type="button" " class="btn btn-primary">Save</button>
+            <button id="btnDelete" name="btnDelete" type="button" class="btn btn-dark">Delete</button>
+            <button id="btnNew" name="btnNew" type="button" class="btn btn-success">New Wine</button>
           </div>
         </form>
       </div>
@@ -172,10 +172,10 @@
         </div>
         <!-- Wine picture(s) uploading -->
         <div>
-          <form id="frmUpload" class="form-upload" action="#" method="post" enctype="multipart/form-data">
+          <form id="frmUpload" class="form-upload hideConnect" action="#" method="post" enctype="multipart/form-data">
             <div>
-              <button id="btnAddPictures" name="btnAddPictures" class="addPicture" style="display:none;" type="button"><i class="fas fa-camera"></i></button>
-              <button id="btnDelPictures" name="btnDelPictures"  class="delPictures" style="display:none;" type="button"><i class="fas fa-trash-alt"></i></button>
+              <button id="btnAddPictures" name="btnAddPictures" class="addPicture" type="button"><i class="fas fa-camera"></i></button>
+              <button id="btnDelPictures" name="btnDelPictures"  class="delPictures" type="button"><i class="fas fa-trash-alt"></i></button>
             </div>
             <div id="uploadHide">
               <label for="upload">  Picture :</label>
@@ -188,18 +188,16 @@
         </div>
         <div class="likes">
          <p id="wineLikesCount" class="likes" ></p>
-          <form id="addLike" action="#" method="post">
+          <form id="addLike" action="#" method="post" class="hideConnect">
             <!-- Wine Picture -->
-            <button id="btnLike" name ="btnLike" style="display:none;" class="likeButton"><i class="far fa-thumbs-up"></i> Like</button>
+            <button id="btnLike" name ="btnLike" class="likeButton"><i class="far fa-thumbs-up"></i> Like</button>
           </form>
         </div>
-        <form id="addNote" action="#" method="post">
-          <!-- Wine Notes -->
-          <div class="form-group">
+        <!-- Wine Notes -->
+          <div>
             <label for="notes">Notes:</label>
             <textarea class="form-control" id="notes" name="description" rows="4" readonly></textarea>
           </div>
-        </form>
         <!-- Comments section -->
         <p class="success" id="commentMsg"></p>
         <div id="comments" class="comments scrollable">
