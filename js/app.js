@@ -11,12 +11,98 @@ let info;
 let pictureSelect;
 let picturesList;
 
-const userId= 1;
-const user = "myriam";
-const pass = "epfc";
+const userId= 20;
+let user = "Rachida";
+let pass = "epfc";
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 const pics = "http://cruth.phpnet.org/epfc/caviste/public/pics/";
 const uploads = "http://cruth.phpnet.org/epfc/caviste/public/uploads/";
+
+//Formulaire d'inscription
+$(function () {
+	var dialog, form,
+		name = $("#name"),
+		password = $("#password"),
+		allFields = $([]).add(name).add(password);
+	//TODO adapter quand l'api sera prete 
+	function connectUser() {
+		user = document.getElementById("userName").value;
+		pass = document.getElementById("password").value;
+		console.log(user, pass);
+		const xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				let data = xhr.responseText;
+				let login = JSON.parse(data);
+				console.log(login);
+			} else {
+				//alert('Veuillez utiliser le bon login et mot de passe svp.')
+			}
+		};
+		xhr.open("GET", apiUrl + "/users", true);
+		xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+		xhr.send();
+
+		if (1) {
+			//cacher le bouton login quand l utilisateur est connecté 
+			document.getElementById("login-icone").style.display = 'none';
+			//Afficher le bouton logout, save, delete, new
+			document.getElementById("logout-icone").style.display = 'block';
+			//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
+			let buttons = document.getElementsByClassName('hideConnect');
+  				for(let i = 0; i < buttons.length; i++) {
+    				buttons[i].style.display = 'inline-block';
+ 			 }
+		}
+		dialog.dialog("close");
+	}
+
+	function disconnectUser() {
+	//cacher le bouton login quand l utilisateur est connecté 
+		document.getElementById("login-icone").style.display = 'block';
+		//Afficher le bouton logout, save, delete, new
+		document.getElementById("logout-icone").style.display = 'none';
+		//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
+		let buttons = document.getElementsByClassName('hideConnect');
+			for(let i = 0; i < buttons.length; i++) {
+			buttons[i].style.display = 'none';
+		 }
+		sessionStorage.clear();
+	}
+
+	dialog = $("#dialog-form").dialog({
+		autoOpen: false,
+		height: 400,
+		width: 350,
+		modal: true,
+		buttons: {
+			"connect": connectUser,
+			Cancel: function () {
+				dialog.dialog("close");
+			},
+		},
+		close: function () {
+			form[0].reset();
+			allFields.removeClass("ui-state-error");
+		},
+	});
+
+	form = dialog.find("form").on("submit", function (event) {
+		event.preventDefault();
+		connectUser();
+	});
+
+	$("#login-icone")
+		.button()
+		.on("click", function () {
+			dialog.dialog("open");
+		});
+
+	$("#logout-icone")
+		.button()
+		.on("click", disconnectUser);
+});
+
 
 //Functions
 function filter(){
