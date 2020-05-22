@@ -42,14 +42,19 @@ transform:translateX(6em);
 }
 
 /*----Element(s) de Formulaire(s) à "cacher"----*/
-#promoHide, #bioHide{
+#promoHide, #bioHide, #btnUpdateComment, #uploadHide, #btnCancelComment{
 	display:none;
 }
 
-#uploadHide{
-  display:none;
+.scrollable {
+  max-height: 250px; /* or any value */
+  overflow-y: auto;
 }
 
+.success{
+  display:none;
+  color:green;
+}
 
 .error{
 display:none;
