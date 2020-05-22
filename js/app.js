@@ -6,17 +6,57 @@ let sortName;
 let lastAction;
 let userLikes=[];
 let availableTags = [];
+let userId = sessionStorage.getItem('id');
+
 
 let info;
 let pictureSelect;
 let picturesList;
+//Array of user objects
 
-const userId= 20;
-let user = "Rachida";
-let pass = "epfc";
+let loginTab = [
+	{
+	"username" : "rachida",
+	"password" : "epfc",
+	"id":"20"
+	},
+	
+	{
+	"username" : "youssef",
+	"password" : "epfc",
+	"id" :"23"
+	},
+	
+	{
+	"username" : "simon",
+	"password" : "epfc",
+	"id" : "21"
+	},
+	
+	{
+	"username" : "angeline",
+	"password" : "epfc",
+	"id" :"8"
+	},
+	
+	{
+	"username" : "myriam",
+	"password" : "epfc",
+	"id" : "17"
+	},
+	
+	{
+	"username" : "ced",
+	"password" : "epfc",
+	"id" : "1"
+	}
+	
+	]
+	
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 const pics = "http://cruth.phpnet.org/epfc/caviste/public/pics/";
 const uploads = "http://cruth.phpnet.org/epfc/caviste/public/uploads/";
+
 
 //Formulaire d'inscription
 $(function () {
@@ -28,33 +68,46 @@ $(function () {
 	function connectUser() {
 		user = document.getElementById("userName").value;
 		pass = document.getElementById("password").value;
-		console.log(user, pass);
+
+		if(window.sessionStorage){
+			console.log('Supported');
+		
+			//parcourir le tableau d'objets pour récupérer la valeur de chaque clé
+			  for(let i=0; i<loginTab.length; i++){
+				
+				if(user == loginTab[i].username && pass == loginTab[i].password){
+					alert('login success !');
+				
+					//On affecter le login et le pwd  à la session 
+					sessionStorage.setItem("user", user);
+					sessionStorage.setItem("pass", pass);
+					sessionStorage.setItem("id", loginTab[i].id);
+				} else {
+					alert('Username or password is invalid, please try again !');
+				}
+		
+			} 
+		} else {
+		
+			console.log('Not supported');
+		}
+
 		const xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				let data = xhr.responseText;
 				let login = JSON.parse(data);
-				console.log(login);
+				alert('vous êtes connecté');
 			} else {
-				//alert('Veuillez utiliser le bon login et mot de passe svp.')
+				alert('Error !');
 			}
 		};
 		xhr.open("GET", apiUrl + "/users", true);
-		xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+		xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhr.send();
 
-		if (1) {
-			//cacher le bouton login quand l utilisateur est connecté 
-			document.getElementById("login-icone").style.display = 'none';
-			//Afficher le bouton logout, save, delete, new
-			document.getElementById("logout-icone").style.display = 'block';
-			//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
-			let buttons = document.getElementsByClassName('hideConnect');
-  				for(let i = 0; i < buttons.length; i++) {
-    				buttons[i].style.display = 'inline-block';
- 			 }
-		}
 		dialog.dialog("close");
+		onload();
 	}
 
 	function disconnectUser() {
@@ -68,6 +121,7 @@ $(function () {
 			buttons[i].style.display = 'none';
 		 }
 		sessionStorage.clear();
+		onload();
 	}
 
 	dialog = $("#dialog-form").dialog({
@@ -245,6 +299,8 @@ function uploadPictures(){
 
 			alert(picturesList.name);
 			alert("Upload réussi !");
+			document.getElementById("uploadHide").style.display = "none";
+			showWine(idWine);
 		} else {
 		
 			alert("Vous avez atteint le nombre de photo maximal pour ce vin (max 3 ajouts possibles)");
@@ -259,7 +315,7 @@ function uploadPictures(){
 	};
 
 	xhr.open("POST", apiUrl +'/wines/' + idWine + '/'+ 'pictures', true);
-	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhr.send(dataUpload);
 
 }
@@ -291,7 +347,7 @@ function deletePicture(){
 	};
 
 	xhr.open("DELETE", apiUrl +'/wines/' + idWine + '/pictures/'+ pictureId, true);
-	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhr.send();
 	}	
 }
@@ -321,7 +377,7 @@ function deleteWine() {
 			}
 		};
 		xhr.open("DELETE", apiUrl +'/wines/' + idWine, true);
-		xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
+		xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhr.send();
 	}
 }
@@ -409,7 +465,7 @@ function saveWine() {
 	}
 	//Envoie de la requete au serveur
 	xhr.open(HTTPMethod, requestUrl, true);
-	xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhr.send(data);
 }
 
@@ -734,7 +790,7 @@ function comment(){
 		};
 		console.log(apiUrl+'/wines/'+id+'/comments', toSend);
 		xhttp.open('POST', apiUrl+'/wines/'+id+'/comments', true);
-		xhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+		xhttp.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhttp.send(toSend);
 	}else{
 		msg = "Please enter a comment under 255 characters";
@@ -846,7 +902,7 @@ function like(){
 		}
 	};
 	xhr.open("PUT",apiUrl+'/wines/'+id+'/like',true);
-	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhr.send(toSend);
 }
 
@@ -885,7 +941,7 @@ function getPictures(wine){
 	};
 
 	xhttp.open("GET",apiUrl+'/wines/'+wine.id+'/pictures',true);
-	xhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhttp.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhttp.send();
 }
 
@@ -974,5 +1030,17 @@ window.onload = function() {
 		}
 	});
 	btnDelPictures.addEventListener('click', deletePicture);
-
+	
+	if (sessionStorage.getItem("user")){
+		//cacher le bouton login quand l utilisateur est connecté 
+		document.getElementById("login-icone").style.display = 'none';
+		//Afficher le bouton logout, save, delete, new
+		document.getElementById("logout-icone").style.display = 'block';
+		//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
+		let buttons = document.getElementsByClassName('hideConnect');
+			  for(let i = 0; i < buttons.length; i++) {
+				buttons[i].style.display = 'block';
+		  }
+	}
 };
+
