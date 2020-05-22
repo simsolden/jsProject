@@ -42,7 +42,7 @@ transform:translateX(6em);
 }
 
 /*----Element(s) de Formulaire(s) à "cacher"----*/
-#promoHide, #bioHide, #btnUpdateComment, #uploadHide, #btnCancelComment{
+#promoHide, #bioHide, #btnUpdateComment, #uploadHide, #btnCancelComment, .hideConnect{
 	display:none;
 }
 
