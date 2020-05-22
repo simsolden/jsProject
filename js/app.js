@@ -49,19 +49,25 @@ $(function () {
 			//Afficher le bouton logout, save, delete, new
 			document.getElementById("logout-icone").style.display = 'block';
 			//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
-			document.getElementById("btnSave").style.display = 'block';
-			document.getElementById("btnDelete").style.display = 'block';
-			document.getElementById("btnNew").style.display = 'block';
-			document.getElementById("btnAddPictures").style.display = 'block';
-			document.getElementById("btnDelPictures").style.display = 'block';
-			document.getElementById("btnLike").style.display = 'block';
-			document.getElementById("btnComment").style.display = 'block';
+			let buttons = document.getElementsByClassName('hideConnect');
+  				for(let i = 0; i < buttons.length; i++) {
+    				buttons[i].style.display = 'inline-block';
+ 			 }
 		}
 		dialog.dialog("close");
 	}
 
 	function disconnectUser() {
-
+	//cacher le bouton login quand l utilisateur est connecté 
+		document.getElementById("login-icone").style.display = 'block';
+		//Afficher le bouton logout, save, delete, new
+		document.getElementById("logout-icone").style.display = 'none';
+		//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
+		let buttons = document.getElementsByClassName('hideConnect');
+			for(let i = 0; i < buttons.length; i++) {
+			buttons[i].style.display = 'none';
+		 }
+		sessionStorage.clear();
 	}
 
 	dialog = $("#dialog-form").dialog({
@@ -94,19 +100,7 @@ $(function () {
 
 	$("#logout-icone")
 		.button()
-		.on("click", function () {
-			//Afficher le bouton login lorsqu'on clique sur logout, et cacher le bouton logout 
-			document.getElementById("login-icone").style.display = 'block';
-			document.getElementById("logout-icone").style.display = 'none';
-			//Cacher les boutons lorsqu'on clique sur logout
-			document.getElementById("btnSave").style.display = 'none';
-			document.getElementById("btnDelete").style.display = 'none';
-			document.getElementById("btnNew").style.display = 'none';
-			document.getElementById("btnAddPictures").style.display = 'none';
-			document.getElementById("btnDelPictures").style.display = 'none';
-			document.getElementById("btnLike").style.display = 'none';
-			document.getElementById("btnComment").style.display = 'none';
-		});
+		.on("click", disconnectUser);
 });
 
 
