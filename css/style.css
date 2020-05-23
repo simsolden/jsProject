@@ -47,8 +47,15 @@ transform:translateX(6em);
 }
 
 .scrollable {
-  max-height: 250px; /* or any value */
-  overflow-y: auto;
+  overflow: auto;
+}
+
+#winesList{
+  max-height: 60%; /* or any value */
+}
+
+#comments{
+  max-height: 22%; /* or any value */
 }
 
 .success{
@@ -171,4 +178,3 @@ div#users-contain table th {
   border: 1px solid transparent;
   padding: 0.3em;
 }
-

@@ -1,15 +1,15 @@
 /**
- * Wine cellar site type "Single Page Application"
- * @Version 1.0
- * @file Main script of the SPA
- *
- * @author Simon Oldenhove <simonoldenhove@gmail.com>
- *
- *
- *
- *
- *
- */
+* Wine cellar site type "Single Page Application"
+* @Version 1.0
+* @file Main script of the SPA
+*
+* @author Simon Oldenhove <simonoldenhove@gmail.com>
+*
+*
+*
+*
+*
+*/
 
 
 /******************* Variables ******************/
@@ -70,8 +70,8 @@ const uploads = "http://cruth.phpnet.org/epfc/caviste/public/uploads/";
 /******************* Functions ******************/
 
 /**
- * Formulaire de connexion et de déconnexion
- */
+* Formulaire de connexion et de déconnexion
+*/
 $(function () {
 	var dialog, form,
 	name = $("#name"),
@@ -152,8 +152,8 @@ $(function () {
 });
 
 /**
- * Filter wines via select value
- */
+* Filter wines via select value
+*/
 function filter(){
 	//Define last action
 	lastAction='filter';
@@ -185,8 +185,8 @@ function filter(){
 }
 
 /**
- * Sort wines list in normal state or after filter, search, etc...
- */
+* Sort wines list in normal state or after filter, search, etc...
+*/
 function sortBy(){
 	const selectSort = document.getElementById('selectSort');
 	const selectedSort=selectSort.options[selectSort.selectedIndex].value;
@@ -201,9 +201,9 @@ function sortBy(){
 }
 
 /**
- * Sort wines list
- * @param {Object[]} wines - The list of wines to sort
- */
+* Sort wines list
+* @param {Object[]} wines - The list of wines to sort
+*/
 function sort(wines){
 	//sort by year
 	if(sortName=='Year'){
@@ -220,8 +220,8 @@ function sort(wines){
 }
 
 /**
- * Get all years from wines list to fill in select values
- */
+* Get all years from wines list to fill in select values
+*/
 function getAllYears(){
 	document.getElementById('selectYear').innerHTML='<option value="Year" selected>Year</option>';
 	const allYears = document.getElementById('selectYear');
@@ -245,8 +245,8 @@ function getAllYears(){
 }
 
 /**
- * Get all countries from wines list to fill in select values
- */
+* Get all countries from wines list to fill in select values
+*/
 function getAllCountries(){
 	document.getElementById('selectCountry').innerHTML='<option value="Country" selected>Country</option>';
 
@@ -269,8 +269,8 @@ function getAllCountries(){
 }
 
 /**
- * Search wines through names
- */
+* Search wines through names
+*/
 function search(){
 	//define last action
 	lastAction='search';
@@ -290,18 +290,18 @@ function search(){
 }
 
 /**
- * Show buttons to add user pictures
- */
+* Show buttons to add user pictures
+*/
 function addPictures(){
 	document.getElementById("uploadHide").style.display = "block";
 }
 
 /**
- * Upload user's wine pictures
- */
+* Upload user's wine pictures
+*/
 function uploadPictures(){
 
-	let idWine = document.getElementById('idWine').value;
+	let idWine = document.getElementById('idWine').getAttribute('data-id');
 	const frmUpload = document.forms["frmUpload"];
 	const dataUpload = new FormData(frmUpload);
 
@@ -336,14 +336,14 @@ function uploadPictures(){
 }
 
 /**
- * Delete picture
- */
+* Delete picture
+*/
 function deletePicture(){
 	//This is the picture id of the image selected via the carousel
 
 	if(confirm('Souhaitez-vous vraiment supprimer cette photo ?')){
 		pictureId = $('#carousel li.active').attr("data-id");
-		let idWine = document.getElementById('idWine').value;
+		let idWine = document.getElementById('idWine').getAttribute('data-id');
 
 		const xhr = new XMLHttpRequest();
 		xhr.onload = function () {
@@ -368,8 +368,8 @@ function deletePicture(){
 }
 
 /**
- * Delete a wine
- */
+* Delete a wine
+*/
 function deleteWine() {
 	if (confirm("Voulez-vous vraiment supprimer ce vin ?")) {
 		let info;
@@ -398,8 +398,8 @@ function deleteWine() {
 }
 
 /**
- * Autocomplete search field via JQueryUI
- */
+* Autocomplete search field via JQueryUI
+*/
 function autocomplete() {
 	$( "#inputSearch" ).autocomplete({
 		source: availableTags
@@ -407,8 +407,8 @@ function autocomplete() {
 }
 
 /**
- * Allows to add or update a wine
- */
+* Allows to add or update a wine
+*/
 function saveWine() {
 
 	const data = new FormData(); //Récupération des données du formulaire
@@ -484,8 +484,8 @@ function saveWine() {
 }
 
 /**
- * Clear wine inputs and select request method
- */
+* Clear wine inputs and select request method
+*/
 function newWine() {
 	$(".error").slideUp();
 
@@ -504,11 +504,19 @@ function newWine() {
 	document.getElementById("capacity").value = "";
 	document.getElementById("bio").type = "checkbox";
 	document.getElementById("promo").value = "";
+	document.getElementById("carousel-indicators").innerHTML='';
+	document.getElementById("carousel-inner").innerHTML = '<img src="' + pics + 'generic.jpg' + '" alt="generic wine picture">';
+	document.getElementById("comments").innerHTML = '';
+	document.getElementById("notes").value='';
+	document.getElementById("notes").readOnly = false;
+
+	//Hide right pannel
+	$("#btnLike, #btnAddPictures, #btnDelPictures, #wineLikesCount, #addComment").hide();
 }
 
 /**
- * Validate form data to add a wine
- */
+* Validate form data to add a wine
+*/
 function validateForm() {
 	let msg = "";
 	//Name
@@ -605,8 +613,8 @@ function validateForm() {
 }
 
 /**
- * Validate picture's formats and number
- */
+* Validate picture's formats and number
+*/
 function validateAddPictures(){
 	let msgError = "";
 	let pictures = document.getElementById("upload");
@@ -636,9 +644,9 @@ function validateAddPictures(){
 }
 
 /**
- * Request and show likes
- * @param {number} id - The id of the wine for which we want the number of likes
- */
+* Request and show likes
+* @param {number} id - The id of the wine for which we want the number of likes
+*/
 function getLikes(id){
 	//Show user blue liked button if already liked
 	const likeButton=document.getElementById('btnLike');
@@ -648,23 +656,23 @@ function getLikes(id){
 		likeButton.className = 'likeButton';
 	}
 	//Request and show wines like
-	const xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (xhttp.readyState == 4 && xhttp.status == 200) {
-			let data = xhttp.responseText;
+	const xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			let data = xhr.responseText;
 			let likes = JSON.parse(data);
 			document.getElementById("wineLikesCount").innerHTML=likes.total +" user(s) like this wine.";
 		}
 	};
-	xhttp.open("GET",apiUrl+'/wines/'+id+'/likes-count',true);
-	xhttp.send();
+	xhr.open("GET",apiUrl+'/wines/'+id+'/likes-count',true);
+	xhr.send();
 }
 
 
 /**
- * Show selectable wines list
- * @param {Object[]} wines - The list of wines to show
- */
+* Show selectable wines list
+* @param {Object[]} wines - The list of wines to show
+*/
 function showWines(wines) {
 	//Add Wines to List
 	const emptyList = document.getElementById('winesList');
@@ -690,10 +698,10 @@ function showWines(wines) {
 }
 
 /**
- * Show the comment section 'modify and cancel' buttons + comment in textarea
- * @param {boolean} hide - Hide or show value
- * @param {string} [comment] - Original comment to show
- */
+* Show the comment section 'modify and cancel' buttons + comment in textarea
+* @param {boolean} hide - Hide or show value
+* @param {string} [comment] - Original comment to show
+*/
 function hideOrShowCommentAndButtons(hide, comment){
 	if(hide){
 		document.getElementById('btnComment').style.display='block';
@@ -710,11 +718,13 @@ function hideOrShowCommentAndButtons(hide, comment){
 }
 
 /**
- * Show single wine info
- * @param {number} id - Id of the wine
- */
+* Show single wine info
+* @param {number} id - Id of the wine
+*/
 function showWine(id) {
 
+	$("#btnLike, #btnAddPictures, #btnDelPictures, #wineLikesCount, #addComment").show();
+	document.getElementById("notes").readOnly = true;
 	//clear error messages
 	$(".success, .error").slideUp('slow');
 	hideOrShowCommentAndButtons(true);
@@ -725,7 +735,8 @@ function showWine(id) {
 	const wine = wines.find((element) => element.id == id);
 
 	//Show common wine properties
-	document.getElementById("idWine").value = wine.id;;
+	document.getElementById("idWine").innerHTML ="Id: " + wine.id;;
+	document.getElementById("idWine").setAttribute('data-id',  wine.id);
 	document.getElementById("name").value = wine.name;
 	document.getElementById("grapes").value = wine.grapes;
 	document.getElementById("country").value = wine.country;
@@ -774,9 +785,9 @@ function showWine(id) {
 }
 
 /**
- * Request and show comments
- * @param {Object} wine - A Wine object
- */
+* Request and show comments
+* @param {Object} wine - A Wine object
+*/
 function getComments(wine){
 	//Hide modify or cancel button and empty comment box
 	hideOrShowCommentAndButtons(true);
@@ -784,10 +795,10 @@ function getComments(wine){
 	document.getElementById("comments").innerHTML ='<div class="card-header">Comments</div>';
 
 	//Gather wine comments from API
-	const xhttp = new XMLHttpRequest();
-	xhttp.onload = function (){
-		if(xhttp.status===200) {
-			let data = xhttp.responseText;
+	const xhr = new XMLHttpRequest();
+	xhr.onload = function (){
+		if(xhr.status===200) {
+			let data = xhr.responseText;
 			let JSONcomments = JSON.parse(data);
 			let div='';
 			//Loop through wine comments
@@ -798,7 +809,7 @@ function getComments(wine){
 					let btnModify= '<button name="btnModifyComment" data-id="'+JSONcomments[prop].id+'" type="button" class="btn btn-link  btn-sm">Modify</button>';
 					div = '<div class="card mb-2"><div class="card-body"><p id="'+JSONcomments[prop].id+'">' + JSONcomments[prop].content + '</p>'+btnDel +btnModify+'</div></div>';
 					document.getElementById("comments").innerHTML += div;
-				//Else just show the comment without buttons
+					//Else just show the comment without buttons
 				}else{
 					div = '<div class="card mb-2"><div class="card-body"><p>' + JSONcomments[prop].content + '</p></div></div>';
 					document.getElementById("comments").innerHTML += div;
@@ -818,47 +829,49 @@ function getComments(wine){
 				});
 			}
 		}else{
-			alert('Ajax error with get comments : ' +xhttp.responseText);
+			alert('Ajax error with get comments : ' +xhr.responseText);
 		}
 	};
-	xhttp.open("GET", apiUrl + '/wines/' + wine.id + '/comments', true);
-	xhttp.send();
+	xhr.open("GET", apiUrl + '/wines/' + wine.id + '/comments', true);
+	xhr.send();
 }
 
 /**
- * Comment a wine
- */
+* Comment a wine
+*/
 function comment(){
 
 	//retrieve wine and comment
-	const id= document.getElementById('idWine').value;
+	const id= document.getElementById('idWine').getAttribute('data-id');
 	const wine = wines.find((element) => element.id == id);
 	const comment= document.getElementById('comment').value;
 
 	//check if comment exists and is long enough
 	if(comment.length<255 && comment.length>0 ){
-		const xhttp = new XMLHttpRequest();
+		const xhr = new XMLHttpRequest();
 
 		//Commentaire JSONifié à envoyer
 		let toSend={content:comment};
 		toSend=JSON.stringify(toSend);
 
-		xhttp.onload = function(){
+		console.log(apiUrl+'/wines/'+id+'/comments', sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass"), toSend)
+
+		xhr.onload = function(){
 			//Si ajout du commentaire, affiché message succès et vider le textarea
-			if(xhttp.status===200){
+			if(xhr.status===200){
 				msg="Commentaire ajouté";
 				document.getElementById('commentMsg').innerHTML = msg;
 				$("#commentMsg").slideDown();
 				getComments(wine);
-			//Sinon afficher l'erreur ajax
+				//Sinon afficher l'erreur ajax
 			}else{
-				alert("requête post comment Ajax: " + xhttp.responseText);
+				alert("requête post comment Ajax: " + xhr.responseText);
 			}
 		};
 		//HTTP request
-		xhttp.open('POST', apiUrl+'/wines/'+id+'/comments', true);
-		xhttp.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
-		xhttp.send(toSend);
+		xhr.open('POST', apiUrl+'/wines/'+id+'/comments', true);
+		xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
+		xhr.send(toSend);
 
 	}else{
 		//Si trop long affiché message erreur
@@ -869,37 +882,37 @@ function comment(){
 }
 
 /**
- * Delete comment
- * @param {Object} wine - A Wine object
- * @param {number} commentId - Id of the comment
- */
+* Delete comment
+* @param {Object} wine - A Wine object
+* @param {number} commentId - Id of the comment
+*/
 function deleteComment(wine, commentId){
 
 	if(confirm("Voulez-vous supprimer ?")){
-		const xhttp = new XMLHttpRequest();
-		xhttp.onload = function (){
-			if(xhttp.status === 200){
+		const xhr = new XMLHttpRequest();
+		xhr.onload = function (){
+			if(xhr.status === 200){
 				//Show success message and show new comments list
 				let msg = ("Comment deleted");
 				document.getElementById("commentMsg").innerHTML=msg;
 				$('#commentMsg').slideDown();
 				getComments(wine);
 			}else{
-				alert("Delete Comment ajax error : " +xhttp.responseText);
+				alert("Delete Comment ajax error : " +xhr.responseText);
 			}
 		};
 		//Http request with Authorization
-		xhttp.open('DELETE', apiUrl+ '/wines/' + wine.id +'/comments/' + commentId, true);
-		xhttp.setRequestHeader('Authorization', 'Basic ' +btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
-		xhttp.send();
+		xhr.open('DELETE', apiUrl+ '/wines/' + wine.id +'/comments/' + commentId, true);
+		xhr.setRequestHeader('Authorization', 'Basic ' +btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
+		xhr.send();
 	}
 }
 
 /**
- * Modify comment
- * @param {Object} wine - A Wine object
- * @param {number} commentId - Id of the comment
- */
+* Modify comment
+* @param {Object} wine - A Wine object
+* @param {number} commentId - Id of the comment
+*/
 function modifyComment(wine, commentId){
 
 	//Show comment and modify and cancel buttons
@@ -910,12 +923,12 @@ function modifyComment(wine, commentId){
 		const newComment=document.getElementById("comment").value;
 		if(newComment.length<255 && newComment.length>0 ){
 			//Create http request and comment in JSON to send
-			const xhttp = new XMLHttpRequest();
+			const xhr = new XMLHttpRequest();
 			let toSend={"content":newComment};
 			toSend=JSON.stringify(toSend);
 
-			xhttp.onload = function(){
-				if(xhttp.status===200){
+			xhr.onload = function(){
+				if(xhr.status===200){
 					//Show success message and show new wines list + hide modify and cancel buttons
 					let msg="Comment modified";
 					document.getElementById("commentMsg").innerHTML=msg;
@@ -923,13 +936,13 @@ function modifyComment(wine, commentId){
 					hideOrShowCommentAndButtons(true);
 					getComments(wine);
 				}else{
-					alert('Ajax error on PUT comment:' +xhttp.responseText);
+					alert('Ajax error on PUT comment:' +xhr.responseText);
 				}
 			};
 
-			xhttp.open('PUT', apiUrl + '/wines/' + wine.id + '/comments/' + commentId);
-			xhttp.setRequestHeader('Authorization', 'Basic '+ btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
-			xhttp.send(toSend);
+			xhr.open('PUT', apiUrl + '/wines/' + wine.id + '/comments/' + commentId);
+			xhr.setRequestHeader('Authorization', 'Basic '+ btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
+			xhr.send(toSend);
 		}else{
 			//Message empty or too long, error message
 			document.getElementById('comment').value='';
@@ -946,14 +959,14 @@ function modifyComment(wine, commentId){
 }
 
 /**
- * Like or dislike a wine
- */
+* Like or dislike a wine
+*/
 function like(){
 	//prevents page from reloading
 	event.preventDefault();
 
 	const xhr = new XMLHttpRequest();
-	const id=document.getElementById('idWine').value;
+	const id=document.getElementById('idWine').getAttribute('data-id');
 
 	//Choose if like or unlike wine
 	let like=false;
@@ -984,21 +997,21 @@ function like(){
 }
 
 /**
- * Request and show pictures
- * @param {Object} wine - A Wine object
- */
+* Request and show pictures
+* @param {Object} wine - A Wine object
+*/
 function getPictures(wine){
 	document.getElementById("carousel-inner").innerHTML='';
-	const xhttp = new XMLHttpRequest();
+	const xhr = new XMLHttpRequest();
 
 	//Add the image of the API
 	let div = '<div class="carousel-item active"><img  src="' + pics + wine.picture + '" alt="' + wine.name + ' picture"></div>';
 	document.getElementById("carousel-inner").innerHTML = div;
 
-	xhttp.onload = function () {
-		if(xhttp.status===200) {
+	xhr.onload = function () {
+		if(xhr.status===200) {
 
-			let data = xhttp.responseText;
+			let data = xhr.responseText;
 			let JSONpictures = JSON.parse(data);
 
 			//create list for carousel indicators
@@ -1020,21 +1033,21 @@ function getPictures(wine){
 		}
 	};
 
-	xhttp.open("GET",apiUrl+'/wines/'+wine.id+'/pictures',true);
-	xhttp.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
-	xhttp.send();
+	xhr.open("GET",apiUrl+'/wines/'+wine.id+'/pictures',true);
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
+	xhr.send();
 }
 
 /**
- * Get wines from the API and then display them
- */
+* Get wines from the API and then display them
+*/
 function getWines(){
 	//Data gathering from the API
-	const xhttp = new XMLHttpRequest();
+	const xhr = new XMLHttpRequest();
 	let	winesArray=[];
-	xhttp.onreadystatechange = function() {
-		if(xhttp.readyState==4 && xhttp.status==200) {
-			let data = xhttp.responseText;
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState==4 && xhr.status==200) {
+			let data = xhr.responseText;
 			wines = JSON.parse(data);
 			for (let prop in wines) {
 				//fill the array with our wines
@@ -1051,34 +1064,34 @@ function getWines(){
 
 		}
 	};
-	xhttp.open('GET',apiUrl+'/wines',true);
-	xhttp.send();
+	xhr.open('GET',apiUrl+'/wines',true);
+	xhr.send();
 }
 
 /**
- * Fill array with the likes of the user once
- */
+* Fill array with the likes of the user once
+*/
 function getUserLikes(){
 	//Data gathering from the API to have an array of the users likes
-	const xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if(xhttp.readyState==4 && xhttp.status==200) {
-			let data = xhttp.responseText;
+	const xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState==4 && xhr.status==200) {
+			let data = xhr.responseText;
 			let wines = JSON.parse(data);
 			for (let prop in wines) {
 				userLikes.push(wines[prop].id);
 			}
 		}
 	};
-	xhttp.open('GET',apiUrl+'/users/'+sessionStorage.getItem('id')+'/likes/wines',true);
-	xhttp.send();
+	xhr.open('GET',apiUrl+'/users/'+sessionStorage.getItem('id')+'/likes/wines',true);
+	xhr.send();
 }
 
 
 /******************* Main ******************/
 /**
- * Main function which gathers wine from the api and handles events and connection
- */
+* Main function which gathers wine from the api and handles events and connection
+*/
 window.onload = function() {
 
 	//Main functions

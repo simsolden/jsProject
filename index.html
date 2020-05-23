@@ -86,7 +86,7 @@
         </form>
         <div id="content" class="row">
           <div class="col-4 mt-5">
-            <ul id="winesList">
+            <ul id="winesList" class="scrollable">
           <!-- Wines list -->
         </ul>
       </div>
@@ -94,10 +94,10 @@
         <form id="addUpdateWine" action="#" method="post">
 
           <!-- New wine form/Wine info -->
-          <div class="form-group">
-            <label for="idWine">Id:</label>
-            <input id="idWine" name="idWine" type="number" class="form-control">
-          </div>
+
+
+          <h1 id="idWine" name="idWine"></h1>
+
           <div class="form-group">
             <label for="name">Name:</label>
             <input id="name" name="name" type="text" class="form-control">
@@ -165,6 +165,7 @@
           <ol id="carousel-indicators" class="carousel-indicators hideConnect">
           </ol>
           <div id="carousel-inner" class="carousel-inner" role="listbox">
+
           </div>
         </div>
         <!-- Wine picture(s) uploading -->
