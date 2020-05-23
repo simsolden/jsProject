@@ -1,17 +1,28 @@
-//Variables
+/**
+ * Wine cellar site type "Single Page Application"
+ * @Version 1.0
+ * @file Main script of the SPA
+ *
+ * @author Simon Oldenhove <simonoldenhove@gmail.com>
+ *
+ *
+ *
+ *
+ *
+ */
 
+
+/******************* Variables ******************/
 let wines;
 let HTTPMethod;
 let sortName;
 let lastAction;
 let userLikes=[];
 let availableTags = [];
-
 let info;
 let pictureSelect;
 let picturesList;
-//Array of user objects
-
+//Array of users object, TODO put in another js file ?
 let loginTab = [
 	{
 		"username" : "rachida",
@@ -55,8 +66,11 @@ const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 const pics = "http://cruth.phpnet.org/epfc/caviste/public/pics/";
 const uploads = "http://cruth.phpnet.org/epfc/caviste/public/uploads/";
 
+/******************* Functions ******************/
 
-//Formulaire d'inscription
+/**
+ * Formulaire de connexion et de déconnexion
+ */
 $(function () {
 	var dialog, form,
 	name = $("#name"),
@@ -68,8 +82,6 @@ $(function () {
 		let pass = document.getElementById("password").value;
 
 		if(window.sessionStorage){
-			console.log('Supported');
-
 			//parcourir le tableau d'objets pour récupérer la valeur de chaque clé
 			for(let i=0; i<loginTab.length; i++){
 				if(user == loginTab[i].username && pass == loginTab[i].password){
@@ -97,9 +109,9 @@ $(function () {
 		//Afficher le bouton logout, save, delete, new
 		document.getElementById("logout-icone").style.display = 'none';
 		//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
-		let buttons = document.getElementsByClassName('hideConnect');
-		for(let i = 0; i < buttons.length; i++) {
-			buttons[i].style.display = 'none';
+		let elements = document.getElementsByClassName('hideConnect');
+		for(let i = 0; i < elements.length; i++) {
+			elements[i].style.display = 'none';
 		}
 		sessionStorage.clear();
 		onload();
@@ -138,8 +150,9 @@ $(function () {
 	.on("click", disconnectUser);
 });
 
-
-//Functions
+/**
+ * Filter wines via select value
+ */
 function filter(){
 	//Define last action
 	lastAction='filter';
@@ -170,6 +183,9 @@ function filter(){
 
 }
 
+/**
+ * Sort wines list in normal state or after filter, search, etc...
+ */
 function sortBy(){
 	const selectSort = document.getElementById('selectSort');
 	const selectedSort=selectSort.options[selectSort.selectedIndex].value;
@@ -183,6 +199,10 @@ function sortBy(){
 	}
 }
 
+/**
+ * Sort wines list
+ * @param {Object[]} wines - The list of wines to sort
+ */
 function sort(wines){
 	//sort by year
 	if(sortName=='Year'){
@@ -198,7 +218,11 @@ function sort(wines){
 	}
 }
 
+/**
+ * Get all years from wines list to fill in select values
+ */
 function getAllYears(){
+	document.getElementById('selectYear').innerHTML="";
 	const allYears = document.getElementById('selectYear');
 	let setYear=new Set();
 	let arrayYears;
@@ -219,7 +243,11 @@ function getAllYears(){
 
 }
 
+/**
+ * Get all countries from wines list to fill in select values
+ */
 function getAllCountries(){
+	document.getElementById('selectCountry').innerHTML='';
 	const allCountries = document.getElementById('selectCountry');
 	let setCountry=new Set();
 	let arrayCountries;
@@ -239,6 +267,9 @@ function getAllCountries(){
 
 }
 
+/**
+ * Search wines through names
+ */
 function search(){
 	//define last action
 	lastAction='search';
@@ -257,10 +288,16 @@ function search(){
 	document.getElementById("selectCountry").value="Country";
 }
 
+/**
+ * Show buttons to add user pictures
+ */
 function addPictures(){
 	document.getElementById("uploadHide").style.display = "block";
 }
 
+/**
+ * Upload user's wine pictures
+ */
 function uploadPictures(){
 
 	let idWine = document.getElementById('idWine').value;
@@ -269,7 +306,6 @@ function uploadPictures(){
 
 	//Pour uploader une photo:
 	let pictureSelect = document.getElementById('upload');
-
 	let picturesList = pictureSelect.files[0];
 	//alert(picturesList.name);
 	dataUpload.getAll(picturesList);
@@ -277,13 +313,10 @@ function uploadPictures(){
 	const xhr = new XMLHttpRequest();
 	xhr.onload = function () {
 		if (this.status === 200) {
-
-			alert(picturesList.name);
 			alert("Upload réussi !");
 			document.getElementById("uploadHide").style.display = "none";
 			showWine(idWine);
 		} else {
-
 			alert("Vous avez atteint le nombre de photo maximal pour ce vin (max 3 ajouts possibles)");
 		}
 	}
@@ -301,13 +334,13 @@ function uploadPictures(){
 
 }
 
-
-
-//Delete picture
+/**
+ * Delete picture
+ */
 function deletePicture(){
 	//This is the picture id of the image selected via the carousel
 
-	if(confirm('Souhaitez-vous vraiment supprimer ce vin ?')){
+	if(confirm('Souhaitez-vous vraiment supprimer cette photo ?')){
 		pictureId = $('#carousel li.active').attr("data-id");
 		let idWine = document.getElementById('idWine').value;
 
@@ -333,9 +366,9 @@ function deletePicture(){
 	}
 }
 
-
-
-
+/**
+ * Delete a wine
+ */
 function deleteWine() {
 	if (confirm("Voulez-vous vraiment supprimer ce vin ?")) {
 		let info;
@@ -363,8 +396,9 @@ function deleteWine() {
 	}
 }
 
-
-
+/**
+ * Autocomplete search field via JQueryUI
+ */
 function autocomplete() {
 	$( "#inputSearch" ).autocomplete({
 		source: availableTags
@@ -372,10 +406,8 @@ function autocomplete() {
 }
 
 /**
-* Fonction permettant de créer et modifier un vin
-* @author Simon
-* @author Rachida
-*/
+ * Allows to add or update a wine
+ */
 function saveWine() {
 
 	const data = new FormData(); //Récupération des données du formulaire
@@ -450,6 +482,9 @@ function saveWine() {
 	xhr.send(data);
 }
 
+/**
+ * Clear wine inputs and select request method
+ */
 function newWine() {
 	$(".error").slideUp();
 
@@ -470,6 +505,9 @@ function newWine() {
 	document.getElementById("promo").value = "";
 }
 
+/**
+ * Validate form data to add a wine
+ */
 function validateForm() {
 	let msg = "";
 	//Name
@@ -565,6 +603,9 @@ function validateForm() {
 	}
 }
 
+/**
+ * Validate picture's formats and number
+ */
 function validateAddPictures(){
 	let msgError = "";
 	let pictures = document.getElementById("upload");
@@ -593,8 +634,10 @@ function validateAddPictures(){
 	}
 }
 
-
-//Request and show likes()
+/**
+ * Request and show likes
+ * @param {number} id - The id of the wine for which we want the number of likes
+ */
 function getLikes(id){
 	//Show user blue liked button if already liked
 	const likeButton=document.getElementById('btnLike');
@@ -617,6 +660,10 @@ function getLikes(id){
 }
 
 
+/**
+ * Show selectable wines list
+ * @param {Object[]} wines - The list of wines to show
+ */
 function showWines(wines) {
 	//Add Wines to List
 	const emptyList = document.getElementById('winesList');
@@ -641,18 +688,35 @@ function showWines(wines) {
 	}
 }
 
-function hideCommentValueAndButtons(){
-	document.getElementById('btnComment').style.display='block';
-	document.getElementById('btnUpdateComment').style.display='none';
-	document.getElementById('btnCancelComment').style.display='none';
-	document.getElementById('comment').value='';
+/**
+ * Show the comment section 'modify and cancel' buttons + comment in textarea
+ * @param {boolean} hide - Hide or show value
+ * @param {string} [comment] - Original comment to show
+ */
+function hideOrShowCommentAndButtons(hide, comment){
+	if(hide){
+		document.getElementById('btnComment').style.display='block';
+		document.getElementById('btnUpdateComment').style.display='none';
+		document.getElementById('btnCancelComment').style.display='none';
+		document.getElementById('comment').value='';
+	}else{
+		document.getElementById('btnComment').style.display='none';
+		document.getElementById('btnUpdateComment').style.display='inline-block';
+		document.getElementById('btnCancelComment').style.display='inline-block';
+		document.getElementById('comment').value= comment==undefined ? comment : '';
+	}
+
 }
 
+/**
+ * Show single wine info
+ * @param {number} id - Id of the wine
+ */
 function showWine(id) {
 
 	//clear error messages
 	$(".success, .error").slideUp('slow');
-	hideCommentValueAndButtons();
+	hideOrShowCommentAndButtons(true);
 
 	//define HTTPMethod for wine update as PUT
 	HTTPMethod = "PUT";
@@ -708,24 +772,32 @@ function showWine(id) {
 	getComments(wine);
 }
 
-//Request and show comments
+/**
+ * Request and show comments
+ * @param {Object} wine - A Wine object
+ */
 function getComments(wine){
-	const xhttp = new XMLHttpRequest();
+	//Hide modify or cancel button and empty comment box
+	hideOrShowCommentAndButtons(true);
+	//Create begining of comment section
 	document.getElementById("comments").innerHTML ='<div class="card-header">Comments</div>';
+
+	//Gather wine comments from API
+	const xhttp = new XMLHttpRequest();
 	xhttp.onload = function (){
 		if(xhttp.status===200) {
 			let data = xhttp.responseText;
 			let JSONcomments = JSON.parse(data);
 			let div='';
-			let i=0;
+			//Loop through wine comments
 			for (let prop in JSONcomments) {
-				//If the comment is of the user, show delete and modify button and link the to according events
+				//If the comment is of the user, show comment + delete and modify buttons with commentId in data-id
 				if(parseInt(JSONcomments[prop].user_id) === parseInt(sessionStorage.getItem('id'))){
 					let btnDel= '<button name="btnDeleteComment" data-id="'+JSONcomments[prop].id+'" type="button" class="btn btn-link btn-sm mr-2">Delete</button>';
 					let btnModify= '<button name="btnModifyComment" data-id="'+JSONcomments[prop].id+'" type="button" class="btn btn-link  btn-sm">Modify</button>';
 					div = '<div class="card mb-2"><div class="card-body"><p id="'+JSONcomments[prop].id+'">' + JSONcomments[prop].content + '</p>'+btnDel +btnModify+'</div></div>';
 					document.getElementById("comments").innerHTML += div;
-					//Else just show the comment
+				//Else just show the comment without buttons
 				}else{
 					div = '<div class="card mb-2"><div class="card-body"><p>' + JSONcomments[prop].content + '</p></div></div>';
 					document.getElementById("comments").innerHTML += div;
@@ -734,8 +806,10 @@ function getComments(wine){
 			//Add event listenners to delete and modify buttons
 			btnDel = document.getElementsByName('btnDeleteComment');
 			btnModify = document.getElementsByName('btnModifyComment');
+			//Since there are as many delete and modify buttons, only loop once
 			for (let i=0; i<btnDel.length; i++){
 				btnModify[i].addEventListener('click', function() {
+					//Give commentId thourgh data-id attribute
 					modifyComment(wine, btnModify[i].getAttribute('data-id'));
 				});
 				btnDel[i].addEventListener('click', function() {
@@ -743,93 +817,112 @@ function getComments(wine){
 				});
 			}
 		}else{
-			alert(xhttp.responseText);
+			alert('Ajax error with get comments : ' +xhttp.responseText);
 		}
 	};
 	xhttp.open("GET", apiUrl + '/wines/' + wine.id + '/comments', true);
 	xhttp.send();
 }
 
-//Comment a wine
+/**
+ * Comment a wine
+ */
 function comment(){
 
+	//retrieve wine and comment
 	const id= document.getElementById('idWine').value;
+	const wine = wines.find((element) => element.id == id);
 	const comment= document.getElementById('comment').value;
+
+	//check if comment exists and is long enough
 	if(comment.length<255 && comment.length>0 ){
 		const xhttp = new XMLHttpRequest();
+
+		//Commentaire JSONifié à envoyer
 		let toSend={content:comment};
 		toSend=JSON.stringify(toSend);
 
 		xhttp.onload = function(){
+			//Si ajout du commentaire, affiché message succès et vider le textarea
 			if(xhttp.status===200){
-				document.getElementById('comment').value='';
-				getComments(id);
+				msg="Commentaire ajouté";
+				document.getElementById('commentMsg').innerHTML = msg;
+				$("#commentMsg").slideDown();
+				getComments(wine);
+			//Sinon afficher l'erreur ajax
 			}else{
-				alert(xhttp.responseText);
+				alert("requête post comment Ajax: " + xhttp.responseText);
 			}
 		};
-		console.log(apiUrl+'/wines/'+id+'/comments', toSend);
+		//HTTP request
 		xhttp.open('POST', apiUrl+'/wines/'+id+'/comments', true);
 		xhttp.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhttp.send(toSend);
+
 	}else{
+		//Si trop long affiché message erreur
 		msg = "Please enter a comment under 255 characters";
 		document.getElementById("commentError").innerHTML = msg;
 		$("#commentError").slideDown();
 	}
 }
 
-//Delete comment
+/**
+ * Delete comment
+ * @param {Object} wine - A Wine object
+ * @param {number} commentId - Id of the comment
+ */
 function deleteComment(wine, commentId){
 
 	if(confirm("Voulez-vous supprimer ?")){
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = function (){
 			if(xhttp.status === 200){
-				hideCommentValueAndButtons();
+				//Show success message and show new comments list
 				let msg = ("Comment deleted");
 				document.getElementById("commentMsg").innerHTML=msg;
 				$('#commentMsg').slideDown();
 				getComments(wine);
 			}else{
-				alert(xhttp.responseText);
+				alert("Delete Comment ajax error : " +xhttp.responseText);
 			}
 		};
+		//Http request with Authorization
 		xhttp.open('DELETE', apiUrl+ '/wines/' + wine.id +'/comments/' + commentId, true);
 		xhttp.setRequestHeader('Authorization', 'Basic ' +btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhttp.send();
 	}
 }
 
-//Modify comment
+/**
+ * Modify comment
+ * @param {Object} wine - A Wine object
+ * @param {number} commentId - Id of the comment
+ */
 function modifyComment(wine, commentId){
 
-	//fill comment section with comment to modify
-	let comment=document.getElementById(commentId).innerHTML;
-	document.getElementById('comment').value=comment;
-	//Show modify and cancel buttons
-	document.getElementById('btnComment').style.display='none';
-	document.getElementById('btnUpdateComment').style.display='inline-block';
-	document.getElementById('btnCancelComment').style.display='inline-block';
-
+	//Show comment and modify and cancel buttons
+	const comment=document.getElementById(commentId).innerHTML;
+	hideOrShowCommentAndButtons(false, comment);
 	//Create listener on update
 	document.getElementById('btnUpdateComment').addEventListener('click', function(){
 		const newComment=document.getElementById("comment").value;
 		if(newComment.length<255 && newComment.length>0 ){
-			console.log(newComment);
+			//Create http request and comment in JSON to send
 			const xhttp = new XMLHttpRequest();
-
 			let toSend={"content":newComment};
 			toSend=JSON.stringify(toSend);
+
 			xhttp.onload = function(){
 				if(xhttp.status===200){
+					//Show success message and show new wines list + hide modify and cancel buttons
 					let msg="Comment modified";
 					document.getElementById("commentMsg").innerHTML=msg;
 					$('#commentMsg').slideDown();
-					hideCommentValueAndButtons();
+					hideOrShowCommentAndButtons(true);
 					getComments(wine);
 				}else{
-					alert(xhttp.responseText);
+					alert('Ajax error on PUT comment:' +xhttp.responseText);
 				}
 			};
 
@@ -837,6 +930,7 @@ function modifyComment(wine, commentId){
 			xhttp.setRequestHeader('Authorization', 'Basic '+ btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 			xhttp.send(toSend);
 		}else{
+			//Message empty or too long, error message
 			document.getElementById('comment').value='';
 			msg = "Please enter a comment under 255 characters";
 			document.getElementById("commentError").innerHTML = msg;
@@ -850,7 +944,9 @@ function modifyComment(wine, commentId){
 
 }
 
-//Like or dislike a wine
+/**
+ * Like or dislike a wine
+ */
 function like(){
 	//prevents page from reloading
 	event.preventDefault();
@@ -886,7 +982,10 @@ function like(){
 	xhr.send(toSend);
 }
 
-//Request and show pictures
+/**
+ * Request and show pictures
+ * @param {Object} wine - A Wine object
+ */
 function getPictures(wine){
 	document.getElementById("carousel-inner").innerHTML='';
 	const xhttp = new XMLHttpRequest();
@@ -925,7 +1024,9 @@ function getPictures(wine){
 	xhttp.send();
 }
 
-//Get wines from the API and then display them
+/**
+ * Get wines from the API and then display them
+ */
 function getWines(){
 	//Data gathering from the API
 	const xhttp = new XMLHttpRequest();
@@ -937,7 +1038,7 @@ function getWines(){
 			for (let prop in wines) {
 				//fill the array with our wines
 				winesArray.push(wines[prop]);
-				//Create tag for autocompletion on search
+				//Create tags for autocompletion on search
 				availableTags.push(wines[prop].name.toLowerCase());
 			}
 			winesArray.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
@@ -953,9 +1054,11 @@ function getWines(){
 	xhttp.send();
 }
 
-//Fill array with the likes of the user once
+/**
+ * Fill array with the likes of the user once
+ */
 function getUserLikes(){
-	//Data gathering from the API
+	//Data gathering from the API to have an array of the users likes
 	const xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if(xhttp.readyState==4 && xhttp.status==200) {
@@ -970,12 +1073,15 @@ function getUserLikes(){
 	xhttp.send();
 }
 
-//Main
 
+/******************* Main ******************/
+/**
+ * Main function which gathers wine from the api and handles events and connection
+ */
 window.onload = function() {
 
+	//Main functions
 	getWines();
-	getUserLikes();
 	autocomplete();
 
 	//Buttons and inputs
@@ -1016,8 +1122,10 @@ window.onload = function() {
 		xhr.open("GET", apiUrl + "/users", true);
 		xhr.send();
 		*/
-		
-		//Add events related to connected user
+
+		//Get connected user likes
+		getUserLikes();
+		//Gather button elements and add events related to connected user
 		const btnNew = document.getElementById('btnNew');
 		const btnSave = document.getElementById('btnSave');
 		const btnDelete = document.getElementById('btnDelete');
@@ -1034,12 +1142,11 @@ window.onload = function() {
 		btnUpload.addEventListener('click', validateAddPictures);
 		btnComment.addEventListener('click', comment);
 
-		//cacher le bouton login et affiché log-out quand l utilisateur est connecté
+		//Hide login button and show log-out
 		document.getElementById("login-icone").style.display = 'none';
 		document.getElementById("logout-icone").style.display = 'block';
 
-		//cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
-
+		//Show elements that were hidden
 		let elements = document.getElementsByClassName('hideConnect');
 		for(let i = 0; i < elements.length; i++) {
 			elements[i].style.display = 'block';
