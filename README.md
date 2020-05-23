@@ -1,7 +1,7 @@
 <h1 align="center">
-    <a href="index.html"><img src="logo/vin.png" alt="Caviste 2020" width="100"></a>
+    <a href="index.html"><img src="logo/vin.png" alt="#" width="100"></a>
     <br>
-    # Projet Caviste 2020
+    Projet Caviste 2020
     <br>
     <br>
 </h1>
