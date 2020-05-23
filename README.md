@@ -5,7 +5,7 @@
     <br>
 </h1>
  
- Projet Caviste 2020
+# Projet Caviste 2020
 
 Le projet "Caviste 2020" est une application conçu comme une bibliothèque personnelle regroupant des vins.
 Elle permet de consulter les vins, leurs informations...
