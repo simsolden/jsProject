@@ -47,8 +47,15 @@ transform:translateX(6em);
 }
 
 .scrollable {
-  max-height: 250px; /* or any value */
-  overflow-y: auto;
+  overflow: auto;
+}
+
+#winesList{
+  max-height: 50%; /* or any value */
+}
+
+#comments{
+  max-height: 22%; /* or any value */
 }
 
 .success{
@@ -172,7 +179,6 @@ div#users-contain table th {
   padding: 0.3em;
 }
 
-
 /*----------Graphique reprenant les vins selon leur origine------------*/
 
 #canvas-holder {
@@ -200,3 +206,4 @@ div#users-contain table th {
   height: 10px;
   margin-right: 10px;
 }
+
