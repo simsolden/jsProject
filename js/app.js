@@ -10,64 +10,99 @@ let availableTags = [];
 let info;
 let pictureSelect;
 let picturesList;
+//Array of user objects
 
-const userId= 20;
-let user = "Rachida";
-let pass = "epfc";
+let loginTab = [
+	{
+		"username" : "rachida",
+		"password" : "epfc",
+		"id":"20"
+	},
+
+	{
+		"username" : "youssef",
+		"password" : "epfc",
+		"id" :"23"
+	},
+
+	{
+		"username" : "simon",
+		"password" : "epfc",
+		"id" : "21"
+	},
+
+	{
+		"username" : "angeline",
+		"password" : "epfc",
+		"id" :"8"
+	},
+
+	{
+		"username" : "myriam",
+		"password" : "epfc",
+		"id" : "17"
+	},
+
+	{
+		"username" : "ced",
+		"password" : "epfc",
+		"id" : "1"
+	}
+
+];
+
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 const pics = "http://cruth.phpnet.org/epfc/caviste/public/pics/";
 const uploads = "http://cruth.phpnet.org/epfc/caviste/public/uploads/";
 
+
 //Formulaire d'inscription
 $(function () {
 	var dialog, form,
-		name = $("#name"),
-		password = $("#password"),
-		allFields = $([]).add(name).add(password);
-	//TODO adapter quand l'api sera prete 
+	name = $("#name"),
+	password = $("#password"),
+	allFields = $([]).add(name).add(password);
+	//TODO adapter quand l'api sera prete
 	function connectUser() {
-		user = document.getElementById("userName").value;
-		pass = document.getElementById("password").value;
-		console.log(user, pass);
-		const xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-				let data = xhr.responseText;
-				let login = JSON.parse(data);
-				console.log(login);
-			} else {
-				//alert('Veuillez utiliser le bon login et mot de passe svp.')
-			}
-		};
-		xhr.open("GET", apiUrl + "/users", true);
-		xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
-		xhr.send();
+		let user = document.getElementById("userName").value;
+		let pass = document.getElementById("password").value;
 
-		if (1) {
-			//cacher le bouton login quand l utilisateur est connecté 
-			document.getElementById("login-icone").style.display = 'none';
-			//Afficher le bouton logout, save, delete, new
-			document.getElementById("logout-icone").style.display = 'block';
-			//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
-			let buttons = document.getElementsByClassName('hideConnect');
-  				for(let i = 0; i < buttons.length; i++) {
-    				buttons[i].style.display = 'inline-block';
- 			 }
+		if(window.sessionStorage){
+			console.log('Supported');
+
+			//parcourir le tableau d'objets pour récupérer la valeur de chaque clé
+			for(let i=0; i<loginTab.length; i++){
+				if(user == loginTab[i].username && pass == loginTab[i].password){
+					alert('login success !');
+					//On affecter le login et le pwd  à la session
+					sessionStorage.setItem("user", user);
+					sessionStorage.setItem("pass", pass);
+					sessionStorage.setItem("id", loginTab[i].id);
+				}
+			}
+			//Après le for si aucunne connexion => message d'erreur
+			if(!sessionStorage.getItem("user")){
+				alert("Erreur connexion");
+			}
+		} else {
+			console.log('sessionStorage Not supported');
 		}
 		dialog.dialog("close");
+		onload();
 	}
 
 	function disconnectUser() {
-	//cacher le bouton login quand l utilisateur est connecté 
+		//cacher le bouton login quand l utilisateur est connecté
 		document.getElementById("login-icone").style.display = 'block';
 		//Afficher le bouton logout, save, delete, new
 		document.getElementById("logout-icone").style.display = 'none';
 		//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
 		let buttons = document.getElementsByClassName('hideConnect');
-			for(let i = 0; i < buttons.length; i++) {
+		for(let i = 0; i < buttons.length; i++) {
 			buttons[i].style.display = 'none';
-		 }
+		}
 		sessionStorage.clear();
+		onload();
 	}
 
 	dialog = $("#dialog-form").dialog({
@@ -93,14 +128,14 @@ $(function () {
 	});
 
 	$("#login-icone")
-		.button()
-		.on("click", function () {
-			dialog.dialog("open");
-		});
+	.button()
+	.on("click", function () {
+		dialog.dialog("open");
+	});
 
 	$("#logout-icone")
-		.button()
-		.on("click", disconnectUser);
+	.button()
+	.on("click", disconnectUser);
 });
 
 
@@ -245,8 +280,10 @@ function uploadPictures(){
 
 			alert(picturesList.name);
 			alert("Upload réussi !");
+			document.getElementById("uploadHide").style.display = "none";
+			showWine(idWine);
 		} else {
-		
+
 			alert("Vous avez atteint le nombre de photo maximal pour ce vin (max 3 ajouts possibles)");
 		}
 	}
@@ -259,7 +296,7 @@ function uploadPictures(){
 	};
 
 	xhr.open("POST", apiUrl +'/wines/' + idWine + '/'+ 'pictures', true);
-	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhr.send(dataUpload);
 
 }
@@ -269,31 +306,31 @@ function uploadPictures(){
 //Delete picture
 function deletePicture(){
 	//This is the picture id of the image selected via the carousel
-	
-		if(confirm('Souhaitez-vous vraiment supprimer ce vin ?')){
-	pictureId = $('#carousel li.active').attr("data-id");
-	let idWine = document.getElementById('idWine').value;
 
-	const xhr = new XMLHttpRequest();
-	xhr.onload = function () {
-		if (this.status === 200) {
-			
-			alert("Suppression réussie !");
-			showWine(idWine);
-		} 
-	}
+	if(confirm('Souhaitez-vous vraiment supprimer ce vin ?')){
+		pictureId = $('#carousel li.active').attr("data-id");
+		let idWine = document.getElementById('idWine').value;
 
-	xhr.onerror = function () {
-		if (this.status === 404) {
+		const xhr = new XMLHttpRequest();
+		xhr.onload = function () {
+			if (this.status === 200) {
 
-			alert("Une erreur est survenue lors de la suppression de la photo !");
+				alert("Suppression réussie !");
+				showWine(idWine);
+			}
 		}
-	};
 
-	xhr.open("DELETE", apiUrl +'/wines/' + idWine + '/pictures/'+ pictureId, true);
-	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
-	xhr.send();
-	}	
+		xhr.onerror = function () {
+			if (this.status === 404) {
+
+				alert("Une erreur est survenue lors de la suppression de la photo !");
+			}
+		};
+
+		xhr.open("DELETE", apiUrl +'/wines/' + idWine + '/pictures/'+ pictureId, true);
+		xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
+		xhr.send();
+	}
 }
 
 
@@ -321,7 +358,7 @@ function deleteWine() {
 			}
 		};
 		xhr.open("DELETE", apiUrl +'/wines/' + idWine, true);
-		xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
+		xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhr.send();
 	}
 }
@@ -409,7 +446,7 @@ function saveWine() {
 	}
 	//Envoie de la requete au serveur
 	xhr.open(HTTPMethod, requestUrl, true);
-	xhr.setRequestHeader("My-Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhr.send(data);
 }
 
@@ -534,24 +571,24 @@ function validateAddPictures(){
 
 
 	if(pictures.files.length == ""){
-	  msgError = "Please upload a max 200 000 size .jpg or .jpeg file";
-	  document.getElementById("uploadError").innerHTML = msgError;
+		msgError = "Please upload a max 200 000 size .jpg or .jpeg file";
+		document.getElementById("uploadError").innerHTML = msgError;
 
 	} else if(pictures.files.length != ""){
 
-	  if(pictures.size > frmUpload.MAX_FILE_SIZE.value){
-		msgError = "Please upload a max 200 000 size file";
-		document.getElementById("uploadError").innerHTML = msgError;
+		if(pictures.size > frmUpload.MAX_FILE_SIZE.value){
+			msgError = "Please upload a max 200 000 size file";
+			document.getElementById("uploadError").innerHTML = msgError;
 
-	} else if(pictures.accept != ".jpeg, .jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
-	  msgError = "Please upload at least one .jpeg file";
-	  document.getElementById("uploadError").innerHTML = msgError;
+		} else if(pictures.accept != ".jpeg, .jpg"){      //condition n'est peut-être pas nécessaire car avec la précision dans le formulaire, cela nous limite à la selection des fichiers jpj uniquement.
+			msgError = "Please upload at least one .jpeg file";
+			document.getElementById("uploadError").innerHTML = msgError;
 
-	} else {
-		document.getElementById("uploadError").innerHTML = "";
+		} else {
+			document.getElementById("uploadError").innerHTML = "";
 
-		uploadPictures();
-	 }
+			uploadPictures();
+		}
 
 	}
 }
@@ -661,12 +698,12 @@ function showWine(id) {
 		document.getElementById("promoHide").style.display = "none";
 	}
 
-  	//Get and show wine Likes
+	//Get and show wine Likes
 	getLikes(id);
 
 	//Get and show pictures
 	getPictures(wine);
-  
+
 	//Get and show comments
 	getComments(wine);
 }
@@ -682,9 +719,8 @@ function getComments(wine){
 			let div='';
 			let i=0;
 			for (let prop in JSONcomments) {
-				console.log(div);
 				//If the comment is of the user, show delete and modify button and link the to according events
-				if(parseInt(JSONcomments[prop].user_id) === userId){
+				if(parseInt(JSONcomments[prop].user_id) === parseInt(sessionStorage.getItem('id'))){
 					let btnDel= '<button name="btnDeleteComment" data-id="'+JSONcomments[prop].id+'" type="button" class="btn btn-link btn-sm mr-2">Delete</button>';
 					let btnModify= '<button name="btnModifyComment" data-id="'+JSONcomments[prop].id+'" type="button" class="btn btn-link  btn-sm">Modify</button>';
 					div = '<div class="card mb-2"><div class="card-body"><p id="'+JSONcomments[prop].id+'">' + JSONcomments[prop].content + '</p>'+btnDel +btnModify+'</div></div>';
@@ -734,7 +770,7 @@ function comment(){
 		};
 		console.log(apiUrl+'/wines/'+id+'/comments', toSend);
 		xhttp.open('POST', apiUrl+'/wines/'+id+'/comments', true);
-		xhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+		xhttp.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhttp.send(toSend);
 	}else{
 		msg = "Please enter a comment under 255 characters";
@@ -760,7 +796,7 @@ function deleteComment(wine, commentId){
 			}
 		};
 		xhttp.open('DELETE', apiUrl+ '/wines/' + wine.id +'/comments/' + commentId, true);
-		xhttp.setRequestHeader('Authorization', 'Basic ' +btoa(user + ':' + pass));
+		xhttp.setRequestHeader('Authorization', 'Basic ' +btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhttp.send();
 	}
 }
@@ -771,7 +807,7 @@ function modifyComment(wine, commentId){
 	//fill comment section with comment to modify
 	let comment=document.getElementById(commentId).innerHTML;
 	document.getElementById('comment').value=comment;
-		//Show modify and cancel buttons
+	//Show modify and cancel buttons
 	document.getElementById('btnComment').style.display='none';
 	document.getElementById('btnUpdateComment').style.display='inline-block';
 	document.getElementById('btnCancelComment').style.display='inline-block';
@@ -786,19 +822,19 @@ function modifyComment(wine, commentId){
 			let toSend={"content":newComment};
 			toSend=JSON.stringify(toSend);
 			xhttp.onload = function(){
-					if(xhttp.status===200){
-						let msg="Comment modified";
-						document.getElementById("commentMsg").innerHTML=msg;
-						$('#commentMsg').slideDown();
-						hideCommentValueAndButtons();
-						getComments(wine);
-					}else{
-						alert(xhttp.responseText);
-					}
+				if(xhttp.status===200){
+					let msg="Comment modified";
+					document.getElementById("commentMsg").innerHTML=msg;
+					$('#commentMsg').slideDown();
+					hideCommentValueAndButtons();
+					getComments(wine);
+				}else{
+					alert(xhttp.responseText);
+				}
 			};
 
 			xhttp.open('PUT', apiUrl + '/wines/' + wine.id + '/comments/' + commentId);
-			xhttp.setRequestHeader('Authorization', 'Basic '+ btoa(user +':'+ pass));
+			xhttp.setRequestHeader('Authorization', 'Basic '+ btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 			xhttp.send(toSend);
 		}else{
 			document.getElementById('comment').value='';
@@ -846,7 +882,7 @@ function like(){
 		}
 	};
 	xhr.open("PUT",apiUrl+'/wines/'+id+'/like',true);
-	xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhr.send(toSend);
 }
 
@@ -885,7 +921,7 @@ function getPictures(wine){
 	};
 
 	xhttp.open("GET",apiUrl+'/wines/'+wine.id+'/pictures',true);
-	xhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+	xhttp.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhttp.send();
 }
 
@@ -930,7 +966,7 @@ function getUserLikes(){
 			}
 		}
 	};
-	xhttp.open('GET',apiUrl+'/users/'+userId+'/likes/wines',true);
+	xhttp.open('GET',apiUrl+'/users/'+sessionStorage.getItem('id')+'/likes/wines',true);
 	xhttp.send();
 }
 
@@ -944,28 +980,15 @@ window.onload = function() {
 
 	//Buttons and inputs
 	const btnSearch = document.getElementById('btnSearch');
-	const btnNew = document.getElementById('btnNew');
-	const btnSave = document.getElementById('btnSave');
-	const btnDelete = document.getElementById('btnDelete');
 	const btnFilter = document.getElementById('btnFilter');
 	const btnSortBy=document.getElementById('btnSortBy');
-	const btnLike=document.getElementById('btnLike');
-	const btnAddPictures = document.getElementById('btnAddPictures');
-	const btnUpload = document.getElementById('btnUpload');
 	const input = document.getElementById("inputSearch");
-	const addComment = document.getElementById("addComment");
+
 
 	//Events creation
-	btnComment.addEventListener('click', comment);
 	btnSearch.addEventListener('click', search);
-	btnNew.addEventListener('click', newWine);
-	btnSave.addEventListener('click',validateForm);
-	btnDelete.addEventListener('click', deleteWine);
 	btnFilter.addEventListener('click', filter);
 	btnSortBy.addEventListener('click', sortBy);
-	btnLike.addEventListener('click', like);
-	btnAddPictures.addEventListener('click', addPictures);
-	btnUpload.addEventListener('click', validateAddPictures);
 	input.addEventListener("keydown", function(event) {
 		// Number 13 is the "Enter" key on the keyboard
 		if (event.keyCode === 13) {
@@ -975,4 +998,52 @@ window.onload = function() {
 	});
 	btnDelPictures.addEventListener('click', deletePicture);
 
+	//If user connected
+	if (sessionStorage.getItem("user")){
+
+		//TODO request users values to see if user and pass are valid else, sessionStorage.clear();
+		/**
+		const xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				let data = xhr.responseText;
+				let login = JSON.parse(data);
+				alert('vous êtes connecté');
+			} else {
+				alert('Error !');
+			}
+		};
+		xhr.open("GET", apiUrl + "/users", true);
+		xhr.send();
+		*/
+		
+		//Add events related to connected user
+		const btnNew = document.getElementById('btnNew');
+		const btnSave = document.getElementById('btnSave');
+		const btnDelete = document.getElementById('btnDelete');
+		const btnLike=document.getElementById('btnLike');
+		const btnAddPictures = document.getElementById('btnAddPictures');
+		const btnUpload = document.getElementById('btnUpload');
+		const addComment = document.getElementById("addComment");
+
+		btnNew.addEventListener('click', newWine);
+		btnSave.addEventListener('click',validateForm);
+		btnDelete.addEventListener('click', deleteWine);
+		btnLike.addEventListener('click', like);
+		btnAddPictures.addEventListener('click', addPictures);
+		btnUpload.addEventListener('click', validateAddPictures);
+		btnComment.addEventListener('click', comment);
+
+		//cacher le bouton login et affiché log-out quand l utilisateur est connecté
+		document.getElementById("login-icone").style.display = 'none';
+		document.getElementById("logout-icone").style.display = 'block';
+
+		//cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
+
+		let elements = document.getElementsByClassName('hideConnect');
+		for(let i = 0; i < elements.length; i++) {
+			elements[i].style.display = 'block';
+		}
+		document.getElementById("carousel-indicators").style.display = 'flex';
+	}
 };
