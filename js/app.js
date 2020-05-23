@@ -1153,6 +1153,9 @@ window.onload = function() {
 		}
 		document.getElementById("carousel-indicators").style.display = 'flex';
 	}
+	
+	var ctx = document.getElementById("graphvin").getContext("2d");
+	window.myPie = new Chart(ctx, config);
 };
 
 // Graphique reprenant l'origine des vins
@@ -1242,9 +1245,4 @@ var config = {
       enabled: false,
     }
   }
-};
-
-window.onload = function() {
-    var ctx = document.getElementById("graphvin").getContext("2d");
-    window.myPie = new Chart(ctx, config);
 };
