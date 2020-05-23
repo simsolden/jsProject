@@ -714,7 +714,6 @@ function hideOrShowCommentAndButtons(hide, comment){
 		document.getElementById('btnCancelComment').style.display='inline-block';
 		document.getElementById('comment').value= comment!=undefined ? comment : '';
 	}
-
 }
 
 /**
@@ -722,8 +721,10 @@ function hideOrShowCommentAndButtons(hide, comment){
 * @param {number} id - Id of the wine
 */
 function showWine(id) {
-
-	$("#btnLike, #btnAddPictures, #btnDelPictures, #wineLikesCount, #addComment").show();
+	if(sessionStorage.getItem('user')){
+		$("#addComment").show();
+	}
+	$("#btnLike, #btnAddPictures, #btnDelPictures, #wineLikesCount").show();
 	document.getElementById("notes").readOnly = true;
 	//clear error messages
 	$(".success, .error").slideUp('slow');
