@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="librairies/node_modules/jquery/dist/jquery.min.js"></script>
   <script src="librairies/jqueryUI/jquery-ui/jquery-ui.min.js"></script>
+  <script src="librairies/node_modules/chart.js/dist/chart.min.js"></script>
   <script src="js/app.js"></script>
   <title>Caviste 2020</title>
 </head>
@@ -65,6 +66,7 @@
       </div>
     </div>
     <form id="filterAndSort" action="#" method="post">
+
           <div class="form-row ml-3">
             <div class="optionsDiv">
               <select id="selectCountry">
@@ -89,7 +91,14 @@
             <ul id="winesList" class="scrollable">
           <!-- Wines list -->
         </ul>
+        <!-- Graphique origine du vin -->
+        <div id="canvas-holder" class ="ml-3" style="width: 300px;">
+          <canvas id="graphvin" width="300" height="300"/>
+        </div>
+        <div id="chartjs-tooltip">
+        </div>
       </div>
+
       <div class="col mt-3">
         <form id="addUpdateWine" action="#" method="post">
 
@@ -185,17 +194,17 @@
           </form>
         </div>
         <div class="likes">
-         <p id="wineLikesCount" class="likes" ></p>
+          <p id="wineLikesCount" class="likes" ></p>
           <form id="addLike" action="#" method="post" class="hideConnect">
             <!-- Wine Picture -->
             <button id="btnLike" name ="btnLike" class="likeButton"><i class="far fa-thumbs-up"></i> Like</button>
           </form>
         </div>
         <!-- Wine Notes -->
-          <div>
-            <label for="notes">Notes:</label>
-            <textarea class="form-control" id="notes" name="description" rows="4" readonly></textarea>
-          </div>
+        <div>
+          <label for="notes">Notes:</label>
+          <textarea class="form-control" id="notes" name="description" rows="4" readonly></textarea>
+        </div>
         <!-- Comments section -->
         <p class="success" id="commentMsg"></p>
         <div id="comments" class="comments scrollable">
@@ -211,6 +220,9 @@
           </div>
         </form>
       </div>
+    </div>
+    <div class="row">
+
     </div>
   </div>
 
