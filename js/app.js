@@ -62,6 +62,7 @@ let loginTab = [
 
 ];
 
+
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 const pics = "http://cruth.phpnet.org/epfc/caviste/public/pics/";
 const uploads = "http://cruth.phpnet.org/epfc/caviste/public/uploads/";
@@ -164,7 +165,6 @@ function filter(){
 	const selectYear = document.getElementById("selectYear");
 	const selectedYear=selectYear.options[selectYear.selectedIndex].value;
 
-
 	//case when the user want to filter by country and year
 	if(selectedCountry!='Country'&&selectedYear!='Year'){
 		selected = showWines(wines.filter(element => element.country == selectedCountry && element.year == selectedYear));
@@ -178,6 +178,7 @@ function filter(){
 		selected = showWines(wines.filter(element => element.country == selectedCountry));
 	}
 	else{
+
 		showWines(wines);
 	}
 
@@ -222,7 +223,7 @@ function sort(wines){
  * Get all years from wines list to fill in select values
  */
 function getAllYears(){
-	document.getElementById('selectYear').innerHTML="";
+	document.getElementById('selectYear').innerHTML='<option value="Year" selected>Year</option>';
 	const allYears = document.getElementById('selectYear');
 	let setYear=new Set();
 	let arrayYears;
@@ -247,7 +248,8 @@ function getAllYears(){
  * Get all countries from wines list to fill in select values
  */
 function getAllCountries(){
-	document.getElementById('selectCountry').innerHTML='';
+	document.getElementById('selectCountry').innerHTML='<option value="Country" selected>Country</option>';
+
 	const allCountries = document.getElementById('selectCountry');
 	let setCountry=new Set();
 	let arrayCountries;
@@ -264,7 +266,6 @@ function getAllCountries(){
 	for (let item of arrayCountries){
 		allCountries.options[allCountries.options.length] = new Option(item, item);
 	}
-
 }
 
 /**
@@ -703,7 +704,7 @@ function hideOrShowCommentAndButtons(hide, comment){
 		document.getElementById('btnComment').style.display='none';
 		document.getElementById('btnUpdateComment').style.display='inline-block';
 		document.getElementById('btnCancelComment').style.display='inline-block';
-		document.getElementById('comment').value= comment==undefined ? comment : '';
+		document.getElementById('comment').value= comment!=undefined ? comment : '';
 	}
 
 }
