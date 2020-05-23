@@ -721,10 +721,12 @@ function hideOrShowCommentAndButtons(hide, comment){
 * @param {number} id - Id of the wine
 */
 function showWine(id) {
+	//Show comment section and other buttons if user is connected and after fields were clear by newWine()
 	if(sessionStorage.getItem('user')){
 		$("#addComment").show();
 	}
 	$("#btnLike, #btnAddPictures, #btnDelPictures, #wineLikesCount").show();
+	document.getElementById("bio").setAttribute('type','text');
 	document.getElementById("notes").readOnly = true;
 	//clear error messages
 	$(".success, .error").slideUp('slow');
