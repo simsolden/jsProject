@@ -1161,13 +1161,11 @@ window.onload = function() {
 // Graphique reprenant l'origine des vins
 
 window.chartColors = {
-	red: 'rgb(220, 0, 0)',
-	orange: 'rgb(255, 159, 64)',
-	yellow: 'rgb(255, 205, 86)',
-	green: 'rgb(75, 192, 192)',
-	blue: 'rgb(54, 162, 235)',
-	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(231,233,237)'
+	red: 'rgb(50, 0, 32)',
+	orange: 'rgb(128, 0, 32)',
+	yellow: 'rgb(195, 0, 32)',
+	green: 'rgb(250, 50, 50)',
+	blue: 'rgb(149, 149, 149)'
 };
 
 Chart.defaults.global.tooltips.custom = function(tooltip) {
@@ -1214,14 +1212,13 @@ var config = {
   type: 'doughnut',
   data: {
     datasets: [{
-      data: [5, 3, 1, 1, 1, 1],
+      data: [5, 3, 1, 1, 1],
       backgroundColor: [
         window.chartColors.red,
         window.chartColors.orange,
         window.chartColors.yellow,
         window.chartColors.green,
         window.chartColors.blue,
-        window.chartColors.purple,
       ],
     }],
     labels: [
@@ -1230,13 +1227,13 @@ var config = {
       "Argentine", //Yellow
       "Espagne", //Green
       "Italy", //Blue
-      "Burgundy" //Purple
     ]
   },
   options: {
     responsive: true,
     legend: {
       display: true,
+      position: "bottom",
       labels: {
         padding: 20
       },
