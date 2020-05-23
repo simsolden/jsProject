@@ -27,9 +27,9 @@
             <form>
               <fieldset>
                 <label for="userName">Name</label>
-                <input type="text" name="userName" id="userName" value="Rachida" class="text ui-widget-content ui-corner-all">
+                <input type="text" name="userName" id="userName" class="text ui-widget-content ui-corner-all">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" value="epfc" class="text ui-widget-content ui-corner-all">
+                <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all">
                 <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
               </fieldset>
             </form>
@@ -156,7 +156,7 @@
 
           <!-- Form Buttons -->
           <div class="form-group hideConnect">
-            <button id="btnSave" name="btnSave" type="button" " class="btn btn-primary">Save</button>
+            <button id="btnSave" name="btnSave" type="button" class="btn btn-primary">Save</button>
             <button id="btnDelete" name="btnDelete" type="button" class="btn btn-dark">Delete</button>
             <button id="btnNew" name="btnNew" type="button" class="btn btn-success">New Wine</button>
           </div>
@@ -165,7 +165,7 @@
       <div class="col mt-5">
         <!-- Wine Pictures -->
         <div id="carousel" class="carousel slide" data-ride="carousel">
-          <ol id="carousel-indicators" class="carousel-indicators">
+          <ol id="carousel-indicators" class="carousel-indicators hideConnect">
           </ol>
           <div id="carousel-inner" class="carousel-inner" role="listbox">
           </div>
@@ -206,19 +206,14 @@
           <div class="form-group">
             <label for="comment">Comment:</label>
             <textarea class="form-control mb-1" id="comment" name="comment" rows="3"></textarea>
-
             <p class="error" id="commentError"></p>
-
             <button id="btnComment" name="btnComment" type="button" class="btn btn-info">Comment</button>
             <button id="btnUpdateComment" name="btnUpdateComment" type="button" class="btn btn-info">Modify</button>
             <button id="btnCancelComment" name="btnCancelComment" type="button" class="btn btn-danger">Annuler</button>
           </div>
         </form>
       </div>
-
-
     </div>
-
   </div>
 
   <script src="librairies/node_modules/popper.js/dist/popper.min.js"></script>
