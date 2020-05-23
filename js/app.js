@@ -1,5 +1,7 @@
 /**
- * Wine cellar "Single Page Application"
+ * Wine cellar site type "Single Page Application"
+ * @Version 1.0
+ * @file Main script of the SPA
  *
  * @author Simon Oldenhove <simonoldenhove@gmail.com>
  *
@@ -8,6 +10,8 @@
  *
  *
  */
+
+
 /******************* Variables ******************/
 let wines;
 let HTTPMethod;
@@ -62,10 +66,11 @@ const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 const pics = "http://cruth.phpnet.org/epfc/caviste/public/pics/";
 const uploads = "http://cruth.phpnet.org/epfc/caviste/public/uploads/";
 
-
 /******************* Functions ******************/
 
-//Formulaire de connexion et de déconnexion
+/**
+ * Formulaire de connexion et de déconnexion
+ */
 $(function () {
 	var dialog, form,
 	name = $("#name"),
@@ -77,7 +82,6 @@ $(function () {
 		let pass = document.getElementById("password").value;
 
 		if(window.sessionStorage){
-			console.log('Supported');
 			//parcourir le tableau d'objets pour récupérer la valeur de chaque clé
 			for(let i=0; i<loginTab.length; i++){
 				if(user == loginTab[i].username && pass == loginTab[i].password){
@@ -106,7 +110,7 @@ $(function () {
 		document.getElementById("logout-icone").style.display = 'none';
 		//TODO cacher les autres éléments par défaut et les afficher ici lorsque l'utilisateur est connecté
 		let elements = document.getElementsByClassName('hideConnect');
-		for(let i = 0; i < buttons.length; i++) {
+		for(let i = 0; i < elements.length; i++) {
 			elements[i].style.display = 'none';
 		}
 		sessionStorage.clear();
@@ -146,7 +150,9 @@ $(function () {
 	.on("click", disconnectUser);
 });
 
-//Filter wines via select value
+/**
+ * Filter wines via select value
+ */
 function filter(){
 	//Define last action
 	lastAction='filter';
@@ -177,7 +183,9 @@ function filter(){
 
 }
 
-//Sort wines list in normal state or after filter, search, etc...
+/**
+ * Sort wines list in normal state or after filter, search, etc...
+ */
 function sortBy(){
 	const selectSort = document.getElementById('selectSort');
 	const selectedSort=selectSort.options[selectSort.selectedIndex].value;
@@ -191,7 +199,10 @@ function sortBy(){
 	}
 }
 
-//Sort wines list
+/**
+ * Sort wines list
+ * @param {Object[]} wines - The list of wines to sort
+ */
 function sort(wines){
 	//sort by year
 	if(sortName=='Year'){
@@ -207,8 +218,11 @@ function sort(wines){
 	}
 }
 
-//Get all years from wines list to fill in select values
+/**
+ * Get all years from wines list to fill in select values
+ */
 function getAllYears(){
+	document.getElementById('selectYear').innerHTML="";
 	const allYears = document.getElementById('selectYear');
 	let setYear=new Set();
 	let arrayYears;
@@ -229,8 +243,11 @@ function getAllYears(){
 
 }
 
-//Get all countries from wines list to fill in select values
+/**
+ * Get all countries from wines list to fill in select values
+ */
 function getAllCountries(){
+	document.getElementById('selectCountry').innerHTML='';
 	const allCountries = document.getElementById('selectCountry');
 	let setCountry=new Set();
 	let arrayCountries;
@@ -250,7 +267,9 @@ function getAllCountries(){
 
 }
 
-//Search wines through names
+/**
+ * Search wines through names
+ */
 function search(){
 	//define last action
 	lastAction='search';
@@ -269,12 +288,16 @@ function search(){
 	document.getElementById("selectCountry").value="Country";
 }
 
-//Show buttons to add user pictures
+/**
+ * Show buttons to add user pictures
+ */
 function addPictures(){
 	document.getElementById("uploadHide").style.display = "block";
 }
 
-//Upload user's wine pictures
+/**
+ * Upload user's wine pictures
+ */
 function uploadPictures(){
 
 	let idWine = document.getElementById('idWine').value;
@@ -311,7 +334,9 @@ function uploadPictures(){
 
 }
 
-//Delete picture
+/**
+ * Delete picture
+ */
 function deletePicture(){
 	//This is the picture id of the image selected via the carousel
 
@@ -341,7 +366,9 @@ function deletePicture(){
 	}
 }
 
-//Delete a wine
+/**
+ * Delete a wine
+ */
 function deleteWine() {
 	if (confirm("Voulez-vous vraiment supprimer ce vin ?")) {
 		let info;
@@ -369,7 +396,9 @@ function deleteWine() {
 	}
 }
 
-//Autocomplete search field via JQueryUI
+/**
+ * Autocomplete search field via JQueryUI
+ */
 function autocomplete() {
 	$( "#inputSearch" ).autocomplete({
 		source: availableTags
@@ -377,10 +406,8 @@ function autocomplete() {
 }
 
 /**
-* Fonction permettant de créer et modifier un vin
-* @author Simon
-* @author Rachida
-*/
+ * Allows to add or update a wine
+ */
 function saveWine() {
 
 	const data = new FormData(); //Récupération des données du formulaire
@@ -455,7 +482,9 @@ function saveWine() {
 	xhr.send(data);
 }
 
-//Clear wine inputs and select request method
+/**
+ * Clear wine inputs and select request method
+ */
 function newWine() {
 	$(".error").slideUp();
 
@@ -476,7 +505,9 @@ function newWine() {
 	document.getElementById("promo").value = "";
 }
 
-//Validate form data to add a wine
+/**
+ * Validate form data to add a wine
+ */
 function validateForm() {
 	let msg = "";
 	//Name
@@ -572,7 +603,9 @@ function validateForm() {
 	}
 }
 
-//Validate picture's formats and number
+/**
+ * Validate picture's formats and number
+ */
 function validateAddPictures(){
 	let msgError = "";
 	let pictures = document.getElementById("upload");
@@ -601,7 +634,10 @@ function validateAddPictures(){
 	}
 }
 
-//Request and show likes()
+/**
+ * Request and show likes
+ * @param {number} id - The id of the wine for which we want the number of likes
+ */
 function getLikes(id){
 	//Show user blue liked button if already liked
 	const likeButton=document.getElementById('btnLike');
@@ -623,7 +659,11 @@ function getLikes(id){
 	xhttp.send();
 }
 
-//Show selectable wines list
+
+/**
+ * Show selectable wines list
+ * @param {Object[]} wines - The list of wines to show
+ */
 function showWines(wines) {
 	//Add Wines to List
 	const emptyList = document.getElementById('winesList');
@@ -648,7 +688,11 @@ function showWines(wines) {
 	}
 }
 
-//Show the comment section 'modify and cancel' buttons + comment
+/**
+ * Show the comment section 'modify and cancel' buttons + comment in textarea
+ * @param {boolean} hide - Hide or show value
+ * @param {string} [comment] - Original comment to show
+ */
 function hideOrShowCommentAndButtons(hide, comment){
 	if(hide){
 		document.getElementById('btnComment').style.display='block';
@@ -664,7 +708,10 @@ function hideOrShowCommentAndButtons(hide, comment){
 
 }
 
-//Show single wine info
+/**
+ * Show single wine info
+ * @param {number} id - Id of the wine
+ */
 function showWine(id) {
 
 	//clear error messages
@@ -725,7 +772,10 @@ function showWine(id) {
 	getComments(wine);
 }
 
-//Request and show comments
+/**
+ * Request and show comments
+ * @param {Object} wine - A Wine object
+ */
 function getComments(wine){
 	//Hide modify or cancel button and empty comment box
 	hideOrShowCommentAndButtons(true);
@@ -774,7 +824,9 @@ function getComments(wine){
 	xhttp.send();
 }
 
-//Comment a wine
+/**
+ * Comment a wine
+ */
 function comment(){
 
 	//retrieve wine and comment
@@ -815,7 +867,11 @@ function comment(){
 	}
 }
 
-//Delete comment
+/**
+ * Delete comment
+ * @param {Object} wine - A Wine object
+ * @param {number} commentId - Id of the comment
+ */
 function deleteComment(wine, commentId){
 
 	if(confirm("Voulez-vous supprimer ?")){
@@ -838,7 +894,11 @@ function deleteComment(wine, commentId){
 	}
 }
 
-//Modify comment
+/**
+ * Modify comment
+ * @param {Object} wine - A Wine object
+ * @param {number} commentId - Id of the comment
+ */
 function modifyComment(wine, commentId){
 
 	//Show comment and modify and cancel buttons
@@ -884,7 +944,9 @@ function modifyComment(wine, commentId){
 
 }
 
-//Like or dislike a wine
+/**
+ * Like or dislike a wine
+ */
 function like(){
 	//prevents page from reloading
 	event.preventDefault();
@@ -920,7 +982,10 @@ function like(){
 	xhr.send(toSend);
 }
 
-//Request and show pictures
+/**
+ * Request and show pictures
+ * @param {Object} wine - A Wine object
+ */
 function getPictures(wine){
 	document.getElementById("carousel-inner").innerHTML='';
 	const xhttp = new XMLHttpRequest();
@@ -959,7 +1024,9 @@ function getPictures(wine){
 	xhttp.send();
 }
 
-//Get wines from the API and then display them
+/**
+ * Get wines from the API and then display them
+ */
 function getWines(){
 	//Data gathering from the API
 	const xhttp = new XMLHttpRequest();
@@ -987,7 +1054,9 @@ function getWines(){
 	xhttp.send();
 }
 
-//Fill array with the likes of the user once
+/**
+ * Fill array with the likes of the user once
+ */
 function getUserLikes(){
 	//Data gathering from the API to have an array of the users likes
 	const xhttp = new XMLHttpRequest();
@@ -1004,7 +1073,11 @@ function getUserLikes(){
 	xhttp.send();
 }
 
+
 /******************* Main ******************/
+/**
+ * Main function which gathers wine from the api and handles events and connection
+ */
 window.onload = function() {
 
 	//Main functions
