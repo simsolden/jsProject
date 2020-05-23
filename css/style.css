@@ -80,6 +80,7 @@ transform:translateX(6em);
 
 .scrollable {
   overflow: auto;
+  scrollbar-width: thin;
 }
 
 #winesList{
