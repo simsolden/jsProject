@@ -1168,7 +1168,7 @@ window.onload = function() {
 		}
 		document.getElementById("carousel-indicators").style.display = 'flex';
 	}
-	
+
 	var ctx = document.getElementById("graphvin").getContext("2d");
 	window.myPie = new Chart(ctx, config);
 };

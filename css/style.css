@@ -16,6 +16,38 @@ margin-bottom: 30px;
 border: 1px solid #d63031;
 }
 
+/* -- Change bootstrap buttons colors -- */
+.btn-success,  .btn-success:active, .btn-success:visited , .btn-success:focus {
+    background-color:#A50000;
+    border-color:#FFFFFF;
+}
+
+.btn-success:hover{
+    background-color:#8B0000;
+    border-color:#000000;
+}
+
+.btn-info,  .btn-info:active, .btn-info:visited , .btn-info:focus {
+    background-color:#C22222;
+    border-color:#FFFFFF;
+}
+
+.btn-info:hover{
+    background-color:#B22222;
+    border-color:#000000;
+}
+
+
+.btn-primary,  .btn-primary:active, .btn-primary:visited , .btn-primary:focus {
+    background-color:#FA8072;
+    border-color:#FFFFFF;
+}
+
+.btn-primary:hover{
+    background-color:#E2766A;
+    border-color:#FFFFF0;
+}
+
 /*-- Resize pictures and keeps aspect ratio --*/
 .carousel-item{
   max-width:200px;
@@ -55,7 +87,7 @@ transform:translateX(6em);
 }
 
 #comments{
-  max-height: 22%; /* or any value */
+  max-height: 20em; /* or any value */
 }
 
 .success{
@@ -91,13 +123,13 @@ color:red;
 #login-icone {
   float: right;
   margin-top: 1.5%;
-  color: #3498db /*#34ace0*/;
+  color:#E75241;
 }
 
 #logout-icone {
   float: right;
   margin-top: 1.5%;
-  color: #3498db /*#34ace0*/;
+  color:#E75241;
 }
 
 #login-icone:hover {
@@ -206,4 +238,3 @@ div#users-contain table th {
   height: 10px;
   margin-right: 10px;
 }
-
