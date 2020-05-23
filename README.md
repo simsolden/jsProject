@@ -7,7 +7,7 @@
  
 # Projet Caviste 2020
 
-Le projet "Caviste 2020" est une application conçu comme une bibliothèque personnelle regroupant des vins.
+Le projet "Caviste 2020" est une application conçue comme une bibliothèque personnelle regroupant des vins.
 Elle permet de consulter les vins, leurs informations...
 
 ## Etat du projet
@@ -28,6 +28,6 @@ Sous licence MIT
 
 
 ## Documentation
-Pour la documentation, aller lire le [wiki]
+Pour la documentation, allez lire le [wiki]
 
 
