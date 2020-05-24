@@ -1,5 +1,4 @@
-
-# Projet Caviste 2020<img src="/logo/Vin.png" width="50">
+# Projet Caviste 2020   <img src="/logo/Vin.png" width="50">
 
 Le projet "Caviste 2020" est une application conçue sur les principes d'une bibliothèque personnelle regroupant non pas des livres mais bien des bouteilles de vin.
 Elle permet la consultation et la gestion de cette cave en quelques clics.
