@@ -17,7 +17,7 @@ Un graphique permet d'illustrer la proportion de vins présents dans la "cave" e
 
 Les fonctions ajouter/modifier/supprimer une bouteille ont été réalisées, mais les requêtes auxquelles ces dernières renvoient ne sont pas supportées, pour le moment, par l'API en question...<br/>
 À noter :
-Lorsqu'un utilisateur (inscrit) souhaite ajouter un vin, ce n'est qu'après l'exécution de cette tâche qu'il peut y associer une photo ou un commentaire. Même chose dans les cas de suppression et de modifications.
+Lorsqu'un utilisateur (inscrit) souhaite ajouter un vin, ce n'est qu'après l'exécution de cette tâche qu'il peut y associer une photo ou un commentaire. Même chose dans les cas de suppression et de modification.
 
 ## Auteur & copyright
 - Myriam
