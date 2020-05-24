@@ -1,8 +1,6 @@
 <h1 align="center">
     <a href="index.html"><img src="logo/vin.png" alt="Caviste 2020" width="100"></a>
     <br>
-    <br>
-    <br>
 </h1>
  
 # Projet Caviste 2020
@@ -16,8 +14,8 @@ Abonné ou simple utilisateur, vous n'aurez pas les mêmes droits...
 
 ### Mise en place du projet, utilisation
 En plus de consulter les vins, la recherche est accessible tout comme la possibilité de trier (par nom, grappe et année) ou de filtrer (par pays et par année) les vins. L'utilisateur pourra se connecter, via son username et son password, à son compte. Il a donc l'autorisation, dans ce cas-ci, d'ajouter/de modifier ou de supprimer ses propres commentaires ainsi que les photos pour chaque vin. Ce dernier peut également "liker" un vin en appuyant sur le bouton correspondant. Le tout en exploitant l'API Restful "Caviste" et sa documentation, disponibles aux adresses suivantes : <br/>
-API  => http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines <br/>
-DOC => http://cruth.phpnet.org/epfc/caviste/public/index.php
+[API](http://cruth.phpnet.org/epfc/caviste/public/index.php/api/wines/) <br/>
+[DOC](http://cruth.phpnet.org/epfc/caviste/public/index.php)
 
 Un graphique permet d'illustrer la proportion de vins présents dans la "cave" en fonction de leur provenance.
 
