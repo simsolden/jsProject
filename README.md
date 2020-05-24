@@ -1,5 +1,5 @@
 <h1 align="center">
-    <a href="index.html"><img src="logo/vin.png" alt="Caviste 2020" width="100"></a>
+    <a href="index.html"><img src="https://github.com/simsolden/jsProject/logo/vin.png" alt="Caviste 2020" width="100"></a>
     <br>
 </h1>
  
