@@ -171,14 +171,13 @@ function filter(){
 	}
 	//case when the user want to filter only by year
 	else if(selectedCountry=='Country'&&selectedYear!='Year'){
-		selected = showWines(wines.filter(element => element.year == selectedYear));
+		showWines(wines.filter(element => element.year == selectedYear));
 	}
 	//case when the user want to filter only by country
 	else if(selectedCountry!='Country'&&selectedYear=='Year'){
-		selected = showWines(wines.filter(element => element.country == selectedCountry));
+		showWines(wines.filter(element => element.country == selectedCountry));
 	}
 	else{
-
 		showWines(wines);
 	}
 
@@ -191,12 +190,15 @@ function sortBy(){
 	const selectSort = document.getElementById('selectSort');
 	const selectedSort=selectSort.options[selectSort.selectedIndex].value;
 	sortName=selectedSort;
-	wines = sort(wines);
+	sort(wines);
 	//allows the sort even when the wines are filtered or searched
 	if(lastAction=='filter'){
 		filter();
 	}else if(lastAction=='search'){
-		search();
+
+		if(lastAction=='search'){
+			search();
+		}
 	}
 }
 
@@ -205,18 +207,23 @@ function sortBy(){
  * @param {Object[]} wines - The list of wines to sort
  */
 function sort(wines){
+
 	//sort by year
 	if(sortName=='Year'){
-		return wines.sort((a, b) => a.year !== b.year ? a.year < b.year ? -1 : 1 : 0);
+		showWines(wines.sort((a, b) => a.year !== b.year ? a.year < b.year ? -1 : 1 : 0));
 	}
 	//sort by grapes
 	else if(sortName=='Grapes'){
-		return wines.sort((a, b) => a.grapes !== b.grapes ? a.grapes < b.grapes ? -1 : 1 : 0);
+		showWines(wines.sort((a, b) => a.grapes !== b.grapes ? a.grapes < b.grapes ? -1 : 1 : 0));
 	}
 	//sort by name
 	else{
-		return wines.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0);
+		showWines(wines.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0));
 	}
+
+
+
+
 }
 
 /**
