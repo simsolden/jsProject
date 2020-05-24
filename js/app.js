@@ -3,11 +3,11 @@
  * @Version 1.0
  * @file Main script of the SPA
  *
- * @author Simon Oldenhove <simonoldenhove@gmail.com>
- *
- *
- *
- *
+ * @author Y. Astitou
+ * @author A. Heymans
+ * @author M. Kadi
+ * @author R. Mimouni
+ * @author S. Oldenhove <simonoldenhove@gmail.com>
  *
  */
 
