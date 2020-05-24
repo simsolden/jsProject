@@ -1,8 +1,5 @@
-<h1 align="center">
-    <a href="index.html"><img src="jsProject/logo/Vin.png" alt="Caviste 2020" width="100"></a>
-    <br>
-</h1>
- 
+![Caviste 2020](./logo/Vin.png)
+
 # Projet Caviste 2020
 
 Le projet "Caviste 2020" est une application conçue sur les principes d'une bibliothèque personnelle regroupant non pas des livres mais bien des bouteilles de vin.
