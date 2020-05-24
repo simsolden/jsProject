@@ -3,10 +3,10 @@
  * @Version 1.0
  * @file Main script of the SPA
  *
- * @author Y. Astitou
- * @author A. Heymans
- * @author M. Kadi
- * @author R. Mimouni
+ * @author Y. Astitou <sefynear@gmail.com>
+ * @author A. Heymans <angeline.heymans@outlook.com>
+ * @author M. Kadi <kadiimyriam@hotmail.com>
+ * @author R. Mimouni <mimounir@outlook.be>
  * @author S. Oldenhove <simonoldenhove@gmail.com>
  *
  */
