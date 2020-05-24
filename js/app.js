@@ -1,5 +1,7 @@
 /**
+ *
  * Wine cellar site type "Single Page Application"
+ *
  * @Version 1.0
  * @file Main script of the SPA
  *
@@ -12,7 +14,8 @@
  */
 
 
-/******************* Variables ******************/
+/******************* Global Variables ******************/
+
 let wines;
 let HTTPMethod;
 let sortName;
@@ -23,45 +26,6 @@ let info;
 let pictureSelect;
 let picturesList;
 //Array of users object, TODO put in another js file ?
-let loginTab = [
-	{
-		"username" : "rachida",
-		"password" : "epfc",
-		"id":"20"
-	},
-
-	{
-		"username" : "youssef",
-		"password" : "epfc",
-		"id" :"23"
-	},
-
-	{
-		"username" : "simon",
-		"password" : "epfc",
-		"id" : "21"
-	},
-
-	{
-		"username" : "angeline",
-		"password" : "epfc",
-		"id" :"8"
-	},
-
-	{
-		"username" : "myriam",
-		"password" : "epfc",
-		"id" : "17"
-	},
-
-	{
-		"username" : "ced",
-		"password" : "epfc",
-		"id" : "1"
-	}
-
-];
-
 
 const apiUrl = "http://cruth.phpnet.org/epfc/caviste/public/index.php/api";
 const pics = "http://cruth.phpnet.org/epfc/caviste/public/pics/";
@@ -84,13 +48,13 @@ $(function () {
 
 		if(window.sessionStorage){
 			//parcourir le tableau d'objets pour récupérer la valeur de chaque clé
-			for(let i=0; i<loginTab.length; i++){
-				if(user == loginTab[i].username && pass == loginTab[i].password){
+			for(let i=0; i<APIusers.length; i++){
+				if(user == APIusers[i].username && pass == APIusers[i].password){
 					alert('login success !');
 					//On affecter le login et le pwd  à la session
 					sessionStorage.setItem("user", user);
 					sessionStorage.setItem("pass", pass);
-					sessionStorage.setItem("id", loginTab[i].id);
+					sessionStorage.setItem("id", APIusers[i].id);
 				}
 			}
 			//Après le for si aucunne connexion => message d'erreur
@@ -180,7 +144,6 @@ function filter(){
 	else{
 		showWines(wines);
 	}
-
 }
 
 /**
@@ -220,10 +183,6 @@ function sort(wines){
 	else{
 		showWines(wines.sort((a, b) => a.name !== b.name ? a.name < b.name ? -1 : 1 : 0));
 	}
-
-
-
-
 }
 
 /**
@@ -247,8 +206,6 @@ function getAllYears(){
 	for (let item of arrayYears){
 		allYears.options[allYears.options.length] = new Option(item, item);
 	}
-
-
 }
 
 /**
@@ -260,7 +217,6 @@ function getAllCountries(){
 	const allCountries = document.getElementById('selectCountry');
 	let setCountry=new Set();
 	let arrayCountries;
-
 	//creation of a set to remove duplicates
 	for(let i=0;i<wines.length;i++){
 		setCountry.add(wines[i]['country']);
@@ -268,7 +224,6 @@ function getAllCountries(){
 	//transforming the set into an array to use the sort() function
 	arrayCountries = Array.from(setCountry);
 	arrayCountries.sort();
-
 	//browse the list to add appropriate option values
 	for (let item of arrayCountries){
 		allCountries.options[allCountries.options.length] = new Option(item, item);
@@ -311,13 +266,11 @@ function uploadPictures(){
 	let idWine = document.getElementById('idWine').getAttribute('data-id');
 	const frmUpload = document.forms["frmUpload"];
 	const dataUpload = new FormData(frmUpload);
-
 	//Pour uploader une photo:
 	let pictureSelect = document.getElementById('upload');
 	let picturesList = pictureSelect.files[0];
 	//alert(picturesList.name);
 	dataUpload.getAll(picturesList);
-
 	const xhr = new XMLHttpRequest();
 	xhr.onload = function () {
 		if (this.status === 200) {
@@ -328,14 +281,13 @@ function uploadPictures(){
 			alert("Vous avez atteint le nombre de photo maximal pour ce vin (max 3 ajouts possibles)");
 		}
 	}
-
 	xhr.onerror = function () {
 		if (this.status === 404) {
 
 			alert("Une erreur est survenue, la photo n'a pu être uploader");
 		}
 	};
-
+	//HTTP request and Authorization
 	xhr.open("POST", apiUrl +'/wines/' + idWine + '/'+ 'pictures', true);
 	xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 	xhr.send(dataUpload);
@@ -346,28 +298,25 @@ function uploadPictures(){
  * Delete picture
  */
 function deletePicture(){
-	//This is the picture id of the image selected via the carousel
 
 	if(confirm('Souhaitez-vous vraiment supprimer cette photo ?')){
+		//picture id of the image selected in the carousel
 		pictureId = $('#carousel li.active').attr("data-id");
 		let idWine = document.getElementById('idWine').getAttribute('data-id');
 
 		const xhr = new XMLHttpRequest();
 		xhr.onload = function () {
 			if (this.status === 200) {
-
 				alert("Suppression réussie !");
 				showWine(idWine);
 			}
 		}
-
 		xhr.onerror = function () {
 			if (this.status === 404) {
-
 				alert("Une erreur est survenue lors de la suppression de la photo !");
 			}
 		};
-
+		//HTTP request
 		xhr.open("DELETE", apiUrl +'/wines/' + idWine + '/pictures/'+ pictureId, true);
 		xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhr.send();
@@ -391,13 +340,12 @@ function deleteWine() {
 				showWines(wines);
 			}
 		};
-
 		xhr.onerror = function () {
 			if (this.status === 404) {
-				//console.log('error');
 				info = "Une erreur est survenue, le vin n'a pas pu être supprimé";
 			}
 		};
+		////showinfo
 		xhr.open("DELETE", apiUrl +'/wines/' + idWine, true);
 		xhr.setRequestHeader("Authorization", "Basic " + btoa(sessionStorage.getItem("user") + ":" + sessionStorage.getItem("pass")));
 		xhr.send();
@@ -1130,22 +1078,6 @@ window.onload = function() {
 
 	//If user connected
 	if (sessionStorage.getItem("user")){
-
-		//TODO request users values to see if user and pass are valid else, sessionStorage.clear();
-		/**
-		const xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-				let data = xhr.responseText;
-				let login = JSON.parse(data);
-				alert('vous êtes connecté');
-			} else {
-				alert('Error !');
-			}
-		};
-		xhr.open("GET", apiUrl + "/users", true);
-		xhr.send();
-		*/
 
 		//Get connected user likes
 		getUserLikes();
