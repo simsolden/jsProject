@@ -36,6 +36,6 @@ Sous licence MIT
 
 
 ## Documentation
-Pour la documentation, nous vous invitons à parcourir/à lire attentivement (la page ?) [wiki]
+Pour la documentation, nous vous invitons à parcourir/à lire attentivement le [wiki](https://github.com/simsolden/jsProject/wiki).
 
 
